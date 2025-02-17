@@ -1,6 +1,6 @@
 /* Minden szín, ami nem a Tailwind-ben van az itt van meghatározva*/
 :root { 
-  --bg-color-strong: #FF6200;
+  --bg-color-strong: rgba(255, 98, 0, 0.25);
   --bg-color-weak: #FFF4E4;
   
   --button-important: #E85B44;
