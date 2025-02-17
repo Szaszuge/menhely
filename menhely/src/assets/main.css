@@ -2,5 +2,5 @@
 @import "tailwindcss";
 
 body{
-    background:linear-gradient(var(--bg-color-weak) 50%, var(--bg-color-strong) 100%) ;
-  }
+    background:linear-gradient(var(--bg-color-weak) 50%, var(--bg-color-strong) 100%);
+}
