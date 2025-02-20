@@ -52,13 +52,10 @@ import { RouterLink } from 'vue-router';
 
 <style scoped>
 #main {
-
     background-color: var(--bg-color-weak);
-
     max-height: 130px;
     height: calc(50px + 10vh);
     min-height: 70px;
-    
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
@@ -73,16 +70,41 @@ import { RouterLink } from 'vue-router';
     align-items: center;
 }
 
-#right:last-child{
+#right:last-child {
     margin-right: 35px;
 }
 
-.link{
+.link {
     margin: 0px 30px;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    transition: color 0.3s ease-in-out;
 }
-#mh-icon {
 
-    padding-left: 40px;
+.link:hover {
+    color: #ff6600;
+}
 
+.link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 100%;
+    height: 3px;
+    background-color: #ff6600;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease-in-out;
+}
+
+.link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.link:active {
+    color: #cc5500;
 }
 </style>
