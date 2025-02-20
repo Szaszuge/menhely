@@ -1,6 +1,6 @@
 <script setup>
 import pawFooter from '../components/paw-footer.vue'
-import homebar from '../components/homebar.vue'
+import homebar from '../components/Homebar.vue'
 </script>
 
 <template>
