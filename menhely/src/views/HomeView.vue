@@ -1,8 +1,9 @@
 <script setup>
+import pawFooter from '../components/paw-footer.vue'
 </script>
 
 <template>
-  <main>
-    
+  <main> 
+<paw-footer/>
   </main>
 </template>
