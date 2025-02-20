@@ -7,7 +7,7 @@ import { RouterLink } from 'vue-router';
     <div id="left">
         <!--SVG ikon nem tölt be ha fájlból próbálom behívni, úgyhogy egy kicsit ocsmány lesz, de működik -->
         <RouterLink to="/">
-        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:serif="http://www.serif.com/" width="auto" height="85px" viewBox="0 0 3200 2134" version="1.1" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;" id="mh-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:serif="http://www.serif.com/" width="auto" height="75px" viewBox="0 0 3200 2134" version="1.1" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;" id="mh-icon">
             <g id="Radar">
                 <circle cx="1590.03" cy="977.467" r="52.083" style="fill:none;stroke:#000;stroke-width:33.33px;"></circle>
                 <circle cx="1590.03" cy="977.467" r="260.417" style="fill:none;stroke:#000;stroke-width:33.33px;"></circle>
@@ -44,7 +44,7 @@ import { RouterLink } from 'vue-router';
     <div id="right">
         <RouterLink to="/" class="link">Állatkatalógus</RouterLink>
         <RouterLink to="/" class="link">Állat leadása</RouterLink>
-        <RouterLink to="/" class="link">Hogyan segíthet</RouterLink>
+        <RouterLink to="/" class="link">Hogyan segíthet?</RouterLink>
         <RouterLink to="/" class="link">Bejelentkezés</RouterLink>
     </div>
 </div>
@@ -53,25 +53,29 @@ import { RouterLink } from 'vue-router';
 <style scoped>
 #main {
     background-color: var(--bg-color-weak);
-    max-height: 130px;
-    height: calc(50px + 10vh);
-    min-height: 70px;
+    max-height: 100px;
+    height: calc(30px + 10vh);
+    min-height: 60px;
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: center;
 }
 
+#mh-icon{
+    padding-left: 25px;
+}
+
 #right {
     font-weight: 600;
-    font-size: 29px;
+    font-size: 24px;
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
 }
 
 #right:last-child {
-    margin-right: 35px;
+    margin-right: 25px;
 }
 
 .link {
