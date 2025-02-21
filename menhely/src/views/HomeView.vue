@@ -11,8 +11,8 @@ import homecard from '../components/Homecards.vue'
     <h3>Szerintünk minden kiskedvenc megérdemel egy szerető családot és célunk ezt megvalósítani.</h3>
     <div id="homecards">
       <homecard/>
-      <homecard/>
-      <homecard/>
+      <homecard format="care"/>
+      <homecard format="food"/>
     </div>
     <paw-footer/>
   </main>
