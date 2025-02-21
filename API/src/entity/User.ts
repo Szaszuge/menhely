@@ -1,5 +1,12 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
 
+
+export enum Permits {
+    banned = "banned",
+    base = "user",
+    elevated = "moderator",
+    owner = "admin",
+}
 @Entity()
 export class User {
 
@@ -7,12 +14,25 @@ export class User {
     id: number
 
     @Column()
-    firstName: string
+    userName: string
 
     @Column()
-    lastName: string
+    fullName: string
 
     @Column()
-    age: number
+    email: string
+
+    @Column()
+    phoneNumber: string
+    
+    @Column()
+    adressID: number
+    
+    @Column({
+        type: 'enum',
+        enum: Permits,
+        default: Permits.base
+    })
+    permit: Permits
 
 }
