@@ -2,6 +2,7 @@
 import pawFooter from '../components/paw-footer.vue'
 import homebar from '../components/Homebar.vue'
 import homecard from '../components/Homecards.vue'
+import Allatcard from '../components/Allatcard.vue';
 </script>
 
 <template>
@@ -13,6 +14,16 @@ import homecard from '../components/Homecards.vue'
       <homecard/>
       <homecard format="care"/>
       <homecard format="food"/>
+    </div>
+    <h1>Tekintse meg a nemrég hozzánk került állatokat!</h1>
+    <br>
+    <div id="petcards"> 
+      <allatcard/>
+      <allatcard/>
+      <allatcard/>
+      <allatcard/>
+      <allatcard/>
+      <allatcard/>
     </div>
     <paw-footer/>
   </main>
@@ -37,5 +48,11 @@ h3{
   justify-content: space-evenly;
   margin: 40px 0px 20px;
 
+}
+#petcards{
+  display: flex;
+  flex-flow: row wrap;
+  gap: 3rem;
+  justify-content: center;
 }
 </style>
