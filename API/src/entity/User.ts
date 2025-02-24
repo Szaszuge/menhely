@@ -26,7 +26,7 @@ export class User {
     phoneNumber: string
     
     @Column()
-    adressID: number
+    addressID: number
     
     @Column({
         type: 'enum',
