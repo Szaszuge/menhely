@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Button from './button.vue';
+</script>
 
 
 <template>
@@ -6,8 +8,17 @@
         <div id="sub" class="bg-orange-300">
             <h1>Egy kis segítség is életeket menthet!</h1>
             <p>Oldalunk minden bajai kóbor kutyának és macskának ideiglenes otthont kíván, valamint szeretnénk megadni a lehetőséget hogy minden állat egy szerető gazdához kerüljön miharamabb.</p>
+            <div class="buttonigazitas">
+                <Button>
+                    Bejelentkezés
+                </Button>
+
+                <Button>
+                    Regisztráció
+                </Button>
+            </div>
         </div>
-        <img src="../assets/welcome.png" alt="">
+        <div class="kep"></div>
     </div>
 
 
@@ -38,9 +49,20 @@ h1{
     font-size: 1.75rem;
     font-weight: 600;
     padding-bottom: 5rem;
+    text-align: center;
 }
 p{
     font-weight: 600;
     text-align: center;
+}
+.buttonigazitas{
+    margin-top: 3rem;
+    gap: 8rem;
+}
+.kep{
+    background-image: url('../assets/welcome.png');
+    background-size: cover;
+    min-width: calc(425px + 45vw);
+    height: 500px;
 }
 </style>

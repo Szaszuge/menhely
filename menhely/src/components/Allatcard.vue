@@ -35,7 +35,7 @@
     flex-flow: column nowrap;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0px 5px 0px 0px rgba(44, 41, 41, 0.2);
+    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.4);
   }
   
   .allatkep {

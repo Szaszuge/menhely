@@ -40,6 +40,7 @@ div{
     border: 1.5px black solid;
     border-radius: 10px;
     max-height: 18rem;
+    margin-bottom: 2rem;
 }
 
 img{
