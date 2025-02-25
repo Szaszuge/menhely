@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, ManyToOne } from "typeorm"
+import { Address } from "./Address"
 
 
 export enum Permits {
@@ -6,6 +7,7 @@ export enum Permits {
     base = "user",
     elevated = "moderator",
     owner = "admin",
+    limbo = "inactive"
 }
 @Entity()
 export class User {
@@ -20,18 +22,21 @@ export class User {
     fullName: string
 
     @Column()
+    password: string
+
+    @Column()
     email: string
 
     @Column()
     phoneNumber: string
     
-    @Column()
-    addressID: number
+    @ManyToOne(() => Address, (address) => address.residents)
+    address: Address
     
     @Column({
         type: 'enum',
         enum: Permits,
-        default: Permits.base
+        default: Permits.limbo
     })
     permit: Permits
 
