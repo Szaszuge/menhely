@@ -21,6 +21,6 @@
     color: white;
     font-weight: 600;
     box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.4);
+    cursor:pointer;
 }
-
 </style>

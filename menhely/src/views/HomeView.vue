@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import pawFooter from '../components/paw-footer.vue'
 import homebar from '../components/Homebar.vue'
 import homecard from '../components/Homecards.vue'
 import Allatcard from '../components/Allatcard.vue';
@@ -25,7 +24,6 @@ import Allatcard from '../components/Allatcard.vue';
       <allatcard/>
       <allatcard/>
     </div>
-    <paw-footer/>
   </main>
 </template>
 

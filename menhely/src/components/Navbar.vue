@@ -45,7 +45,7 @@ import { RouterLink } from 'vue-router';
         <RouterLink to="/" class="link">Állatkatalógus</RouterLink>
         <RouterLink to="/" class="link">Állat leadása</RouterLink>
         <RouterLink to="/" class="link">Hogyan segíthet?</RouterLink>
-        <RouterLink to="/" class="link">Bejelentkezés</RouterLink>
+        <RouterLink to="/login" class="link">Bejelentkezés</RouterLink>
     </div>
 </div>
 </template>
