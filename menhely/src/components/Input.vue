@@ -3,13 +3,14 @@
 </script>
 
 <template>
-    <input type="text" id="fname" name="fname"><br><br>
+<input type="text" placeholder="Input" class="border-3 border-gray-500 text-gray-500 bg-white p-2 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-500 shadow-base"/>
 </template>
 
 
 <style scoped>
-    template{
+    input{
         width: 300px;
-        height: 35px;
+        height: 40px;
+        background-color: rgb(255, 255, 255);
     }
 </style>

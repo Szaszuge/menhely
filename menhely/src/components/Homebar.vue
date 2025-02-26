@@ -9,13 +9,17 @@ import Button from './button.vue';
             <h1>Egy kis segítség is életeket menthet!</h1>
             <p>Oldalunk minden bajai kóbor kutyának és macskának ideiglenes otthont kíván, valamint szeretnénk megadni a lehetőséget hogy minden állat egy szerető gazdához kerüljön miharamabb.</p>
             <div class="buttonigazitas">
+                <RouterLink to="/login">
                 <Button>
                     Bejelentkezés
                 </Button>
+                </RouterLink>
 
+                <RouterLink to="/register">
                 <Button>
                     Regisztráció
                 </Button>
+                </RouterLink>
             </div>
         </div>
         <div class="kep"></div>
