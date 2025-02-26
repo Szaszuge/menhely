@@ -4,15 +4,15 @@
 </script>
 
 <template>
-    <div></div>
+    <div>
 
-
-
+    </div>
 </template>
 
 
 <style scoped>
 div{
+    
     background-image: url("../assets/paws.png");
     z-index: -1;
     background-repeat: repeat-x;

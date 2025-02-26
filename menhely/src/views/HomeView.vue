@@ -2,6 +2,7 @@
 import homebar from '../components/Homebar.vue'
 import homecard from '../components/Homecards.vue'
 import Allatcard from '../components/Allatcard.vue';
+import PawFooter from '@/components/PawFooter.vue';
 </script>
 
 <template>
@@ -24,6 +25,7 @@ import Allatcard from '../components/Allatcard.vue';
       <allatcard/>
       <allatcard/>
     </div>
+    <PawFooter/>
   </main>
 </template>
 
