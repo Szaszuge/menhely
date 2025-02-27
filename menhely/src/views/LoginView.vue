@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import CustomInput from '../components/CustomInput.vue';
 import Button from '../components/Button.vue';
+import PawFooter from '../components/PawFooter.vue';
 </script>
 
 <template>
