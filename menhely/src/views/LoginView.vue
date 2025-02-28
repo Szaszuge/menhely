@@ -10,12 +10,12 @@ import PawFooter from '../components/PawFooter.vue';
     <h1>Bejelentkezés</h1>
 
     <h3>Felhasználónév</h3>
-    <CustomInput class="w-75"/>
+    <CustomInput/>
 
     <br>
 
     <h3>Jelszó</h3>
-    <CustomInput class="w-75"/>
+    <CustomInput/>
 
     <h4>Elfelejtetted a jelszavad?</h4>
     <RouterLink to="/register">
@@ -56,14 +56,19 @@ img{
 }
 
 #form{
+    width: 400px;
     margin-left: 6rem;
     margin-top: 5rem;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: stretch;
+    gap: 0.375rem;
 }
 
 #login{
-    margin: 10px;
-    margin-left: 180px;
+    margin: 10px 0px 10px 10px;
     height: 50px !important; 
     width: 120px;
+    align-self: flex-end;
 }
 </style>
