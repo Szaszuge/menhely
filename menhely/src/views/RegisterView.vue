@@ -5,8 +5,8 @@ import PawFooter from '../components/PawFooter.vue';
 //w-79 , w-37.5
 //x2
 //
+const name = "Test"
 </script>
-
 <template>
 <main>
     <div id="form">
@@ -16,7 +16,7 @@ import PawFooter from '../components/PawFooter.vue';
         <div class="input-row">
             <div class="input-group">
                 <h3>Teljes név*</h3>
-                <CustomInput id="teljesNev"/>
+                <CustomInput id="teljesNev" v-model:model-value="name"/>
             </div>
             <div class="input-group">
                 <h3>Felhasználónév*</h3>
