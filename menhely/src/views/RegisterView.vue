@@ -2,10 +2,31 @@
 import CustomInput from '../components/CustomInput.vue';
 import Button from '../components/Button.vue';
 import PawFooter from '../components/PawFooter.vue';
-//w-79 , w-37.5
-//x2
-//
-const name = "Test"
+
+let address = {
+    city: "",
+    postal: "",
+    street: "",
+    number: "",
+    floor: "",
+    door: ""
+};
+
+let user = {
+    fullName: "",
+    userName: "",
+    password: "",
+    email: "",
+    phoneNumber: "",
+    address: address,
+    permit: "inactive"
+};
+
+function register(event) {
+    const userText = `${user.fullName}\n${user.userName}\n${user.email}\n${user.phoneNumber}`
+    alert(userText);
+}
+
 </script>
 <template>
 <main>
@@ -16,56 +37,67 @@ const name = "Test"
         <div class="input-row">
             <div class="input-group">
                 <h3>Teljes név*</h3>
-                <CustomInput id="teljesNev" v-model:model-value="name"/>
+                <CustomInput id="teljesNev" v-model="user.fullName"/>
             </div>
             <div class="input-group">
                 <h3>Felhasználónév*</h3>
-                <CustomInput id="felhasznaloNev"/>
+                <CustomInput id="felhasznaloNev" v-model="user.userName"/>
             </div>
         </div>
 
         <div class="input-full">
             <h3>E-mail cím*</h3>
-            <CustomInput id="emailCim"/>
+            <CustomInput id="emailCim" v-model="user.email"/>
+        </div>
+
+        <div class="input-full">
+            <h3>Telefonszám*</h3>
+            <CustomInput id="telefon" v-model="user.phoneNumber"/>
         </div>
 
         <div class="input-row">
             <div class="input-group">
                 <h3>Irányítószám</h3>
-                <CustomInput id="iranyitoszam"/>
+                <CustomInput id="iranyitoszam" v-model="address.postal"/>
             </div>
             <div class="input-group">
                 <h3>Település*</h3>
-                <CustomInput id="telepules"/>
+                <CustomInput id="telepules" v-model="address.city"/>
             </div>
         </div>
 
-        <div class="input-full">
-            <h3>Utca, házszám*</h3>
-            <CustomInput id="utcaHazszam"/>
+        <div class="input-row">
+            <div class="input-group">
+                <h3>Utca*</h3>
+                <CustomInput id="utca" v-model="address.street"/>
+            </div>
+            <div class="input-group">
+                <h3>Házszám*</h3>
+                <CustomInput id="hazszam" v-model="address.number"/>
+            </div>
         </div>
 
         <div class="input-row">
             <div class="input-group">
                 <h3>Emelet</h3>
-                <CustomInput id="emelet"/>
+                <CustomInput id="emelet" v-model="address.floor"/>
             </div>
             <div class="input-group">
                 <h3>Ajtó</h3>
-                <CustomInput id="ajto"/>
+                <CustomInput id="ajto" v-model="address.door"/>
             </div>
         </div>
 
         <div class="input-full">
             <h3>Jelszó*</h3>
-            <CustomInput id="jelszo"/>
+            <CustomInput id="jelszo" v-model="user.password"/>
         </div>
         
         <div class="veg">
         <RouterLink to="/login">
             <h4>Már van fiókod?</h4>
         </RouterLink>
-        <Button id="login" >Regisztráció</Button>
+        <Button id="login" @click="register">Regisztráció</Button>
         </div>
     </div>
     <img src="../assets/Kutyamacska.png">
