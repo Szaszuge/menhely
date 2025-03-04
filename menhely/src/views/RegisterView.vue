@@ -1,17 +1,21 @@
 <script setup lang="ts">
+import { useRouter } from "vue-router";
 import CustomInput from '../components/CustomInput.vue';
 import Button from '../components/Button.vue';
 import PawFooter from '../components/PawFooter.vue';
 import { ApiService } from '@/service/api.service';
+import { Address } from '@/interfaces/address';
+
+let router = useRouter()
 let api = new ApiService();
 
-let address = {
+let address:Address = {
     city: "",
     postal: "",
     street: "",
     number: "",
-    floor: "",
-    door: ""
+    floor: null,
+    door: null
 };
 
 let user = {
@@ -25,14 +29,15 @@ let user = {
 };
 
 function register(event) {
-    const userText = `${user.fullName}\n${user.userName}\n${user.email}\n${user.phoneNumber}\n${address.postal} ${address.city}, ${address.street}, ${address.number}\n${!!address.floor ? address.floor + " emelet" : ""}, ${!!address.door ? address.door + " ajtó" : ""}`
-    alert(userText);
-    api.userRegister(this.user, this.address);
+    console.log(user);
+    api.userRegister(user, address).then((res) => {
+        console.log(res.data.message);
+    });
+    //router.push("/");
 }
 
-
-
 </script>
+
 <template>
 <main>
     <div id="form">
@@ -63,7 +68,7 @@ function register(event) {
         <div class="input-row">
             <div class="input-group">
                 <h3>Irányítószám</h3>
-                <CustomInput id="iranyitoszam" v-model="address.postal"/>
+                <CustomInput id="iranyitoszam" v-model="address.postal" type=""/>
             </div>
             <div class="input-group">
                 <h3>Település*</h3>

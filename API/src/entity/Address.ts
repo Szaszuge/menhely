@@ -8,7 +8,7 @@ export class Address {
     id: number
 
     @Column()
-    city: number
+    city: string
 
     @Column()
     postal: number

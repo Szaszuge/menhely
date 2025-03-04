@@ -12,6 +12,7 @@ export class ApiService {
         return localStorage.getItem(this.tokenName);
     }
     userRegister(user:User, address:Address){
+        console.log("API request called.");
         return axios.post(this.server + "/users/reserve", [user, address]);
     }
 }

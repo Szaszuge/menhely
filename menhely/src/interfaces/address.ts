@@ -1,8 +1,8 @@
 export interface Address {
-    city: number
-    postal: number
+    city: string
+    postal: string
     street: string
-    number: number
+    number: string
     floor: string | null
-    door: number | null
+    door: string | null
 }

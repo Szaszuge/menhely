@@ -1,15 +1,15 @@
 import { Router } from "express";
 
-//import * as userController from "../controllers/user.controller";
+import * as userController from "../controllers/user.controller";
 
 const router = Router();
 /**
  * USER modul útvonalai
  */
 
-// register new user
+// reserve new user
 
-//router.post('/register', userController.register);
+router.post('/reserve', userController.reserve);
 
 // login user
 
