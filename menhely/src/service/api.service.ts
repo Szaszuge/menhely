@@ -1,0 +1,17 @@
+import axios from 'axios';
+import { environment } from '../enviroments/testing';
+import type { User } from '@/interfaces/user';
+import type { Address } from '@/interfaces/address';
+
+export class ApiService {
+    constructor(){ }
+        private server = environment.serverUrl;
+        private tokenName = environment.tokenName;
+
+    getToken():String | null{
+        return localStorage.getItem(this.tokenName);
+    }
+    userRegister(user:User, address:Address){
+        return axios.post(this.server + "/users/reserve", [user, address]);
+    }
+}

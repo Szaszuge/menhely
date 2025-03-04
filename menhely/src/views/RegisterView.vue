@@ -2,6 +2,8 @@
 import CustomInput from '../components/CustomInput.vue';
 import Button from '../components/Button.vue';
 import PawFooter from '../components/PawFooter.vue';
+import { ApiService } from '@/service/api.service';
+let api = new ApiService();
 
 let address = {
     city: "",
@@ -23,9 +25,12 @@ let user = {
 };
 
 function register(event) {
-    const userText = `${user.fullName}\n${user.userName}\n${user.email}\n${user.phoneNumber}`
+    const userText = `${user.fullName}\n${user.userName}\n${user.email}\n${user.phoneNumber}\n${address.postal} ${address.city}, ${address.street}, ${address.number}\n${!!address.floor ? address.floor + " emelet" : ""}, ${!!address.door ? address.door + " ajtó" : ""}`
     alert(userText);
+    api.userRegister(this.user, this.address);
 }
+
+
 
 </script>
 <template>
@@ -90,7 +95,7 @@ function register(event) {
 
         <div class="input-full">
             <h3>Jelszó*</h3>
-            <CustomInput id="jelszo" v-model="user.password"/>
+            <CustomInput id="jelszo" v-model="user.password" type="password"/>
         </div>
         
         <div class="veg">

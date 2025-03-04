@@ -2,6 +2,12 @@
 import CustomInput from '../components/CustomInput.vue';
 import Button from '../components/Button.vue';
 import PawFooter from '../components/PawFooter.vue';
+
+let user = {
+    name: "",
+    pass: "",
+};
+
 </script>
 
 <template>
@@ -10,12 +16,12 @@ import PawFooter from '../components/PawFooter.vue';
     <h1>Bejelentkezés</h1>
 
     <h3>Felhasználónév</h3>
-    <CustomInput/>
+    <CustomInput v-model="user.name"/>
 
     <br>
 
     <h3>Jelszó</h3>
-    <CustomInput/>
+    <CustomInput v-model="user.pass" type="password"/>
 
     <h4>Elfelejtetted a jelszavad?</h4>
     <RouterLink to="/register">
