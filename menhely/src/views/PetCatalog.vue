@@ -2,6 +2,7 @@
 import Allatcard from '@/components/Allatcard.vue';
 import Filter from '@/components/Filter.vue';
 import CustomInput from '@/components/CustomInput.vue';
+import PawFooter from '@/components/PawFooter.vue';
 
 let search = '';
 
@@ -12,7 +13,7 @@ let search = '';
     <div id="petcatalog">       
         <div id="searchID">
             <p>Keresés</p>
-            <CustomInput v-model="search" />
+            <CustomInput v-model="search" search/>
             <Filter/>   
         </div>
 
@@ -26,7 +27,7 @@ let search = '';
         </div>
 
     </div>
-
+<PawFooter/>
 </template>
 
 <style scoped>
@@ -47,5 +48,9 @@ let search = '';
 }
 #searchID{
     align-self: flex-start;
+    margin-bottom: 2rem;
+    position: sticky;
+    top: 2rem;
+
 }
 </style>
