@@ -25,6 +25,7 @@ exports.reserveUser = async (user:any, ad:any) => {
 
     let generated_user = await AppDataSource.manager.save(pushed_user);
 
+    console.log("[SERVICE] USER GENERATED.");
     return generated_user;
 }
 
@@ -57,7 +58,7 @@ exports.address = async(address:Address) => {
 
 exports.IsEmailUsed = async (email) => {
     console.log(`[SERVICE] IS EMAILED USED (${email})`);
-    const result = await AppDataSource.manager.findOneBy(User, {email: email})
+    const result = await AppDataSource.manager.findOneBy(User, {email: email});
     return result != null;
 }
 
