@@ -5,9 +5,11 @@ import Button from '../components/Button.vue';
 import PawFooter from '../components/PawFooter.vue';
 import { ApiService } from '@/service/api.service';
 import { Address } from '@/interfaces/address';
+import { MailService } from "@/service/mail.service";
 
 let router = useRouter()
 let api = new ApiService();
+let mail = new MailService();
 
 let address:Address = {
     city: "",
@@ -29,11 +31,21 @@ let user = {
 };
 
 function register(event) {
-    console.log(user);
+    let data = {"to": user.email,
+    "subject": "GazdiRadar Regisztráció",
+    "content": {
+        "userName": user.userName,
+        "link": "www.google.com",
+    },
+    "template": "Register"
+    };
+    /*
     api.userRegister(user, address).then((res) => {
         console.log(res.data.message);
     });
-    router.push("/emailsent");
+    */
+    mail.sendMail(data);
+    // router.push("/emailsent");
 }
 
 </script>

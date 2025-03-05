@@ -10,8 +10,12 @@ const mailMan = nodemailer.createTransport({
     },
 })
 
-exports.sendMessageThroughEmail = async (req, res, next) => {
-    const {to, subject, content, template} = req.body;
+export const RenderMail = async (req, res, next) => {
+    console.log(req.body);
+    let to = req.body.to;
+    let subject = req.body.subject;
+    let content = req.body.content;
+    let template = req.body.template;
 
     const templatePath = path.join(__dirname, 'templates', template + '.ejs');
     console.log("Signal recived.")
