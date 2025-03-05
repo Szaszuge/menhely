@@ -112,7 +112,7 @@ function register(event) {
     </div>
     <img src="../assets/Kutyamacska.png">
 </main>
-<PawFooter/>
+<PawFooter :is-sticky="true"/>
 </template>
 
 <style scoped>

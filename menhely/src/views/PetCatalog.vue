@@ -1,8 +1,23 @@
 <script setup lang="ts">
+import { onMounted, onUnmounted } from 'vue';
 import Allatcard from '@/components/Allatcard.vue';
 import Filter from '@/components/Filter.vue';
 import CustomInput from '@/components/CustomInput.vue';
 import PawFooter from '@/components/PawFooter.vue';
+
+onMounted(() => {
+
+    document.documentElement.style.overflow = 'auto';
+    document.body.style.overflow = 'auto';
+    document.body.style.position = 'static';
+});
+
+onUnmounted(() => {
+
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+});
 
 let search = '';
 

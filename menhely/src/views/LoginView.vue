@@ -32,6 +32,7 @@ let user = {
 </div>
 <img src="../assets/Kutyamacska.png">
 </main>
+<PawFooter  :is-sticky="true"/>
 </template>
 
 <style scoped>
