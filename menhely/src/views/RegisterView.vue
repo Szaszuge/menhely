@@ -33,7 +33,7 @@ function register(event) {
     api.userRegister(user, address).then((res) => {
         console.log(res.data.message);
     });
-    //router.push("/");
+    router.push("/emailsent");
 }
 
 </script>

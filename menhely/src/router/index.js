@@ -24,6 +24,12 @@ const router = createRouter({
       path: '/petcatalog',
       name: 'petcatalog',
       component: () => import('../views/PetCatalog.vue')
+    },
+
+    {
+      path: '/emailsent',
+      name: 'emailsent',
+      component: () => import('../views/EmailSent.vue')
     }
   ],
 })
