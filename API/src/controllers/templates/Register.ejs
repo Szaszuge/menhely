@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="en"></html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../templates/style.css">
-    <title>Document</title>
 </head>
 <body>
 <div id="header">
@@ -46,16 +43,16 @@
 <img src="../../../../menhely/src/assets/verifiedemail.png" alt="">
 
 <h1>Értesítő a regisztrációval kapcsolatban</h1>
-<h2>Kedves [Felhasználó!]</h2>
+<h2>Kedves <%= content.userName %></h2>
 
 
 <p>Köszönjük, hogy regisztrált a GazdiRadar oldalán! Ahhoz, hogy véglegesítse regisztrációját és használhassa szolgáltatásainkat, kérjük kattintson az alábbi gombra. A megerősítés után be tud majd jelentkezni a megadott felhasználónévvel és jelszavával.</p>
 
-<a href=""><div id="gomb"><p>Megerősítés</p></div></a>
+<a href="<%= content.link %>"><div id="gomb"><p>Megerősítés</p></div></a>
 <p id="warning">Ha nem Ön kezdeményezte a regisztrációt, kérjük hagyja figyelmen kívül ezt az emailt!</p>
 <p>Üdvözlettel: A GazdiRadar csapata</p>
 </div>
 
 <div id="pawfooter"></div>
 </body>
-</html></div>
+</html>
