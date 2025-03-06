@@ -14,13 +14,13 @@ const props = defineProps({
 <template>
     <div id="sub" class="bg-orange-300">
         <img v-if="props.format == 'health' ? true : false" src="../assets/card1.png">
-        <p v-if="props.format == 'health' ? true : false" >Inter, semibold.. 16..... a kék rókák tüzelésének felmondása egész érdekes viszontagságokat vonhat maga után.. A zöld ebibékák halálának feje orángután pótlék.</p>
+        <p v-if="props.format == 'health' ? true : false" >Segíts te is! Fogadj örökbe egy kutyát vagy macskát, és adj nekik új esélyt egy boldog életre. Menhelyünkön szeretettel várunk minden mentett állatot!</p>
     
         <img v-if="props.format == 'care' ? true : false" src="../assets/card2.png">
-        <p v-if="props.format == 'care' ? true : false" >There wasn't a bird in the sky, but that was not what caught s, but came with these. She knew what was  coming and she hoped she was prepared. Krumpli hálózsák.</p>
+        <p v-if="props.format == 'care' ? true : false" >Változtass egy életen! Segíts, hogy a menhelyünkön élő állatok biztonságos új otthont találjanak. Minden segítség számít!</p>
         
         <img v-if="props.format == 'food' ? true : false" src="../assets/card3.png">
-        <p v-if="props.format == 'food' ? true : false" >Kicsikét a zöld teknősök tetőjének háza kitinrétegek kitágulásának köszönhetően haza kell vinni a trófeát ahhoz, hogy a kellő értékeket képviseljék a csigák.</p>
+        <p v-if="props.format == 'food' ? true : false" >Támogasd menhelyünket! Minden adomány és segítség számít, hogy jobb körülményeket tudjunk biztosítani a rászoruló állatoknak. Együtt életeken változtathatunk!</p>
     </div>
 </template>
 

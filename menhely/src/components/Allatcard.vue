@@ -7,13 +7,17 @@
         <h2>Sztárforsíp terijer kiskutyuska</h2>
         <div class="igazitas">
             <p class="text-slate-500">Nőstény, 2 hónapos</p>
-            <img src="../assets/forwardbutton.png" alt="" class="forwardbutton">
+            <img src="../assets/forwardbutton.png" alt="" class="forwardbutton" id="forwardbutton">
         </div>
       </div>
     </div>
   </template>
   
   <style scoped>
+
+  #forwardbutton{
+    cursor: pointer;
+  }
   .image-container {
     display: flex;
     flex-flow: column nowrap;
