@@ -30,6 +30,12 @@ const router = createRouter({
       path: '/emailsent',
       name: 'emailsent',
       component: () => import('../views/EmailSent.vue')
+    },
+
+    {
+      path: '/hogyansegithet',
+      name: 'hogyansegithet',
+      component: () => import('../views/HogyanSegithet.vue')
     }
   ],
 })
