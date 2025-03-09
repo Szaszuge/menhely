@@ -36,6 +36,12 @@ const router = createRouter({
       path: '/hogyansegithet',
       name: 'hogyansegithet',
       component: () => import('../views/HogyanSegithet.vue')
+    },
+
+    {
+      path: '/emailconfirm',
+      name: 'emailconfirm',
+      component: () => import('../views/EmailConfirm.vue')
     }
   ],
 })
