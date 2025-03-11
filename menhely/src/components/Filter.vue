@@ -133,7 +133,7 @@ input[type="checkbox"] {
     height: 22px;
     cursor: pointer;
     background: white;
-    border-radius: 4px;
+    border-radius: 50%;
     position: relative;
 }
 
