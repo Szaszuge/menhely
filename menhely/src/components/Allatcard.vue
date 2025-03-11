@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+
+</script>
 
 <template>
     <div class="image-container">
@@ -7,7 +9,10 @@
         <h2>Sztárforsíp terijer kiskutyuska</h2>
         <div class="igazitas">
             <p class="text-slate-500">Nőstény, 2 hónapos</p>
-            <img src="../assets/forwardbutton.png" alt="" class="forwardbutton" id="forwardbutton">
+            <RouterLink to="/petdetails">
+              <img src="../assets/forwardbutton.png" alt="" class="forwardbutton" id="forwardbutton">
+        </RouterLink>
+
         </div>
       </div>
     </div>

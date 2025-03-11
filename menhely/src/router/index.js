@@ -42,6 +42,11 @@ const router = createRouter({
       path: '/emailconfirm',
       name: 'emailconfirm',
       component: () => import('../views/EmailConfirm.vue')
+    },
+    {
+      path: '/petdetails',
+      name: 'petdetails',
+      component: () => import('../views/PetDetailsView.vue')
     }
   ],
 })
