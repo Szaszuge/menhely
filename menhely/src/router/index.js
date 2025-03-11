@@ -33,13 +33,13 @@ const router = createRouter({
     },
 
     {
-      path: '/hogyansegithet',
+      path: '/hogyansegithet', // Ha a többi route angolul van akkor legyen ez is.
       name: 'hogyansegithet',
       component: () => import('../views/HogyanSegithet.vue')
     },
 
     {
-      path: '/emailconfirm',
+      path: '/emailconfirm/:id',
       name: 'emailconfirm',
       component: () => import('../views/EmailConfirm.vue')
     },

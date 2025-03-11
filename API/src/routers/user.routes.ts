@@ -10,6 +10,7 @@ const router = Router();
 // reserve new user
 
 router.post('/reserve', userController.reserve);
+router.post('/getStatByID', userController.getStatusByID);
 
 // login user
 

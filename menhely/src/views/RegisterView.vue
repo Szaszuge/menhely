@@ -39,13 +39,11 @@ function register(event) {
     },
     "template": "Register"
     };
-    /*
     api.userRegister(user, address).then((res) => {
         console.log(res.data.message);
     });
-    */
     mail.sendMail(data);
-    // router.push("/emailsent");
+    router.push("/emailsent");
 }
 
 </script>

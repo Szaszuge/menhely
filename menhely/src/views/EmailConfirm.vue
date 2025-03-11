@@ -1,23 +1,37 @@
 <script setup lang="ts">
+import {useRoute} from "vue-router";
 import { onMounted, onUnmounted } from 'vue';
 import PawFooter from '@/components/PawFooter.vue';
 import Button from '@/components/Button.vue';
 import CustomInput from '@/components/CustomInput.vue';
+import { ApiService } from "@/service/api.service";
 
+let id;
+let status = "";
 onMounted(() => {
     document.body.style.overflow = 'hidden';
+    id = document.getElementById("user_ID").innerHTML;
+
+    let api = new ApiService();
+    api.userDataByID(id).then((res) => {
+        console.log(res.data.status);
+    })
 });
 
 onUnmounted(() => {
     document.body.style.overflow = '';
 });
 
+
 let confirm = '';
+
 </script>
 
 
 <template>
     <div class="emailconfirm-container">
+
+        <!-- Ha a fiók inaktív -->
         <div class="content-container bg-orange-200">
             <div class="titlerow bg-orange-300 rounded-t-[20px]">
                 <h1>Megerősítés</h1>
@@ -29,6 +43,7 @@ let confirm = '';
                     <span class="label">Jelszó:</span>
                     <CustomInput v-model="confirm"/>
                     <Button id="ujrakuldesbutton">Újraküldés</Button>
+                    <div hidden id="user_ID">{{ $route.params.id }}</div>
                 </div>
             </div>
         </div>

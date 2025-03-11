@@ -29,6 +29,17 @@ exports.reserveUser = async (user:any, ad:any) => {
     return generated_user;
 }
 
+exports.getStatusByID = async(id:number) => {
+    console.log("[SERVICE] GETTING USER STATUS BASED ON ID.")
+    const existant = await AppDataSource.manager.findOneBy(User, {id: id})
+    if (existant != null){
+        console.log(`[SERVICE] USER EXISTS. RETURNING STATUS: ${existant.permit}`)
+        return existant.permit;
+    }
+    console.log(`[SERVICE] USER NON-EXISTANT. RETURNING...`)
+    return "non-existent";
+}
+
 exports.address = async(address:Address) => {
     console.log(`[SERVICE] ADDRESS IS: {\n\t${address.city}, ${address.postal}\n\t${address.street} ${address.number}\n\t${!!address.floor ? (address.floor + ". FLOOR, ") : ""}${!!address.door ? (address.door + ". DOOR") : ""}\n}`)
 

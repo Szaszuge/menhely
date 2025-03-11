@@ -60,3 +60,9 @@ export const reserve = async (req, res, next) => {
         next(error);
     }
 }   
+export const getStatusByID = async (req, res) => {
+    console.log(req.body[0])
+    const status = await userService.getStatusByID(req.body[0]);
+    console.log("Returning Status...")
+    res.status(201).json({ message: "Sikeres Feljegyzés", status: status });
+}

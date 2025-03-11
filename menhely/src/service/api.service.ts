@@ -13,8 +13,12 @@ export class ApiService {
     }
 
     userRegister(user:User, address:Address){
-        console.log("API request called.");
+        console.log("Reservation request called.");
         return axios.post(this.server + "/users/reserve", [user, address]);
+    }
+    userDataByID(id:number){
+        console.log("User Status request called.");
+        return axios.post(this.server + "/users/getStatByID", [id]);
     }
     
 }
