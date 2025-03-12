@@ -17,7 +17,7 @@ import PawFooter from '@/components/PawFooter.vue';
     </div>
 
     <div class="info-container">
-      <h2>Sztárforsíp Terijer kiskutyuska</h2>
+      <h2 class="title">Sztárforsíp Terijer kiskutyuska</h2>
       <h3>Bekerülés körülménye</h3>
       <p>Idős család kutyája volt előzőleg, viszont nem tudtak már rá egészségi okok miatt tovább vigyázni és inkább leadták menhelyünkre.</p>
 
@@ -34,7 +34,6 @@ import PawFooter from '@/components/PawFooter.vue';
         <li>Főként lakásban tartandó, eddig abban élt előző gazdájával.</li>
       </ul>
 
-      <!-- Buttons -->
       <div class="button-container">
         <Button class="visit">Meglátogatás</Button>
         <Button class="adopt">Örökbefogadás</Button>
@@ -50,8 +49,6 @@ import PawFooter from '@/components/PawFooter.vue';
   display: flex;
   gap: 20px;
   padding: 20px;
-
-
 }
 
 .image-container {
@@ -60,76 +57,95 @@ import PawFooter from '@/components/PawFooter.vue';
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
+  border: 1px solid black; 
 }
 
-
-
 .image-container img {
-    width: 100%;
-    border-radius: 10px 10px 0 0;
+  width: 100%;
+  border-radius: 10px 10px 0 0;
 }
 
 .details {
   text-align: left;
   padding: 10px;
+  border-radius: 0 0 10px 10px;
 }
 
 .detail-row {
   display: flex;
   justify-content: space-between;
   font-size: 14px;
-  padding: 5px 0;
-  border-bottom: 1px solid #ddd;
+  padding: 10px; 
+  border-bottom: 1px solid black;
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-row:nth-child(even) {
+  background-color: #e8ecf4;
 }
 
 .detail-row span {
   font-weight: bold;
 }
 
-
 .info-container {
-  flex: 2;
+  flex: 2; 
   background: #FFE3C2;
-  padding: 20px;
+  padding: 30px;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
-  color: #DA8233;
-  margin-bottom: 10px;
-  font-weight: 600px;
-  font-size: 2rem;
+.title {
+  background-color: #FF6F3C;
+  padding: 10px;
+  border-radius: 5px;
   text-align: center;
+  font-size: 1.8rem;
+  font-weight: 600;
 }
 
 h3 {
-  margin-top: 10px;
-  color: #B35A2F;
+  margin-top: 2rem;
+  font-size: 1.4rem;
+  font-weight: 600;
 }
 
 p, ul {
-  font-size: 14px;
+  font-size: 16px;
   color: #333;
 }
 
 ul {
   padding-left: 20px;
+  list-style-type: disc;
 }
 
 .button-container {
   display: flex;
-  gap: 10px;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 15px;
   margin-top: 20px;
+
 }
 
 .visit {
   background-color: #FF6F3C;
   color: white;
+  width: 170px;
+  height: 60px;
+  font-size: 1.2rem;
 }
 
 .adopt {
-  background-color: #FF3C3C;
+  background-color: #FF6F3C;
   color: white;
+  width: 170px;
+  height: 60px;
+  font-size: 1.2rem;
 }
 </style>

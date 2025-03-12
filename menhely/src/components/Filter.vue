@@ -133,8 +133,8 @@ input[type="checkbox"] {
     height: 22px;
     cursor: pointer;
     background: white;
-    border-radius: 50%;
     position: relative;
+    border-radius:  4px;
 }
 
 input[type="checkbox"]:checked {
@@ -162,8 +162,8 @@ input[type="radio"] {
     height: 22px;
     cursor: pointer;
     background: white;
-    border-radius:  4px;
     position: relative;
+    border-radius: 50%;
 }
 
 input[type="radio"]:checked {
