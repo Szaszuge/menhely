@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <button class="button">
+    <button class="button shadow-md rounded-2xl text-white cursor-pointer font-bold h-14 w-32">
         <slot>
 
         </slot>
@@ -15,12 +15,9 @@
 <style scoped>
 .button{
     background-color: var(--button-important);
-    height: 60px;
-    width: 120px;
-    border-radius: 15px;
-    color: white;
-    font-weight: 600;
-    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.4);
-    cursor:pointer;
+}
+
+.button:hover {
+    background-color: ;
 }
 </style>
