@@ -48,4 +48,7 @@ h1 {
 p {
     padding: 20px;
 }
+ul{
+    padding:0px 20px 20px 40px;
+}
 </style>
