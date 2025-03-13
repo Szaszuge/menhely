@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import {useRoute} from "vue-router";
-import { onMounted, onUnmounted } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import PawFooter from '@/components/PawFooter.vue';
 import Button from '@/components/Button.vue';
 import CustomInput from '@/components/CustomInput.vue';
 import { ApiService } from "@/service/api.service";
 
 let id;
-let status = "";
+let status = ref('loading');
 onMounted(() => {
     document.body.style.overflow = 'hidden';
     id = document.getElementById("user_ID").innerHTML;
@@ -15,8 +15,9 @@ onMounted(() => {
     let api = new ApiService();
     api.userDataByID(id).then((res) => {
         console.log(res.data.status);
-        status = res.data.status;
+        status.value = res.data.status;
     })
+    
 });
 
 onUnmounted(() => {
@@ -30,9 +31,10 @@ let confirm = '';
 
 
 <template>
-    <div class="emailconfirm-container" :class="status">
 
-        <!-- Ha a fiók inaktív -->
+    <!-- Ha a fiók inaktív -->
+    <div class="emailconfirm-container" :class="status" id="inactive">
+
         <div class="content-container bg-orange-200">
             <div class="titlerow bg-orange-300 rounded-t-[20px]">
                 <h1>Megerősítés</h1>
@@ -43,7 +45,7 @@ let confirm = '';
                 <div class="input-group">
                     <span class="label">Jelszó:</span>
                     <CustomInput v-model="confirm"/>
-                    <Button id="ujrakuldesbutton">Újraküldés</Button>
+                    <Button id="ujrakuldesbutton">Aktiválás</Button>
                     <div hidden id="user_ID">{{ $route.params.id }}</div>
                 </div>
             </div>
@@ -54,22 +56,75 @@ let confirm = '';
 
         <PawFooter :is-sticky="true"/>
     </div>
+
+
+    <div class="emailconfirm-container" :class="status" id="active">
+
+    <!-- Ha a fiók aktív -->
+        <div class="content-container bg-orange-200">
+            <div class="titlerow bg-orange-300 rounded-t-[20px]">
+                <h1>Megerősítés</h1>
+            </div>
+            <div class="content-wrapper">
+                <p class="text-left">Ez a fiók már aktiválva van.</p>
+                
+            </div>
+        </div>
+
+        <img id="cicajobb" src="../assets/catpeek.png" alt="">
+        <img id="kutyabal" src="../assets/dogpeek.png" alt="">
+
+        <PawFooter :is-sticky="true"/>
+    </div>
+
+    <div class="emailconfirm-container" :class="status" id="non-existent">
+
+    <!-- Ha a nem lézetik -->
+        <div class="content-container bg-orange-200">
+            <div class="titlerow bg-orange-300 rounded-t-[20px]">
+                <h1>Hiba</h1>
+            </div>
+            <div class="content-wrapper wide">
+                <p class="text-center">A fiók nem létezik.</p>
+            </div>
+        </div>
+
+        <img id="cicajobb" src="../assets/catpeek.png" alt="">
+        <img id="kutyabal" src="../assets/dogpeek.png" alt="">
+
+        <PawFooter :is-sticky="true"/>
+    </div>
+
 </template>
 
-<style>
-body {
-    overflow: hidden !important;
-}
-</style>
 
 <style scoped>
+#test{
+    font-size: 24px;
+}
+
+div#non-existent.non-existent{
+    display: flex !important;
+}
+
+div#inactive.inactive{
+    display: flex !important;
+}
+
+div#active.active{
+    display: flex !important;
+}
+
+.wide{
+    min-width: 400px;
+}
+
 .emailconfirm-container {
-    visibility: hidden;
     position: relative;
     min-height: 100vh;
     overflow: hidden;
     width: 100%;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
 }
