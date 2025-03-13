@@ -7,12 +7,13 @@ import Button from './Button.vue';
     <div id="supportCim" class="bg-orange-300 font-bold text-3xl items-center">
         <h1>Jelentkezzen önkéntesnek!</h1>
     </div>
-        <p>Menhelyünk meleg szívvel vár minden lelkes embert aki segíteni szeretne kiskedvenceink foglalkoztatásával, ezzel is a menhely működését segítve.
-        Naptárunkban látható lesz melyik napokon tudnak segíteni menhelyünknek.
-        Egy adott napra maximum 2 embert bírunk foglalkoztatni. 
-        A gombra nyomva a mezőket töltse ki adatainak megfelelően!
-        Ha elküldte jelentkezését email-ben fogjuk jelezni önnek ha felvettük. 
-        </p>
+        <p>Menhelyünk meleg szívvel vár minden lelkes embert aki segíteni szeretne kiskedvenceink foglalkoztatásával, ezzel is a menhely működését segítve.</p>
+        <ul style="list-style-type:disc">
+            <li>Naptárunkban látható lesz melyik napokon tudnak segíteni menhelyünknek.</li>
+            <li>Egy adott napra maximum 2 embert bírunk foglalkoztatni. </li>
+            <li>A gombra nyomva a mezőket töltse ki adatainak megfelelően!</li>
+            <li>Ha elküldte jelentkezését email-ben fogjuk jelezni önnek ha felvettük.</li>
+        </ul> 
         <Button id="jelentkezes">Jelentkezem</Button>
 </div>
 </template>
@@ -21,12 +22,12 @@ import Button from './Button.vue';
 #supportCim{
     padding: 20px;
     text-align: center;
-    max-width: 30rem;
+    min-width: 30vw;
     border: 0px black dotted;
     border-radius: 20px 20px 0px 0px;
 }
 h1 {
-    font-size: 3vw;
+    font-size: 2vw;
 }
 #jelentkezes {
     margin-bottom: 30px;
