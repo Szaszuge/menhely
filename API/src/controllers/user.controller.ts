@@ -54,7 +54,7 @@ export const reserve = async (req, res, next) => {
         const ad = await userService.address(user.address)
         const generated_user = await userService.reserveUser(user, ad);
 
-        res.status(201).json({ message: "Sikeres Feljegyzés" });
+        res.status(201).json({ message: "Sikeres Feljegyzés" , user: generated_user.id});
     }
     catch(error){
         next(error);

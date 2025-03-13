@@ -15,6 +15,7 @@ onMounted(() => {
     let api = new ApiService();
     api.userDataByID(id).then((res) => {
         console.log(res.data.status);
+        status = res.data.status;
     })
 });
 
@@ -29,7 +30,7 @@ let confirm = '';
 
 
 <template>
-    <div class="emailconfirm-container">
+    <div class="emailconfirm-container" :class="status">
 
         <!-- Ha a fiók inaktív -->
         <div class="content-container bg-orange-200">
@@ -63,6 +64,7 @@ body {
 
 <style scoped>
 .emailconfirm-container {
+    visibility: hidden;
     position: relative;
     min-height: 100vh;
     overflow: hidden;

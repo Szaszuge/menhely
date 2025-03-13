@@ -31,18 +31,19 @@ let user = {
 };
 
 function register(event) {
-    let data = {"to": user.email,
-    "subject": "GazdiRadar Regisztráció",
-    "content": {
-        "userName": user.userName,
-        "link": "www.google.com",
-    },
-    "template": "Register"
-    };
+    
     api.userRegister(user, address).then((res) => {
         console.log(res.data.message);
-    });
+        let data = {"to": user.email,
+        "subject": "GazdiRadar Regisztráció",
+        "content": {
+            "userName": user.userName,
+            "link": `http://localhost:5173/emailconfirm/${res.data.user}`,
+            },
+        "template": "Register"
+        };
     mail.sendMail(data);
+    });
     router.push("/emailsent");
 }
 
