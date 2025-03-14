@@ -27,6 +27,20 @@ function gonb() {
     </ul>
     <Button @click="gonb" id="jelentkezes">{{ buttonText }}</Button>
   </div>
+
+  <!--
+<h1>Adományozzon</h1>
+<p>Segítsen, hogy még több kutyának és cicának adhassunk esélyt egy új, boldog életre! Minden adomány, legyen az egyszeri vagy rendszeres, hozzájárul ahhoz, hogy folytathassuk munkánkat.
+
+Hogyan támogathat minket?</p>
+<ul style="list-style-type:disc">
+<li>Pénzbeli adomány: Adjon online vagy banki átutalással.</li>
+<li>Rendszeres adomány: Havi hozzájárulással hosszú távon segíthet.</li>
+<li>Az adója 1%-át felajánlhatja menhelyünknek. </li>
+<li>Adószámunk: 12345678-9-10</li>
+</ul>
+Minden segítség számít! Köszönjük, hogy velünk tart, és támogatja a rászoruló állatokat!
+  -->
 </template>
 
 <style scoped>
