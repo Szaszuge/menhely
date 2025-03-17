@@ -24,6 +24,12 @@ onUnmounted(() => {
     document.body.style.overflow = '';
 });
 
+function activate(event) {
+    let api = new ApiService();
+    api.userActivate(Number(document.getElementById("user_ID").innerHTML), confirm).then((res) =>{
+        console.log(res.data);
+    })
+}
 
 let confirm = '';
 
@@ -44,8 +50,8 @@ let confirm = '';
                 
                 <div class="input-group">
                     <span class="label">Jelszó:</span>
-                    <CustomInput v-model="confirm"/>
-                    <Button id="ujrakuldesbutton">Aktiválás</Button>
+                    <CustomInput v-model="confirm" type="password"/>
+                    <Button id="aktivalas" @click="activate">Aktiválás</Button>
                     <div hidden id="user_ID">{{ $route.params.id }}</div>
                 </div>
             </div>

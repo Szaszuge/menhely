@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const userService = require('../services/user.service');
 
 export const reserve = async (req, res, next) => {  
@@ -65,4 +66,19 @@ export const getStatusByID = async (req, res) => {
     const status = await userService.getStatusByID(req.body[0]);
     console.log("Returning Status...")
     res.status(201).json({ message: "Sikeres Feljegyzés", status: status });
+}
+export const activateById = async (req, res) => {
+    console.log("Activate by ID...");
+    console.log(req.body)
+    console.log("Attempting activation...");
+    const result = await userService.activateByID(req.body[0], res.body[1]);
+    if (result == "Activated") {
+        res.status(201).json({ message: "Sikeres Aktiváció"});
+    }
+    else if (result == "Incorrect") {
+        res.status(400).json({ message: "A jelszó nem stimmel"});
+    }
+    else{
+        res.status(406).json({ message: "A fiók nem létezik"});
+    }
 }

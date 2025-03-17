@@ -73,6 +73,24 @@ exports.IsEmailUsed = async (email) => {
     return result != null;
 }
 
+exports.activateByID = async (ID, Confirm) => {
+    console.log("[SERVICE] ACTIVATING USER BASED ON ID.");
+    const existant = await AppDataSource.manager.findOneBy(User, {id: ID});
+    if (existant != null){
+        console.log(`[SERVICE] USER EXISTS... COMPAIRING`);
+        let match = await bcrypt.compare(Confirm, existant.password)
+        if (match){
+            console.log("[SERVICE] ACTIVATING USER...");
+            await AppDataSource.manager.save({id: ID, permit: Permits.base})
+            return "Activated";
+        }
+        console.log("[SERVICE] PASSWORDS DO NOT MATCH. RETURNING FAILURE.");
+        return "Incorrect";
+    }
+    console.log(`[SERVICE] USER NON-EXISTANT. RETURNING...`)
+    return "Illegal";
+}
+
 /*
 exports.loginUser = async (email, password) => {
     const user = await AppDataSource.manager.findOneBy(User, {email: email});

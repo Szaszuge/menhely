@@ -20,5 +20,9 @@ export class ApiService {
         console.log("User Status request called.");
         return axios.post(this.server + "/users/getStatByID", [id]);
     }
+    userActivate(id:number, confirm:String){
+        console.log("Attempting to activate.");
+        return axios.post(this.server + "/users/activateByID", [id, confirm]);
+    }
     
 }

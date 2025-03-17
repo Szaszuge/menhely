@@ -11,6 +11,7 @@ const router = Router();
 
 router.post('/reserve', userController.reserve);
 router.post('/getStatByID', userController.getStatusByID);
+router.post('/activateByID', userController.activateById)
 
 // login user
 
