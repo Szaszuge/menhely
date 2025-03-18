@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Supportcard from '@/components/Supportcard.vue';
+import PawFooter from '@/components/PawFooter.vue';
 </script>
 
 <template>
@@ -8,6 +9,7 @@ import Supportcard from '@/components/Supportcard.vue';
 <img  src="../assets/tamogatas.png" alt="Tamogatas" id="Tamogass"> 
 <Supportcard></Supportcard>
 </div>
+<PawFooter :is-sticky="true"/>
 </template>
 
 <style scoped>
