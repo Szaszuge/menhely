@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import {useRoute} from "vue-router";
+import { useRouter } from "vue-router";
 import { onMounted, onUnmounted, ref } from 'vue';
 import PawFooter from '@/components/PawFooter.vue';
 import Button from '@/components/Button.vue';
 import CustomInput from '@/components/CustomInput.vue';
 import { ApiService } from "@/service/api.service";
 
+let router = useRouter()
 let id;
 let status = ref('loading');
 onMounted(() => {
@@ -28,6 +29,9 @@ function activate(event) {
     let api = new ApiService();
     api.userActivate(Number(document.getElementById("user_ID").innerHTML), confirm).then((res) =>{
         console.log(res.data);
+        if (res.data.message == "Sikeres regisztráció"){
+            router.push("/");
+        }
     })
 }
 
@@ -64,7 +68,7 @@ let confirm = '';
     </div>
 
 
-    <div class="emailconfirm-container" :class="status" id="active">
+    <div class="emailconfirm-container" :class="status" id="user">
 
     <!-- Ha a fiók aktív -->
         <div class="content-container bg-orange-200">
@@ -117,7 +121,7 @@ div#inactive.inactive{
     display: flex !important;
 }
 
-div#active.active{
+div#user.user{
     display: flex !important;
 }
 

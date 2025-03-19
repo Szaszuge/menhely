@@ -81,7 +81,10 @@ exports.activateByID = async (ID, Confirm) => {
         let match = await bcrypt.compare(Confirm, existant.password)
         if (match){
             console.log("[SERVICE] ACTIVATING USER...");
-            await AppDataSource.manager.save({id: ID, permit: Permits.base})
+            if (existant.permit != Permits.limbo){
+                return "Illegal";
+            }
+            await AppDataSource.manager.update(User, {id: ID}, {permit: Permits.base})
             return "Activated";
         }
         console.log("[SERVICE] PASSWORDS DO NOT MATCH. RETURNING FAILURE.");

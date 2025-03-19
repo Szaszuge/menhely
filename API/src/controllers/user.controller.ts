@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt');
 const userService = require('../services/user.service');
 
 export const reserve = async (req, res, next) => {  
@@ -64,14 +63,17 @@ export const reserve = async (req, res, next) => {
 export const getStatusByID = async (req, res) => {
     console.log(req.body[0])
     const status = await userService.getStatusByID(req.body[0]);
-    console.log("Returning Status...")
+    setTimeout(() => "Returning Status...", 1000),
     res.status(201).json({ message: "Sikeres Feljegyzés", status: status });
 }
 export const activateById = async (req, res) => {
     console.log("Activate by ID...");
     console.log(req.body)
     console.log("Attempting activation...");
-    const result = await userService.activateByID(req.body[0], res.body[1]);
+    let x = req.body[0];
+    let y = req.body[1];
+    const result = await userService.activateByID(x, y);
+    setTimeout(() => "Returning results...", 1000);
     if (result == "Activated") {
         res.status(201).json({ message: "Sikeres Aktiváció"});
     }
