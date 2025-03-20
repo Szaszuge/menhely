@@ -118,7 +118,7 @@ function register(event) {
         <RouterLink to="/login">
             <h4>Már van fiókod?</h4>
         </RouterLink>
-        <Button id="login" @click="register">Regisztráció</Button>
+        <Button id="register" @click="register">Regisztráció</Button>
         </div>
     </div>
     <img src="../assets/Kutyamacska.png">
@@ -187,7 +187,7 @@ display: flex;
 flex-flow: column nowrap;
 }
 
-#login {
+#register {
     height: 50px !important;
     width: 120px;
     align-self: flex-end;

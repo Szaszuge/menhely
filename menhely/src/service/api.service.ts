@@ -24,5 +24,8 @@ export class ApiService {
         console.log("Attempting to activate.");
         return axios.post(this.server + "/users/activateByID", [id, confirm]);
     }
+    userLogin(){
+        // TODO: Implement
+    }
     
 }

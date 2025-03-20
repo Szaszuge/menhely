@@ -1,12 +1,20 @@
 <script setup lang="ts">
+import { useRouter } from "vue-router";
+import { ApiService } from '@/service/api.service';
 import CustomInput from '../components/CustomInput.vue';
 import Button from '../components/Button.vue';
 import PawFooter from '../components/PawFooter.vue';
+
+let router = useRouter()
+let api = new ApiService();
 
 let user = {
     name: "",
     pass: "",
 };
+function login(event) {
+    console.log(user.name);
+}
 
 </script>
 
@@ -18,17 +26,17 @@ let user = {
     <h3>Felhasználónév</h3>
     <CustomInput v-model="user.name"/>
 
-    <br>
-
     <h3>Jelszó</h3>
     <CustomInput v-model="user.pass" type="password"/>
 
+    <div id="smalltext">
     <h4>Elfelejtetted a jelszavad?</h4>
     <RouterLink to="/register">
         <h4>Még nincs fiókod?</h4>
     </RouterLink>
+    </div>
 
-    <Button id="login">Bejelentkezés</Button>
+    <Button id="login" @click="login">Bejelentkezés</Button>
 </div>
 <img src="../assets/Kutyamacska.png">
 </main>
@@ -47,6 +55,7 @@ h1, h3, h4{
 
 h4{
     color: #E85B44;
+    font-weight: 800;
 }
 
 main{
@@ -71,7 +80,11 @@ img{
     align-items: stretch;
     gap: 0.375rem;
 }
-
+#smalltext{
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: stretch;
+}
 #login{
     margin: 10px 0px 10px 10px;
     height: 50px !important; 
