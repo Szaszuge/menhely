@@ -74,13 +74,24 @@ export const activateById = async (req, res) => {
     let y = req.body[1];
     const result = await userService.activateByID(x, y);
     setTimeout(() => "Returning results...", 1000);
-    if (result == "Activated") {
-        res.status(201).json({ message: "Sikeres Aktiváció"});
-    }
-    else if (result == "Incorrect") {
-        res.status(400).json({ message: "A jelszó nem stimmel"});
-    }
-    else{
-        res.status(406).json({ message: "A fiók nem létezik"});
+    switch (result){
+        case ("Activated"):
+            res.status(200).json({ message: "Sikeres Aktiváció!"});
+            break;
+        case ("Incorrect"):
+            res.status(400).json({ message: "A jelszó nem egyezik!"});
+            break;
+        case ("Already Active"):
+            res.status(403).json({ message: "A fiók már aktív!"});
+            break; 
+        case ("Banished"):
+            res.status(403).json({ message: "A fiók tiltott!"});
+            break; 
+        case ("Illegal"):
+            res.status(403).json({ message: "A fiók nem létezik!"});
+            break;
+        default:
+            res.status(400).json({message: "Van ami nem jó."})
+            break;
     }
 }

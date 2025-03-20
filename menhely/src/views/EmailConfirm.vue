@@ -28,8 +28,8 @@ onUnmounted(() => {
 function activate(event) {
     let api = new ApiService();
     api.userActivate(Number(document.getElementById("user_ID").innerHTML), confirm).then((res) =>{
-        console.log(res.data);
-        if (res.data.message == "Sikeres regisztráció"){
+        console.log(res.data.message);
+        if (res.data.message == "Sikeres Aktiváció!"){
             router.push("/");
         }
     })
@@ -68,12 +68,12 @@ let confirm = '';
     </div>
 
 
-    <div class="emailconfirm-container" :class="status" id="user">
-
     <!-- Ha a fiók aktív -->
+    <div class="emailconfirm-container" :class="status" id="activated">
+
         <div class="content-container bg-orange-200">
             <div class="titlerow bg-orange-300 rounded-t-[20px]">
-                <h1>Megerősítés</h1>
+                <h1>Sajnáljuk</h1>
             </div>
             <div class="content-wrapper">
                 <p class="text-left">Ez a fiók már aktiválva van.</p>
@@ -81,15 +81,11 @@ let confirm = '';
             </div>
         </div>
 
-        <img id="cicajobb" src="../assets/catpeek.png" alt="">
-        <img id="kutyabal" src="../assets/dogpeek.png" alt="">
-
         <PawFooter :is-sticky="true"/>
     </div>
 
-    <div class="emailconfirm-container" :class="status" id="non-existent">
-
     <!-- Ha a nem lézetik -->
+    <div class="emailconfirm-container" :class="status" id="non-existent">
         <div class="content-container bg-orange-200">
             <div class="titlerow bg-orange-300 rounded-t-[20px]">
                 <h1>Hiba</h1>
@@ -99,8 +95,19 @@ let confirm = '';
             </div>
         </div>
 
-        <img id="cicajobb" src="../assets/catpeek.png" alt="">
-        <img id="kutyabal" src="../assets/dogpeek.png" alt="">
+        <PawFooter :is-sticky="true"/>
+    </div>
+
+    <!-- Ha tiltott -->
+    <div class="emailconfirm-container" :class="status" id="banned">
+        <div class="content-container bg-orange-200">
+            <div class="titlerow bg-orange-300 rounded-t-[20px]">
+                <h1>Sajnáljuk</h1>
+            </div>
+            <div class="content-wrapper wide">
+                <p class="text-center">Ez a fiók le van tiltva.</p>
+            </div>
+        </div>
 
         <PawFooter :is-sticky="true"/>
     </div>
@@ -121,7 +128,10 @@ div#inactive.inactive{
     display: flex !important;
 }
 
-div#user.user{
+div#activated.user, div#activated.moderator, div#activated.admin{
+    display: flex !important;
+}
+div#banned.banned{
     display: flex !important;
 }
 

@@ -81,8 +81,11 @@ exports.activateByID = async (ID, Confirm) => {
         let match = await bcrypt.compare(Confirm, existant.password)
         if (match){
             console.log("[SERVICE] ACTIVATING USER...");
-            if (existant.permit != Permits.limbo){
-                return "Illegal";
+            if (existant.permit != Permits.limbo && existant.permit != Permits.banned){
+                return "Already Active";
+            }
+            else if (existant.permit == Permits.banned){
+                return "Banished";
             }
             await AppDataSource.manager.update(User, {id: ID}, {permit: Permits.base})
             return "Activated";
