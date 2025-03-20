@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, ManyToOne } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, ManyToOne, CreateDateColumn } from "typeorm"
 import { Address } from "./Address"
 
 
@@ -40,4 +40,6 @@ export class User {
     })
     permit: Permits
 
+    @CreateDateColumn()
+    created_at: Date;
 }

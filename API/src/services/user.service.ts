@@ -3,6 +3,8 @@ import { AppDataSource } from "../data-source";
 import { Address } from "../entity/Address";
 import { Permits, User } from "../entity/User";
 import { AnyARecord } from "dns";
+import { CronJob } from 'cron';
+import { LessThan } from "typeorm";
 
 const bcrypt = require('bcrypt');
 const { generateToken } = require('../utils/token');
@@ -96,6 +98,23 @@ exports.activateByID = async (ID, Confirm) => {
     console.log(`[SERVICE] USER NON-EXISTANT. RETURNING...`)
     return "Illegal";
 }
+
+const job = new CronJob(
+	'0 * * * * *', // cronTime
+	async function () {
+
+		console.log("[SERVICE] DELETE EXPIRED USERS");
+        var date = new Date();
+        date.setDate(date.getDate() - 1);
+        let expired = await AppDataSource.manager.findBy(User, {created_at: LessThan(date), permit: Permits.limbo})
+        console.log(expired);
+        await AppDataSource.manager.delete(User, expired);
+
+	}, // onTick
+	null, // onComplete
+	true, // start
+	'Europe/Budapest' // timeZone
+);
 
 /*
 exports.loginUser = async (email, password) => {

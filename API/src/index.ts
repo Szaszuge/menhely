@@ -1,6 +1,5 @@
 import { Console } from "console";
 import { AppDataSource } from "./data-source"
-import { CronJob } from 'cron';
 require('dotenv').config()
 const express = require('express');
 const app = express();
@@ -21,13 +20,3 @@ AppDataSource.initialize().then(async () => {
 }).catch(error => console.log(error))
 
 app.listen(process.env.PORT, () => console.log(`Server listening on port: ${process.env.PORT}`))
-
-const job = new CronJob(
-	'0 * * * * *', // cronTime
-	function () {
-		console.log('TODO: Check if account has expired.');
-	}, // onTick
-	null, // onComplete
-	true, // start
-	'Europe/Budapest' // timeZone
-);
