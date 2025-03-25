@@ -21,6 +21,7 @@ function gonb() {
 const jelentkezesEv = ref('');
 const jelentkezesHonap = ref('');
 const jelentkezesNap = ref('');
+const jelentkezesOka = ref('');
 
 function kuldes() {
   console.log("Bekuldes placeholder");
@@ -96,7 +97,7 @@ function kuldes() {
         <h3>Munka ideje (órában):</h3>
         <!-- itt lesz a dualrangeslider -->
         <h1>Mit szeretnél nálunk dolgozni?</h1>
-        <CustomInput type="text" placeholder="Anyad"></CustomInput>
+        <CustomInput type="text" placeholder="Mi az ok?" v-model="jelentkezesOka"></CustomInput>
         <Button id="bekuldes" @="kuldes">Küldés</Button>
       </template>
     </Supportcard>
