@@ -14,7 +14,7 @@ let user = {
 };
 function login(event) {
     api.userLogin(user.name, user.pass).then((res) => {
-        console.log(res);
+        console.log(res.data.token);
     })
 }
 
