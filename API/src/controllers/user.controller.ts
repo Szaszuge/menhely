@@ -54,7 +54,7 @@ export const reserve = async (req, res, next) => {
         const ad = await userService.address(user.address)
         const generated_user = await userService.reserveUser(user, ad);
 
-        res.status(201).json({ message: "Sikeres Feljegyzés" , user: generated_user.id});
+        return res.status(201).json({ message: "Sikeres Feljegyzés" , user: generated_user.id});
     }
     catch(error){
         next(error);
@@ -104,11 +104,11 @@ export const login = async (req, res) => {
     const token = await userService.loginUser(userN, userP);
     if (token == ";") {
         console.log("Nem létező felhasználó");
-        res.status(400).json({message: "Sikertelen bejelentkezés: Nem létező felhasználó"})
+        return res.status(400).json({message: "Sikertelen bejelentkezés: Nem létező felhasználó"})
     }
     else if (token == ":") {
         console.log("Rossz jelszó");
-        res.status(400).json({message: "Sikertelen bejelentkezés: Rossz jelszó"})
+        return res.status(400).json({message: "Sikertelen bejelentkezés: Rossz jelszó"})
     }
-    res.status(200).json({ message: "Sikeres bejelentkezés!", token: Object.values(token)[0], success: true });
+    return res.status(200).json({ message: "Sikeres bejelentkezés!", token: Object.values(token)[0], success: true });
 }
