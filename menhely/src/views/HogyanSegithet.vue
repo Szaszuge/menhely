@@ -2,10 +2,11 @@
 import Supportcard from "@/components/Supportcard.vue";
 import PawFooter from "@/components/PawFooter.vue";
 import Button from '../components/Button.vue';
+import CustomInput from "@/components/CustomInput.vue";
 import { ref } from "vue";
 
 const buttonText = ref('Jelentkezem');
-const valami = ref(false);
+const valami = ref(true);
 
 function gonb() {
     if (buttonText.value === 'Jelentkezem') {
@@ -13,7 +14,7 @@ function gonb() {
     } else {
         buttonText.value = 'Jelentkezem';
     }
-    
+
     valami.value = !valami.value;
 }
 </script>
@@ -58,7 +59,15 @@ function gonb() {
       rászoruló állatokat!</p>
       </template>
       <template v-else>
-        xd
+        <h3>Itt tudja leadni jelentkezését önkéntes munkára hozzánk! Jelentkezzenek bátran!</h3>
+        <h1>Év:</h1>
+        <CustomInput></CustomInput>
+        <h1>Hónap:</h1>
+        <CustomInput></CustomInput>
+        <h1>Nap:</h1>
+        <CustomInput></CustomInput>
+        <h3>Munka ideje (órában):</h3>
+
       </template>
     </Supportcard>
   </div>
