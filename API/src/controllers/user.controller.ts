@@ -54,7 +54,7 @@ export const reserve = async (req, res, next) => {
         const ad = await userService.address(user.address)
         const generated_user = await userService.reserveUser(user, ad);
 
-        res.status(201).json({ message: "Sikeres Feljegyzés" , user: generated_user.id});
+        return res.status(201).json({ message: "Sikeres Feljegyzés" , user: generated_user.id});
     }
     catch(error){
         next(error);
@@ -68,7 +68,6 @@ export const getStatusByID = async (req, res) => {
 }
 export const activateById = async (req, res) => {
     console.log("Activate by ID...");
-    console.log(req.body)
     console.log("Attempting activation...");
     let x = req.body[0];
     let y = req.body[1];
@@ -94,4 +93,22 @@ export const activateById = async (req, res) => {
             res.status(400).json({message: "Van ami nem jó."})
             break;
     }
+}
+export const login = async (req, res) => {
+    console.log(req.body);
+    const userN = req.body[0];
+    const userP = req.body[1];
+    if (!userN || !userP){
+        return res.status(203).json({ message: 'Hiányzó adatok!'});
+    }
+    const token = await userService.loginUser(userN, userP);
+    if (token == ";") {
+        console.log("Nem létező felhasználó");
+        return res.status(400).json({message: "Sikertelen bejelentkezés: Nem létező felhasználó"})
+    }
+    else if (token == ":") {
+        console.log("Rossz jelszó");
+        return res.status(400).json({message: "Sikertelen bejelentkezés: Rossz jelszó"})
+    }
+    return res.status(200).json({ message: "Sikeres bejelentkezés!", token: Object.values(token)[0], success: true });
 }

@@ -13,7 +13,9 @@ let user = {
     pass: "",
 };
 function login(event) {
-    console.log(user.name);
+    api.userLogin(user.name, user.pass).then((res) => {
+        console.log(res.data.token);
+    })
 }
 
 </script>

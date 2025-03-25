@@ -20,11 +20,13 @@ export class ApiService {
         console.log("User Status request called.");
         return axios.post(this.server + "/users/getStatByID", [id]);
     }
-    userActivate(id:number, confirm:String){
+    userActivate(id:number, confirm:string){
         console.log("Attempting to activate.");
         return axios.post(this.server + "/users/activateByID", [id, confirm]);
     }
-    userLogin(){
+    userLogin(name:string, pass:string){
+        console.log("Attempting to log user in.");
+        return axios.post(this.server + "/users/login", [name, pass]);
         // TODO: Implement
     }
     
