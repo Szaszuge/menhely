@@ -11,8 +11,10 @@ const valami = ref(true);
 function gonb() {
   if (buttonText.value === "Jelentkezem") {
     buttonText.value = "Vissza";
+    jelentkezesTitle.value = "Jelentkezés"
   } else {
     buttonText.value = "Jelentkezem";
+        jelentkezesTitle.value = "Adományozzon!"
   }
 
   valami.value = !valami.value;
@@ -22,6 +24,7 @@ const jelentkezesEv = ref('');
 const jelentkezesHonap = ref('');
 const jelentkezesNap = ref('');
 const jelentkezesOka = ref('');
+const jelentkezesTitle = ref('Adományozzon!');
 
 function kuldes() {
   console.log("Bekuldes placeholder");
@@ -29,7 +32,6 @@ function kuldes() {
 </script>
 
 <template>
-  {{ jelentkezesEv }}
   <div class="kontent">
     <Supportcard title="Jelentkezzen önkéntesnek!">
       <p>
@@ -50,7 +52,7 @@ function kuldes() {
       <Button @click="gonb" id="jelentkezes">{{ buttonText }}</Button>
     </Supportcard>
     <img src="../assets/tamogatas.png" alt="Tamogatas" id="Tamogass" />
-    <Supportcard title="Adományozzon!">
+    <Supportcard v-bind:title="jelentkezesTitle">
       <template v-if="valami">
         <p>
           Segítsen, hogy még több kutyának és cicának adhassunk esélyt egy új,

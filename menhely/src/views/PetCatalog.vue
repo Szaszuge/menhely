@@ -28,7 +28,7 @@ let search = '';
     <div id="petcatalog">       
         <div id="searchID">
             <p>Keresés</p>
-            <CustomInput v-model="search" search/>
+            <CustomInput id="keresesInput" v-model="search" search/>
             <Filter/>   
         </div>
 
@@ -54,6 +54,13 @@ let search = '';
   gap: 3rem;
   justify-content: center;
 }
+
+p{
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+
 #petcatalog{
     display: flex;
     flex-flow: row wrap;
@@ -67,5 +74,9 @@ let search = '';
     position: sticky;
     top: 2rem;
 
+}
+
+#keresesInput{
+    width: 300px;
 }
 </style>

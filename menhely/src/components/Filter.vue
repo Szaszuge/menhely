@@ -83,7 +83,7 @@
 }
 
 .filter-box {
-    padding: 0.5rem 1.5rem;
+    padding: 1rem 1.5rem 1.5rem;
     border: 1.5px solid black;
     border-radius: 1.8rem;
     display: flex;
