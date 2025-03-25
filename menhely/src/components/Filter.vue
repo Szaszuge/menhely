@@ -2,7 +2,6 @@
 
 </script>
 
-
 <template>
     <div class="filter-container">
         <h2 class="filter-title">Szűrők</h2>

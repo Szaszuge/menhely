@@ -18,6 +18,6 @@
 }
 
 .button:hover {
-    background-color: red;
+    background-color: #E85B44;
 }
 </style>

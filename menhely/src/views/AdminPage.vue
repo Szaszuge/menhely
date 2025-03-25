@@ -12,7 +12,7 @@ export default {
     const activeTab = ref('Kérések');
     const search = ref('');
     
-    // Sample data for requests
+
     const requests = [
       { name: 'zikizoki121', type: 'Örökbefogadás' },
       { name: 'zikizoki121', type: 'Leadás' },
@@ -22,7 +22,7 @@ export default {
       { name: 'zikizoki121', type: 'Leadás' },
     ];
 
-    // Sample data for users
+
     const users = [
       { name: 'user1', role: 'Felhasználó' },
       { name: 'user2', role: 'Admin' },
@@ -31,13 +31,13 @@ export default {
       { name: 'user5', role: 'Felhasználó' },
     ];
 
-    // Sample data for animals
+
     const animals = [
-      { name: 'Bodri', species: 'kutya' },
-      { name: 'Cirmi', species: 'macska' },
-      { name: 'Rex', species: 'kutya' },
-      { name: 'Morzsi', species: 'kutya' },
-      { name: 'Foltos', species: 'macska' },
+      { name: 'Bodri', species: 'Kutya' },
+      { name: 'Cirmi', species: 'Macska' },
+      { name: 'Rex', species: 'Kutya' },
+      { name: 'Morzsi', species: 'Kutya' },
+      { name: 'Foltos', species: 'Macska' },
     ];
     
     return {
@@ -57,21 +57,21 @@ export default {
       <div class="navigation-tabs">
         <div 
           class="nav-tab" 
-          :class="{ active: activeTab === 'Felhasználók' }"
+          :class="{ active: activeTab === 'Felhasználók'}"
           @click="activeTab = 'Felhasználók'"
         >
           Felhasználók
         </div>
         <div 
           class="nav-tab" 
-          :class="{ active: activeTab === 'Kérések' }"
+          :class="{ active: activeTab === 'Kérések'}"
           @click="activeTab = 'Kérések'"
         >
           Kérések
         </div>
         <div 
           class="nav-tab" 
-          :class="{ active: activeTab === 'Állatok' }"
+          :class="{ active: activeTab === 'Állatok'}"
           @click="activeTab = 'Állatok'"
         >
           Állatok
@@ -84,7 +84,6 @@ export default {
     </div>
 
     <div class="table-container">
-      <!-- Requests Table -->
       <table v-if="activeTab === 'Kérések'" class="admin-table">
         <thead>
           <tr class="header-row">
@@ -122,7 +121,7 @@ export default {
         </tbody>
       </table>
 
-      <!-- Users Table -->
+
       <table v-if="activeTab === 'Felhasználók'" class="admin-table">
         <thead>
           <tr class="header-row">
@@ -158,7 +157,7 @@ export default {
         </tbody>
       </table>
 
-      <!-- Animals Table -->
+
       <table v-if="activeTab === 'Állatok'" class="admin-table">
         <thead>
           <tr class="header-row">
@@ -271,7 +270,7 @@ export default {
 
 .table-container {
   overflow-x: auto;
-  padding: 0 15px; /* Add padding to the table container */
+  padding: 0 15px; 
 }
 
 .admin-table {
@@ -298,7 +297,7 @@ export default {
 .column-name {
   width: 30%;
   text-align: left;
-  padding-left: 20px; /* Consistent padding for name column */
+  padding-left: 20px; 
 }
 
 .column-middle {
@@ -322,7 +321,7 @@ export default {
 
 .header-row th.column-actions {
   text-align: right;
-  padding-right: 40px; /* Increased padding for better spacing */
+  padding-right: 40px; 
 }
 
 .odd-row {
@@ -338,7 +337,7 @@ export default {
   justify-content: flex-end;
   gap: 10px;
   min-width: 170px;
-  padding-right: 20px; /* Increased padding to move buttons away from edge */
+  padding-right: 20px; 
 }
 
 .actions-container-2 {
@@ -366,7 +365,7 @@ export default {
   object-fit: contain;
 }
 
-/* Add padding to first and last cells in each row for better spacing */
+
 .admin-table tr td:first-child {
   padding-left: 25px;
 }

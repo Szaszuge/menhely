@@ -53,6 +53,12 @@ const router = createRouter({
       path: '/adminpage',
       name: 'adminpage',
       component: () => import('../views/AdminPage.vue')
+    }, 
+
+    {
+      path: '/petsurrender',
+      name: 'petsurrender',
+      component: () => import('../views/AllatLeadas.vue')
     }
   ],
 })
