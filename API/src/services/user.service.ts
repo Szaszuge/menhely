@@ -107,8 +107,10 @@ const job = new CronJob(
         var date = new Date();
         date.setDate(date.getDate() - 1);
         let expired = await AppDataSource.manager.findBy(User, {created_at: LessThan(date), permit: Permits.limbo})
-        console.log(expired);
-        await AppDataSource.manager.delete(User, expired);
+        console.log(`${expired.length} USERS ARE TO BE DELETED.`);
+        if (expired.length > 0) {
+            await AppDataSource.manager.delete(User, expired);
+        }
 
 	}, // onTick
 	null, // onComplete
@@ -116,23 +118,26 @@ const job = new CronJob(
 	'Europe/Budapest' // timeZone
 );
 
-/*
-exports.loginUser = async (email, password) => {
-    const user = await AppDataSource.manager.findOneBy(User, {email: email});
-    if (!user) throw new Error('Nem regisztrált felhasználó!');
-    if (!await bcrypt.compare(password, user.password)) throw new Error('Hibás jelszó!');
+exports.loginUser = async (username, password) => {
+    console.log(`[SERVICE] LOGIN ATTEMPT by '${username}'`);
+    const user = await AppDataSource.manager.findOneBy(User, {userName: username});
+    if (!user) {
+        console.log(`[SERVICE] NO USER FOUND BY NAME '${username}'. RETURNING...`)
+        return ";";
+    }
+    if (!await bcrypt.compare(password, user.password)){
+        `[SERVICE] LOGIN ATTEMPT FAILED by '${username}'. RETURNING...`
+        return ":";
+    }
 
-    const token = generateToken({ id: user.id, name: user.name, email: user.email});
+    const token = generateToken({ id: user.id, name: user.userName, email: user.email});
     return { token }; 
 }
-*/
 
 /*
 exports.getAllUsers = async () => {
     return await userMod.findAll({
         attributes: {exclude: ['password']}
     });
-}
-
-
+} 
 */
