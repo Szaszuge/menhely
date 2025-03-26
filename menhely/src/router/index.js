@@ -63,4 +63,13 @@ const router = createRouter({
   ],
 })
 
+// Guard, ami gyakorlatban csak az admin felületet védi, mert a többi úgy is megtekinthető
+/*
+router.beforeEach(async (to, from) => {
+  console.log(`${from.name} -> ${to.name}`);
+  if (to.name == 'adminpage'){
+    return {name: from.name};
+  }
+})
+*/
 export default router

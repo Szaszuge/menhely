@@ -7,6 +7,7 @@ export const reserve = async (req, res, next) => {
         const user = req.body[0];
         const address = req.body[1];
         console.log(user);
+        console.log(address);
         console.log("Performing mandatory checks..");
 
         console.log("Checking missing data...");
@@ -30,7 +31,7 @@ export const reserve = async (req, res, next) => {
         console.log("Username check passed!");
 
         console.log("Validating real name...");
-        let nameValidator = /^[a-zA-ZáéíóöőúüűÁÉÍÓÖŐÚÜŰ\s]{1,50}$/;
+        let nameValidator = /^(?=.*\s)[a-zA-ZáéíóöőúüűÁÉÍÓÖŐÚÜŰ\s]{1,50}$/;
         if (!nameValidator.test(user.fullName)) {
             return res.status(203).json({ message: 'Helytelen név formátum!'});
         }
@@ -47,6 +48,12 @@ export const reserve = async (req, res, next) => {
         let phoneValidator = /^\d{11}$/;
         if (!phoneValidator.test(user.phoneNumber)) {
             return res.status(203).json({ message: 'Helytelen Telefonszám formátum!'});
+        }
+        console.log("Phone number check passed!");
+
+        console.log("Validating postal code...");
+        if (isNaN(address.postal)) {
+            return res.status(203).json({ message: 'Helytelen irányítószám formátum!'});
         }
         console.log("Phone number check passed!");
 
@@ -95,7 +102,6 @@ export const activateById = async (req, res) => {
     }
 }
 export const login = async (req, res) => {
-    console.log(req.body);
     const userN = req.body[0];
     const userP = req.body[1];
     if (!userN || !userP){

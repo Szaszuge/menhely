@@ -34,7 +34,8 @@ function register(event) {
     
     api.userRegister(user, address).then((res) => {
         console.log(res.data.message);
-        let data = {"to": user.email,
+        if (res.data.message == "Sikeres Feljegyzés"){
+            let data = {"to": user.email,
         "subject": "GazdiRadar Regisztráció",
         "content": {
             "userName": user.userName,
@@ -42,9 +43,10 @@ function register(event) {
             },
         "template": "Register"
         };
-    mail.sendMail(data);
+        mail.sendMail(data);
+        router.push("/emailsent");
+        }
     });
-    router.push("/emailsent");
 }
 
 </script>
