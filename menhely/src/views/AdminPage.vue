@@ -1,14 +1,9 @@
-<script>
+<script setup lang="ts">
 import CustomInput from '@/components/CustomInput.vue';
 import Button from '@/components/Button.vue';
 import { onMounted, onUnmounted, ref } from 'vue';
+import PawFooter from '@/components/PawFooter.vue';
 
-export default {
-  components: {
-    CustomInput,
-    Button
-  },
-  setup() {
     const activeTab = ref('Kérések');
     const search = ref('');
     
@@ -40,15 +35,6 @@ export default {
       { name: 'Foltos', species: 'Macska' },
     ];
     
-    return {
-      activeTab,
-      search,
-      requests,
-      users,
-      animals
-    };
-  }
-}
 </script>
 
 <template>
@@ -196,6 +182,7 @@ export default {
       </table>
     </div>
   </div>
+  <PawFooter :is-sticky="true"/>
 </template>
 
 <style scoped>
@@ -360,8 +347,8 @@ export default {
 }
 
 .action-icon {
-  width: 39px;
-  height: 39px;
+  width: 35px;
+  height: 35px;
   object-fit: contain;
 }
 

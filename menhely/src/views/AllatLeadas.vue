@@ -2,6 +2,7 @@
 import { ref, defineEmits } from 'vue';
 import CustomInput from '@/components/CustomInput.vue';
 import Button from '@/components/Button.vue';
+import PawFooter from '@/components/PawFooter.vue';
 
 const emit = defineEmits(['submit']);
 const honnan = ref('');
@@ -19,11 +20,10 @@ const nap = ref('');
     <div class="form-title-container">
       <h2>Állat leadása</h2>
     </div>
+    <div class="form-content">
     <p class="info-text">A csillaggal jelölt mezők kitöltése kötelező!</p>
-
-
-    <label for="honnan">Állat neve*</label>
-    <CustomInput v-model="allatNeve" placeholder="Pl. Morzsi" />
+      <label for="honnan">Állat neve*</label>
+    <CustomInput class="inputs" v-model="allatNeve" placeholder="Pl. Morzsi" />
 
     <label for="honnan">Honnan származik (otthon/talált)*</label>
     <select id="honnan" v-model="honnan" class="custom-select">
@@ -34,10 +34,10 @@ const nap = ref('');
 
 
     <label for="honnan">Kora*</label>
-    <CustomInput v-model="kor" placeholder="Pl. 2" />
+    <CustomInput class="inputs" v-model="kor" placeholder="Pl. 2" />
 
     <label for="honnan">Település neve*</label>
-    <CustomInput v-model="telepules" placeholder="Pl. Bajaszentistván" />
+    <CustomInput class="inputs" v-model="telepules" placeholder="Pl. Bajaszentistván" />
 
     <label for="lead-idopont">Leadás időpontja*</label>
     <div class="date-container">
@@ -56,30 +56,37 @@ const nap = ref('');
     </div>
 
     <label for="honnan">Egyéb információ</label>
-    <CustomInput v-model="egyebInfo" placeholder="Pl. Más állatokkal jól kijön" />
+    <CustomInput class="inputs" v-model="egyebInfo" placeholder="Pl. Más állatokkal jól kijön" />
 
     <div class="button-container">
       <Button class="submit-button">Leadás igénylése</Button>
     </div>
+    </div> 
+
+    
   </div>
+  <PawFooter :is-sticky="true"/>
 </template>
 
 <style scoped>
 .form-container {
   background: #FED7AA;
-  padding: 1.5rem;
   border-radius: 15px;
+  width: calc(100vw - 25px);
   max-width: 635px; 
   margin: auto;
-  margin-top: 3.5rem;
+  margin-top: 3rem;
+}
+.form-content{
+  padding: 1.5rem;
 }
 
 .info-text {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 600; 
   color: #b33;
   text-align: left; 
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .form-title-container{
@@ -87,7 +94,8 @@ const nap = ref('');
     text-align: center;
     font-size: 2rem;
     background-color: #FDBA74;
-
+    padding: 0.5rem;
+    border-radius: 15px 15px 0 0;
 }
 
 label {
@@ -99,9 +107,9 @@ label {
 .custom-select, .date-select {
   width: 100%;
   padding: 10px;
-  border: 2px solid #aaa;
-  border-radius: 10px;
-  background: #f9f9f9;
+  border: 3px solid #6a7282;
+  border-radius: 15px;
+  background: #f8f4f4;
   font-size: 1rem;
   margin-top: 5px;
 }
@@ -117,7 +125,7 @@ label {
 
 .button-container {
   display: flex;
-  justify-content: flex-end; /* Button aligned to the right */
+  justify-content: flex-end; 
   margin-top: 15px;
 }
 
@@ -127,5 +135,9 @@ label {
     width: 205px;
   font-size: 1.1rem;
   border-radius: 10px;
+}
+.inputs{
+  width: calc(100vw - 65px);
+  max-width: 587px;
 }
 </style>
