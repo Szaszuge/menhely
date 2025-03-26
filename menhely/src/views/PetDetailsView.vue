@@ -15,9 +15,10 @@ import PawFooter from '@/components/PawFooter.vue';
         <div class="detail-row"><span>Útlevél?</span> Nem</div>
       </div>
     </div>
-
-    <div class="info-container">
+    <div id="second">
+      <div class="info-container">
       <h2 class="title">Sztárforsíp Terijer kiskutyuska</h2>
+      <div class="content">
       <h3>Bekerülés körülménye</h3>
       <p>Idős család kutyája volt előzőleg, viszont nem tudtak már rá egészségi okok miatt tovább vigyázni és inkább leadták menhelyünkre.</p>
 
@@ -33,12 +34,15 @@ import PawFooter from '@/components/PawFooter.vue';
         <li>Más kutyákkal tartható, valamint macskákkal is jól kijön és kisgyerekekkel is.</li>
         <li>Főként lakásban tartandó, eddig abban élt előző gazdájával.</li>
       </ul>
+      </div>
 
+    </div>
       <div class="button-container">
         <Button class="visit">Meglátogatás</Button>
         <Button class="adopt">Örökbefogadás</Button>
       </div>
     </div>
+    
   </div>
 
   <PawFooter />
@@ -47,10 +51,14 @@ import PawFooter from '@/components/PawFooter.vue';
 <style scoped>
 .container {
   display: flex;
-  gap: 20px;
+  gap: 70px;
   padding: 20px;
 }
-
+#second {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 .image-container {
   flex: 1;
   background: white;
@@ -93,19 +101,21 @@ import PawFooter from '@/components/PawFooter.vue';
 
 .info-container {
   flex: 2; 
-  background: #FFE3C2;
-  padding: 30px;
+  background: #FED7AA;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
-
+.content {
+  
+  padding: 30px;
+}
 .title {
-  background-color: #FF6F3C;
-  padding: 10px;
-  border-radius: 5px;
-  text-align: center;
-  font-size: 1.8rem;
   font-weight: 600;
+    text-align: center;
+    font-size: 2rem;
+    background-color: #FDBA74;
+    padding: 0.5rem;
+    border-radius: 15px 15px 0 0;
 }
 
 h3 {
