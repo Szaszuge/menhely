@@ -3,6 +3,7 @@ import Supportcard from "@/components/Supportcard.vue";
 import PawFooter from "@/components/PawFooter.vue";
 import Button from "../components/Button.vue";
 import CustomInput from "@/components/CustomInput.vue";
+import DualRangeSlider from "../components/DualRangeSlider.vue"
 import { ref } from "vue";
 
 const buttonText = ref("Jelentkezem");
@@ -97,6 +98,7 @@ function kuldes() {
           v-model="jelentkezesNap"
         ></CustomInput>
         <h3>Munka ideje (órában):</h3>
+        <DualRangeSlider></DualRangeSlider>
         <!-- itt lesz a dualrangeslider -->
         <h1>Mit szeretnél nálunk dolgozni?</h1>
         <CustomInput type="text" placeholder="Mi az ok?" v-model="jelentkezesOka"></CustomInput>
