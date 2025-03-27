@@ -69,12 +69,12 @@ watch(toValue, (newValue) => {
   display: flex;
   flex-direction: column;
   width: 80%;
-  margin: 35% auto;
+  margin: 10% auto;
 }
 
 .sliders_control {
   position: relative;
-  min-height: 50px;
+  min-height: 20px;
 }
 
 .form_control {
