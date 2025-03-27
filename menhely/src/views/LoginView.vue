@@ -15,6 +15,7 @@ let user = {
 function login(event) {
     api.userLogin(user.name, user.pass).then((res) => {
         console.log(res.data.token);
+        localStorage.setItem("LOGINTEST_DONOTUSE", res.data.token);
     })
 }
 
