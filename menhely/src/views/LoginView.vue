@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 import { ApiService } from '@/service/api.service';
+import { environment } from '../enviroments/testing';
 import CustomInput from '../components/CustomInput.vue';
 import Button from '../components/Button.vue';
 import PawFooter from '../components/PawFooter.vue';
 
 let router = useRouter()
 let api = new ApiService();
+let tokenName = environment.tokenName;
 
 let user = {
     name: "",
@@ -15,7 +17,7 @@ let user = {
 function login(event) {
     api.userLogin(user.name, user.pass).then((res) => {
         console.log(res.data.token);
-        localStorage.setItem("LOGINTEST_DONOTUSE", res.data.token);
+        localStorage.setItem(tokenName, res.data.token);
     })
 }
 

@@ -2,7 +2,7 @@
 const props = defineProps({
     format: {
         type: String,
-        required: true, 
+        required: false, 
         default: "health",
         validator(value:string, props) {
             return ["health","care","food"].includes(value)

@@ -1,6 +1,10 @@
 
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
+import { AuthService } from '@/service/auth.service';
+let auth = new AuthService;
+const logged = auth.loggedUser();
+console.log(logged);
 </script>
 
 <template>
