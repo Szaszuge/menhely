@@ -39,7 +39,9 @@ import PawFooter from '@/components/PawFooter.vue';
     </div>
       <div class="button-container">
         <Button class="visit">Meglátogatás</Button>
-        <Button class="adopt">Örökbefogadás</Button>
+        <RouterLink to="/petadoption">
+          <Button class="adopt">Örökbefogadás</Button>
+        </RouterLink>
       </div>
     </div>
     

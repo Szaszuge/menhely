@@ -62,6 +62,11 @@ const router = createRouter({
       path: '/petsurrender',
       name: 'petsurrender',
       component: () => import('../views/AllatLeadas.vue')
+    },
+    {
+      path: '/petadoption',
+      name: 'petadoption',
+      component: () => import('../views/PetAdoption.vue')
     }
   ],
 })
