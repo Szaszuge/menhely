@@ -1,6 +1,18 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import Button from '@/components/Button.vue';
 import PawFooter from '@/components/PawFooter.vue';
+import VisitPopup from '@/components/VisitPopup.vue';
+
+const showVisitPopup = ref(false);
+
+const openVisitPopup = () => {
+  showVisitPopup.value = true;
+};
+
+const closeVisitPopup = () => {
+  showVisitPopup.value = false;
+};
 </script>
 
 <template>
@@ -47,7 +59,7 @@ import PawFooter from '@/components/PawFooter.vue';
         </div>
 
         <div class="action-buttons">
-          <Button class="visit-btn">Meglátogatás</Button>
+          <Button class="visit-btn" @click="openVisitPopup">Meglátogatás</Button>
           <RouterLink to="/petadoption">
             <Button class="adopt-btn">Örökbefogadás</Button>
           </RouterLink>
@@ -56,7 +68,9 @@ import PawFooter from '@/components/PawFooter.vue';
     </div>
   </div>
 
-  <PawFooter  :is-sticky="true"/>
+  <PawFooter :is-sticky="true"/>
+  
+  <VisitPopup v-if="showVisitPopup" @close="closeVisitPopup" />
 </template>
 
 <style scoped>
