@@ -4,160 +4,217 @@ import PawFooter from '@/components/PawFooter.vue';
 </script>
 
 <template>
-  <div class="container">
-    <div class="image-container">
-      <img class="no-padding-image" src="../assets/allatkep.png" alt="Kiskutya" />
-      <div class="details">
-        <div class="detail-row"><span>Fajtája</span> Sztárforsíp terrier kutyuska</div>
-        <div class="detail-row"><span>Színe</span> Sötét- és világosbarna</div>
-        <div class="detail-row"><span>Chippeltetve?</span> Igen</div>
-        <div class="detail-row"><span>Ivartalanított?</span> Nem</div>
-        <div class="detail-row"><span>Útlevél?</span> Nem</div>
+  <div class="pet-details">
+    <div class="left-container">
+      <div class="image-card">
+        <img src="../assets/allatkep.png" alt="Kiskutya" />
+        <div class="specs">
+          <div class="spec-row"><span>Fajtája</span> <span>Sztárforsíp terrier kutyuska</span></div>
+          <div class="spec-row"><span>Színe</span> <span>Sötét- és világosbarna</span></div>
+          <div class="spec-row"><span>Chippeltetve?</span> <span>Igen</span></div>
+          <div class="spec-row"><span>Ivartalanított?</span> <span>Nem</span></div>
+          <div class="spec-row"><span>Útlevél?</span> <span>Nem</span></div>
+        </div>
       </div>
     </div>
-    <div id="second">
-      <div class="info-container">
-      <h2 class="title">Sztárforsíp Terijer kiskutyuska</h2>
-      <div class="content">
-      <h3>Bekerülés körülménye</h3>
-      <p>Idős család kutyája volt előzőleg, viszont nem tudtak már rá egészségi okok miatt tovább vigyázni és inkább leadták menhelyünkre.</p>
 
-      <h3>Betegségek</h3>
-      <ul>
-        <li>Cukorbeteg</li>
-        <li>Asztma</li>
-        <li>Rák</li>
-      </ul>
+    <div class="right-container">
+      <div class="info-card">
+        <h2 class="pet-name">Sztárforsíp Terijer kiskutyuska</h2>
+        
+        <div class="info-content">
+          <section>
+            <h3>Bekerülés körülménye</h3>
+            <p>Idős család kutyája volt előzőleg, viszont nem tudtak már rá egészségi okok miatt tovább vigyázni és inkább leadták menhelyünkre.</p>
+          </section>
 
-      <h3>Egyéb</h3>
-      <ul>
-        <li>Más kutyákkal tartható, valamint macskákkal is jól kijön és kisgyerekekkel is.</li>
-        <li>Főként lakásban tartandó, eddig abban élt előző gazdájával.</li>
-      </ul>
+          <section>
+            <h3>Betegségek</h3>
+            <ul>
+              <li>Cukorbeteg</li>
+              <li>Asztma</li>
+              <li>Rák</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Egyéb</h3>
+            <ul>
+              <li>Más kutyákkal tartható, valamint macskákkal is jól kijön és kisgyerekekkel is.</li>
+              <li>Főként lakásban tartandó, eddig abban élt előző gazdájával.</li>
+            </ul>
+          </section>
+        </div>
+
+        <div class="action-buttons">
+          <Button class="visit-btn">Meglátogatás</Button>
+          <RouterLink to="/petadoption">
+            <Button class="adopt-btn">Örökbefogadás</Button>
+          </RouterLink>
+        </div>
       </div>
-
     </div>
-      <div class="button-container">
-        <Button class="visit">Meglátogatás</Button>
-        <RouterLink to="/petadoption">
-          <Button class="adopt">Örökbefogadás</Button>
-        </RouterLink>
-      </div>
-    </div>
-    
   </div>
 
-  <PawFooter />
+  <PawFooter  :is-sticky="true"/>
 </template>
 
 <style scoped>
-.container {
+.pet-details {
   display: flex;
-  gap: 70px;
-  padding: 20px;
+  flex-wrap: wrap;
+  gap: 2rem;
+  max-width: 1600px; 
+  margin: 2rem auto;
+  padding: 0 1rem;
 }
-#second {
+
+
+.left-container {
+  flex: 1;
+  min-width: 280px;
+  border: 1px solid black; 
+  border-radius: 20px; 
+}
+
+
+.right-container {
+  flex: 3;
+  min-width: 320px;
+}
+
+.image-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-}
-.image-container {
-  flex: 1;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  border: 1px solid black; 
 }
 
-.image-container img {
+.image-card img {
   width: 100%;
-  border-radius: 10px 10px 0 0;
+  object-fit: cover;
+  border-radius: 12px 12px 0 0;
 }
 
-.details {
-  text-align: left;
-  padding: 10px;
-  border-radius: 0 0 10px 10px;
+.specs {
+  padding: 0.5rem;
+  border-radius: 12px 12px 20px 20px;
 }
 
-.detail-row {
+.spec-row {
   display: flex;
   justify-content: space-between;
-  font-size: 14px;
-  padding: 10px; 
-  border-bottom: 1px solid black;
+  padding: 0.75rem;
+  border-bottom: 1px solid #e0e0e0; 
+  font-size: 0.9rem;
 }
 
-.detail-row:last-child {
+.spec-row:last-child {
   border-bottom: none;
 }
-
-.detail-row:nth-child(even) {
-  background-color: #e8ecf4;
+.spec-row:nth-child(even) {
+  background-color: #f8f9fa;
 }
 
-.detail-row span {
-  font-weight: bold;
-}
-
-.info-container {
-  flex: 2; 
-  background: #FED7AA;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-.content {
-  
-  padding: 30px;
-}
-.title {
+.spec-row span:first-child {
   font-weight: 600;
-    text-align: center;
-    font-size: 2rem;
-    background-color: #FDBA74;
-    padding: 0.5rem;
-    border-radius: 15px 15px 0 0;
+}
+
+.info-card {
+  background: #FED7AA;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.pet-name {
+  font-weight: 600;
+  text-align: center;
+  font-size: 1.8rem;
+  background-color: #FDBA74;
+  padding: 1rem;
+  margin: 0;
+  border-radius: 12px 12px 0 0;
+}
+
+.info-content {
+  padding: 1.5rem;
+  flex-grow: 1;
+}
+
+section {
+  margin-bottom: 1.5rem;
 }
 
 h3 {
-  margin-top: 2rem;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 600;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  padding-bottom: 0.5rem;
 }
 
 p, ul {
-  font-size: 16px;
+  font-size: 1rem;
   color: #333;
+  margin: 0.5rem 0;
 }
 
 ul {
-  padding-left: 20px;
+  padding-left: 1.25rem;
   list-style-type: disc;
 }
 
-.button-container {
+.action-buttons {
   display: flex;
   justify-content: flex-end;
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+.visit-btn, .adopt-btn {
+  background-color: #FF6F3C;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-align: center; 
+  display: flex;
   align-items: center;
-  gap: 15px;
-  margin-top: 20px;
-
+  justify-content: center; 
 }
 
-.visit {
-  background-color: #FF6F3C;
-  color: white;
-  width: 170px;
-  height: 60px;
-  font-size: 1.2rem;
+.visit-btn:hover, .adopt-btn:hover {
+  background-color: #e05a2a;
 }
 
-.adopt {
-  background-color: #FF6F3C;
-  color: white;
-  width: 170px;
-  height: 60px;
-  font-size: 1.2rem;
+
+@media (max-width: 768px) {
+  .pet-details {
+    flex-direction: column;
+  }
+  
+  .left-container, .right-container {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+
+  .action-buttons {
+    justify-content: center;
+  }
+}
+
+
+@media (min-width: 1800px) {
+  .pet-details {
+    max-width: 85%; 
+  }
 }
 </style>
