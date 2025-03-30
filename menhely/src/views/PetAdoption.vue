@@ -16,8 +16,8 @@ const textInput = ref('');
   <div class="form-container">
     <div class="form-title-container">
       <div class="title-content">
-        <p>Kérjük, meséljenek kicsit magukról és a körülményekről, ahová a kisállat kerülne (pl. mivel foglalkoznak, miért szeretnének kisállatot, mennyi időt tudnak vele tölteni). Mivel minden kisállatnak saját személyisége van, segít, ha jobban megismerjük az önökét, hogy megtaláljuk a leginkább hozzá illőt.</p>
         <img src="../assets/allatkep.png" alt="Állat kép" class="allatkep">
+        <p>Kérjük, meséljenek kicsit magukról és a körülményekről, ahová a kisállat kerülne (pl. mivel foglalkoznak, miért szeretnének kisállatot, mennyi időt tudnak vele tölteni). Mivel minden kisállatnak saját személyisége van, segít, ha jobban megismerjük az önökét, hogy megtaláljuk a leginkább hozzá illőt.</p>
       </div>
     </div>
     <div class="form-content">
@@ -26,7 +26,7 @@ const textInput = ref('');
           <div class="input-group">
             <label for="select1">Tudsz-e anyagilag megfelelően gondoskodni a kisállatról?</label>
             <select id="select1" v-model="select1" class="custom-select">
-              <option value="" disabled selected>Válassz egy lehetőséget</option>
+              <option value="" disabled selected>Válasszon egy lehetőséget</option>
               <option value="option1">Igen</option>
               <option value="option2">Nem</option>
               <option value="option3">Jelenleg nem, de hamarosan képes leszek rá</option>
@@ -37,7 +37,7 @@ const textInput = ref('');
           <div class="input-group">
             <label for="select2">Van-e kisgyermek a családban?</label>
             <select id="select2" v-model="select2" class="custom-select">
-              <option value="" disabled selected>Válassz egy lehetőséget</option>
+              <option value="" disabled selected>Válasszon egy lehetőséget</option>
               <option value="option1">Igen</option>
               <option value="option2">Nem</option>
               <option value="option3">Várandós vagyok</option>
@@ -47,11 +47,10 @@ const textInput = ref('');
           <div class="input-group">
             <label for="select3">Hogyan szeretnéd tartani az örökbefogadott kisállatot?</label>
             <select id="select3" v-model="select3" class="custom-select">
-              <option value="" disabled selected>Válassz egy lehetőséget</option>
-              <option value="option1">Lehetőség 1</option>
-              <option value="option2">Lehetőség 2</option>
-              <option value="option3">Lehetőség 3</option>
-              <option value="option4">Lehetőség 4</option>
+              <option value="" disabled selected>Válasszon egy lehetőséget</option>
+              <option value="option1">Lakásban</option>
+              <option value="option2">Udvaron</option>
+              <option value="option3">Lakásban és udvaron egyaránt</option>
             </select>
           </div>
         </div>
@@ -61,20 +60,24 @@ const textInput = ref('');
             <label for="select4">Milyen típusú ingatlanban fog élni?</label>
             <select id="select4" v-model="select4" class="custom-select">
               <option value="" disabled selected>Válassz egy lehetőséget</option>
-              <option value="option1">Lehetőség 1</option>
-              <option value="option2">Lehetőség 2</option>
+              <option value="option1">Családi ház</option>
+              <option value="option5">Albérlet</option>
+              <option value="option3">Panel</option>
+              <option value="option2">Tanya</option>
+              <option value="option4">Kertesház</option>
             </select>
-            <p class="small-note invisible">&nbsp;</p>
+            <p id="notvisibletext" class="small-note">(Pl.: a kisállat későbbi orvosi költségei egy vizsgálatnál 30-40ezer forintba is kerülhetnek, felszerelések, minőségi etetés)</p>
           </div>
 
           <div class="input-group">
             <label for="select5">Van-e más kisállat otthon a családban?</label>
             <select id="select5" v-model="select5" class="custom-select">
               <option value="" disabled selected>Válassz egy lehetőséget</option>
-              <option value="option1">Lehetőség 1</option>
-              <option value="option2">Lehetőség 2</option>
-              <option value="option3">Lehetőség 3</option>
+              <option value="option1">Igen</option>
+              <option value="option2">Nem</option>
+              <option value="option3">Több állatot is szeretnék örökbefogadni</option>
             </select>
+            
           </div>
 
           <div class="input-group">
@@ -119,14 +122,16 @@ const textInput = ref('');
   display: flex;
   align-items: center;
   gap: 2rem;
+  flex-direction: row-reverse;
 }
 
 .title-content p {
   flex: 1;
-  font-size: 1rem;
+  font-size: 1.1rem;
   line-height: 1.5;
-  text-align: left;
   font-weight: 600;
+  text-align: justify;
+  flex-direction: row-reverse;
 }
 
 .allatkep {
@@ -151,7 +156,7 @@ const textInput = ref('');
 label {
   display: block;
   font-weight: bold;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.2rem;
   text-align: left;
 }
 
@@ -166,7 +171,9 @@ label {
 .invisible {
   visibility: hidden;
 }
-
+#notvisibletext {
+  visibility: hidden;
+}
 .custom-select {
   width: 100%;
   padding: 10px;
