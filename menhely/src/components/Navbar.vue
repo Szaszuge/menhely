@@ -1,17 +1,17 @@
-
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
-import { AuthService } from '@/service/auth.service';
-let auth = new AuthService;
-const logged = auth.loggedUser();
-console.log(logged);
+import { useUserStore } from '@/stores/user';
+import { onMounted } from 'vue';
+
+const userStore = useUserStore();
+
 </script>
 
 <template>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=keyboard_arrow_down" />
 <div id="main">
     <div id="left">
-        <!--SVG ikon nem tölt be ha fájlból próbálom behívni, úgyhogy egy kicsit ocsmány lesz, de működik -->
+        <!-- SVG ikon nem tölt be ha fájlból próbálom behívni, úgyhogy egy kicsit ocsmány lesz, de működik -->
         <RouterLink to="/">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:serif="http://www.serif.com/" width="auto" height="75px" viewBox="0 0 3200 2134" version="1.1" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;" id="mh-icon">
             <g id="Radar">
@@ -54,7 +54,8 @@ console.log(logged);
         <RouterLink to="/petcatalog" class="link">Állatkatalógus</RouterLink>
         <RouterLink to="/petsurrender" class="link">Állat leadása</RouterLink>
         <RouterLink to="/hogyansegithet" class="link">Hogyan segíthet?</RouterLink>
-        <RouterLink to="/login" class="link">Bejelentkezés</RouterLink>
+        <RouterLink to="/login" class="link" v-if="!userStore.isLoggedIn()">Bejelentkezés</RouterLink>
+        <RouterLink to="/logout" class="link" v-if="userStore.isLoggedIn()">Kijelentkezés</RouterLink>
     </div>
 </div>
 </template>

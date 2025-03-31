@@ -27,7 +27,6 @@ export class ApiService {
     userLogin(name:string, pass:string){
         console.log("Attempting to log user in.");
         return axios.post(this.server + "/users/login", [name, pass]);
-        // TODO: Implement
     }
     
 }

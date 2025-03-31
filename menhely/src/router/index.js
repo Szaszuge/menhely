@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import { AuthService } from '@/service/auth.service';
-let auth = new AuthService;
+import { useUserStore } from '@/stores/user';
 
 
 const router = createRouter({
@@ -16,6 +15,11 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: () => import('../views/LoginView.vue')
+    },
+    {
+      path: '/logout',
+      name: 'logout',
+      component: () => import('../views/LogoutView.vue')
     },
     {
       path: '/register',
@@ -72,12 +76,20 @@ const router = createRouter({
 })
 
 // Guard, ami gyakorlatban csak az admin felületet védi, mert a többi úgy is megtekinthető
-/*
+
 router.beforeEach(async (to, from) => {
+  const userStore = useUserStore();
   console.log(`${from.name} -> ${to.name}`);
+
+  if (to.name == 'login' && userStore.isLoggedIn()){
+    return {name: 'home'};
+  }
+  /*
   if (to.name == 'adminpage'){
     return {name: from.name};
   }
+    */
 })
-*/
+
+
 export default router

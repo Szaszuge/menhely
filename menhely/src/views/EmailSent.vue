@@ -18,7 +18,7 @@ onUnmounted(() => {
   
     <div class="emailsent-container">
         <div id="korID" class="bg-orange-500"></div>
-        <p>Küldtünk egy linket amellyel megerősítheted regisztációdat a következő emailre: [e-mail cím]!</p>
+        <p>Küldtünk egy linket amellyel megerősítheted regisztációdat!</p>
         
         <div class="actions-container">
           <Button id="ujrakuldesbutton">Újraküldés</Button>

@@ -5,10 +5,11 @@ import { environment } from '../enviroments/testing';
 import CustomInput from '../components/CustomInput.vue';
 import Button from '../components/Button.vue';
 import PawFooter from '../components/PawFooter.vue';
+import { useUserStore } from "@/stores/user";
 
-let router = useRouter()
-let api = new ApiService();
-let tokenName = environment.tokenName;
+const router = useRouter();
+const userStore = useUserStore();
+const api = new ApiService();
 
 let user = {
     name: "",
@@ -16,8 +17,13 @@ let user = {
 };
 function login(event) {
     api.userLogin(user.name, user.pass).then((res) => {
-        console.log(res.data.token);
-        localStorage.setItem(tokenName, res.data.token);
+        if (!res.data.token){
+            alert("Szar esett a bablevesbe");
+        }
+        else{
+        userStore.setToken(res.data.token)
+        router.push("/");
+        }
     })
 }
 
@@ -27,7 +33,6 @@ function login(event) {
 <main>
 <div id="form">
     <h1>Bejelentkezés</h1>
-
     <h3>Felhasználónév</h3>
     <CustomInput v-model="user.name"/>
 
@@ -43,6 +48,7 @@ function login(event) {
 
     <Button id="login" @click="login">Bejelentkezés</Button>
 </div>
+
 <img src="../assets/Kutyamacska.png">
 </main>
 <PawFooter  :is-sticky="true"/>
