@@ -100,7 +100,7 @@ exports.activateByID = async (ID, Confirm) => {
 }
 
 const job = new CronJob(
-	'0 * * * * *', // cronTime
+	'0 0,15,30,45 * * * *', // cronTime
 	async function () {
 
 		console.log("[SERVICE] DELETE EXPIRED USERS");
