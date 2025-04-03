@@ -3,8 +3,12 @@ import { ref, defineEmits } from 'vue';
 import CustomInput from '@/components/CustomInput.vue';
 import Button from '@/components/Button.vue';
 import PawFooter from '@/components/PawFooter.vue';
+import { useUserStore } from '@/stores/user';
+
+const auth = useUserStore();
 
 const emit = defineEmits(['submit']);
+
 const honnan = ref('');
 const allatNeve = ref('');
 const telepules = ref('');
@@ -43,7 +47,7 @@ const nap = ref('');
     <div class="date-container">
       <select v-model="ev" class="date-select">
         <option value="">Év</option>
-        <option v-for="year in 5" :key="year" :value="2025 + year - 1">{{ 2025 + year - 1 }}</option>
+        <option v-for="year in 3" :key="year" :value="2025 + year - 1">{{ 2025 + year - 1 }}</option>
       </select>
       <select v-model="ho" class="date-select">
         <option value="">Hó.</option>
@@ -59,7 +63,8 @@ const nap = ref('');
     <CustomInput class="inputs" v-model="egyebInfo" placeholder="Pl. Más állatokkal jól kijön" />
 
     <div class="button-container">
-      <Button class="submit-button">Leadás igénylése</Button>
+      <Button class="submit-button" v-if="auth.isLoggedIn()">Leadás igénylése</Button>
+      <Button class="submit-button-disabled " v-if="!auth.isLoggedIn()" disabled>Jelentkezzen be!</Button>
     </div>
     </div> 
 
@@ -135,6 +140,17 @@ label {
     width: 205px;
   font-size: 1.1rem;
   border-radius: 10px;
+}
+.submit-button-disabled {
+  background-color: #6a7282;
+  color: white;
+    width: 205px;
+  font-size: 1.1rem;
+  border-radius: 10px;
+}
+.submit-button-disabled:hover {
+  background-color: #6a7282;
+  cursor: default;
 }
 .inputs{
   width: calc(100vw - 65px);
