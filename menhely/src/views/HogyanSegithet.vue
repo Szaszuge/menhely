@@ -5,10 +5,8 @@ import Button from "../components/Button.vue";
 import CustomInput from "@/components/CustomInput.vue";
 import DualRangeSlider from "../components/DualRangeSlider.vue"
 import { ref } from "vue";
-
 const buttonText = ref("Jelentkezem");
 const valami = ref(true);
-
 function gonb() {
   if (buttonText.value === "Jelentkezem") {
     buttonText.value = "Vissza";
@@ -17,21 +15,17 @@ function gonb() {
     buttonText.value = "Jelentkezem";
         jelentkezesTitle.value = "Adományozzon!"
   }
-
   valami.value = !valami.value;
 }
-
 const jelentkezesEv = ref('');
 const jelentkezesHonap = ref('');
 const jelentkezesNap = ref('');
 const jelentkezesOka = ref('');
 const jelentkezesTitle = ref('Adományozzon!');
-
 function kuldes() {
   console.log("Bekuldes placeholder");
 }
 </script>
-
 <template>
   <div class="kontent">
     <Supportcard title="Jelentkezzen önkéntesnek!">
@@ -75,40 +69,49 @@ function kuldes() {
         </p>
       </template>
       <template v-else>
-        <h3>
-          Itt tudja leadni jelentkezését önkéntes munkára hozzánk!
-          Jelentkezzenek bátran!
-        </h3>
-        <h1>Év:</h1>
-        <CustomInput
-          type="text"
-          placeholder="Év"
-          v-model="jelentkezesEv"
-        ></CustomInput>
-        <h1>Hónap:</h1>
-        <CustomInput
-          type="text"
-          placeholder="Hónap"
-          v-model="jelentkezesHonap"
-        ></CustomInput>
-        <h1>Nap:</h1>
-        <CustomInput
-          type="text"
-          placeholder="Nap"
-          v-model="jelentkezesNap"
-        ></CustomInput>
-        <h3>Munka ideje (órában):</h3>
+        <h3 class="font-semibold text-center">
+  Itt tudja leadni jelentkezését önkéntes munkára hozzánk!
+  Jelentkezzenek bátran!
+</h3>
+        <div class="date-inputs">
+          <div class="date-input-container">
+            <h1 class="font-semibold">Év:</h1>
+            <CustomInput
+              type="text"
+              placeholder="Év"
+              v-model="jelentkezesEv"
+              class="narrow-input"
+            ></CustomInput>
+          </div>
+          <div class="date-input-container">
+            <h1 class="font-semibold">Hónap:</h1>
+            <CustomInput
+              type="text"
+              placeholder="Hónap"
+              v-model="jelentkezesHonap"
+              class="narrow-input"
+            ></CustomInput>
+          </div>
+          <div class="date-input-container">
+            <h1 class="font-semibold">Nap:</h1>
+            <CustomInput
+              type="text"
+              placeholder="Nap"
+              v-model="jelentkezesNap"
+              class="narrow-input"
+            ></CustomInput>
+          </div>
+        </div>
+        <h4 class="font-semibold">Munka ideje (órában):</h4>
         <DualRangeSlider></DualRangeSlider>
-        <!-- itt lesz a dualrangeslider -->
         <h1>Mit szeretnél nálunk dolgozni?</h1>
         <CustomInput type="text" placeholder="Mi az ok?" v-model="jelentkezesOka"></CustomInput>
-        <Button id="bekuldes" @="kuldes">Küldés</Button>
+        <Button id="bekuldes" @click="kuldes">Küldés</Button>
       </template>
     </Supportcard>
   </div>
   <PawFooter :is-sticky="true" />
 </template>
-
 <style scoped>
 .kontent {
   width: 100vw;
@@ -122,12 +125,23 @@ img {
   width: 12rem;
   height: 12rem;
 }
-
 p {
   padding: 20px;
 }
-
 ul {
   padding: 0px 20px 20px 40px;
+}
+.date-inputs {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+.date-input-container {
+  display: flex;
+  flex-direction: column;
+}
+.narrow-input {
+  width: 100px; /* Sets a narrower width for date inputs */
+  max-width: 100%;
 }
 </style>

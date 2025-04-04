@@ -86,7 +86,6 @@ export default {
 .range-container {
   width: 90%;
   max-width: 500px;
-  margin: 20px auto;
   padding: 15px;
   border-radius: 8px;
 }
