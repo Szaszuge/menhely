@@ -1,18 +1,26 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
 import { useUserStore } from '@/stores/user';
-import { onMounted } from 'vue';
+import { ref } from 'vue';
 
 const userStore = useUserStore();
+const isMenuOpen = ref(false);
 
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value;
+};
+
+const closeMenu = () => {
+  isMenuOpen.value = false;
+};
 </script>
 
 <template>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=keyboard_arrow_down" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=keyboard_arrow_down,menu" />
 <div id="main">
     <div id="left">
         <!-- SVG ikon nem tölt be ha fájlból próbálom behívni, úgyhogy egy kicsit ocsmány lesz, de működik -->
-        <RouterLink to="/">
+        <RouterLink to="/" @click="closeMenu">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:serif="http://www.serif.com/" width="auto" height="75px" viewBox="0 0 3200 2134" version="1.1" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;" id="mh-icon">
             <g id="Radar">
                 <circle cx="1590.03" cy="977.467" r="52.083" style="fill:none;stroke:#000;stroke-width:33.33px;"></circle>
@@ -47,15 +55,15 @@ const userStore = useUserStore();
         </svg>
         </RouterLink>
     </div>
-    <div id="right">
-        <!--<span class="material-symbols-outlined">
-            keyboard_arrow_down
-        </span>-->
-        <RouterLink to="/petcatalog" class="link">Állatkatalógus</RouterLink>
-        <RouterLink to="/petsurrender" class="link">Állat leadása</RouterLink>
-        <RouterLink to="/hogyansegithet" class="link">Hogyan segíthet?</RouterLink>
-        <RouterLink to="/login" class="link" v-if="!userStore.isLoggedIn()">Bejelentkezés</RouterLink>
-        <RouterLink to="/logout" class="link" v-if="userStore.isLoggedIn()">Kijelentkezés</RouterLink>
+    <div id="right" :class="{ 'mobile-menu-open': isMenuOpen }">
+        <RouterLink to="/petcatalog" class="link" @click="closeMenu">Állatkatalógus</RouterLink>
+        <RouterLink to="/petsurrender" class="link" @click="closeMenu">Állat leadása</RouterLink>
+        <RouterLink to="/hogyansegithet" class="link" @click="closeMenu">Hogyan segíthet?</RouterLink>
+        <RouterLink to="/login" class="link" v-if="!userStore.isLoggedIn()" @click="closeMenu">Bejelentkezés</RouterLink>
+        <RouterLink to="/logout" class="link" v-if="userStore.isLoggedIn()" @click="closeMenu">Kijelentkezés</RouterLink>
+    </div>
+    <div class="hamburger-menu" @click="toggleMenu">
+        <span class="material-symbols-outlined">menu</span>
     </div>
 </div>
 </template>
@@ -78,6 +86,7 @@ const userStore = useUserStore();
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: center;
+    position: relative;
 }
 
 #mh-icon{
@@ -128,5 +137,45 @@ const userStore = useUserStore();
 
 .link:active {
     color: #cc5500;
+}
+
+.hamburger-menu {
+    display: none;
+    cursor: pointer;
+    margin-right: 25px;
+    font-size: 32px;
+}
+
+
+@media screen and (max-width: 1050px) {
+    #right {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: var(--bg-color-weak);
+        flex-direction: column;
+        align-items: center;
+        padding: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+        z-index: 100;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    #right.mobile-menu-open {
+        max-height: 300px;
+        padding: 20px 0;
+    }
+
+    .link {
+        margin: 15px 0;
+        font-size: 20px;
+    }
+
+    .hamburger-menu {
+        display: block;
+    }
 }
 </style>
