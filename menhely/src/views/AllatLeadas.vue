@@ -77,10 +77,12 @@ function send(event) {
     <label for="honnan">Egyéb információ</label>
     <CustomInput class="inputs" v-model="egyebInfo" placeholder="Pl. Más állatokkal jól kijön" />
 
-    <Button @click="uploadImage">Kép feltöltése</Button>
-    <input hidden type="file" accept="image/png, image/jpeg" id="image-file-input" v-on:change="imageAdded">
+
 
     <div class="button-container">
+      <Button class="imguploadbtn"  @click="uploadImage">Kép feltöltése</Button>
+      <input hidden type="file" accept="image/png, image/jpeg" id="image-file-input" v-on:change="imageAdded">
+      
       <Button class="submit-button" v-if="auth.isLoggedIn()" @click="send">Leadás igénylése</Button>
       <Button class="submit-button-disabled " v-if="!auth.isLoggedIn()" disabled>Jelentkezzen be!</Button>
     </div>
@@ -150,21 +152,21 @@ label {
   display: flex;
   justify-content: flex-end; 
   margin-top: 15px;
+  gap: 1rem;
 }
 
 .submit-button {
   background: #ff5722;
   color: white;
-    width: 205px;
+    width: 160px;
   font-size: 1.1rem;
-  border-radius: 10px;
+
 }
 .submit-button-disabled {
   background-color: #6a7282;
   color: white;
-    width: 205px;
+    width: 160px;
   font-size: 1.1rem;
-  border-radius: 10px;
 }
 .submit-button-disabled:hover {
   background-color: #6a7282;
@@ -173,5 +175,9 @@ label {
 .inputs{
   width: calc(100vw - 65px);
   max-width: 587px;
+}
+.imguploadbtn{
+  width: 160px;
+  font-size: 1.1rem;
 }
 </style>
