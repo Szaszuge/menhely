@@ -17,8 +17,8 @@ export enum Gender {
 @Entity()
 export class Animal {
 
-    @PrimaryGeneratedColumn()
-    id: number
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
 
     @Column()
     name: string

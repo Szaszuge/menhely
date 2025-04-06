@@ -31,7 +31,7 @@ exports.reserveUser = async (user:any, ad:any) => {
     return generated_user;
 }
 
-exports.getStatusByID = async(id:number) => {
+exports.getStatusByID = async(id:string) => {
     console.log("[SERVICE] GETTING USER STATUS BASED ON ID.")
     const existant = await AppDataSource.manager.findOneBy(User, {id: id})
     if (existant != null){

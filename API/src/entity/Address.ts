@@ -4,8 +4,8 @@ import { Permits, User } from "../entity/User";
 @Entity()
 export class Address {
 
-    @PrimaryGeneratedColumn()
-    id: number
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
 
     @Column()
     city: string
