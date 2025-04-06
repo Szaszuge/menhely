@@ -17,9 +17,17 @@ const ev = ref('');
 const ho = ref('');
 const nap = ref('');
 const egyebInfo = ref('');
+let kep = null;
 
+
+function uploadImage(event){
+  document.getElementById("image-file-input").click()
+}
+function imageAdded(event){
+  kep = event.target.files[0] ?? null;
+}
 function send(event) {
-  console.log(`${allatNeve.value}\n${faj.value}\n${honnan.value}\n${telepules.value}\n${ev.value}\n${ho.value}\n${nap.value}\n${egyebInfo.value}`);
+  console.log(`${allatNeve.value}\n${faj.value}\n${honnan.value}\n${telepules.value}\n${ev.value}\n${ho.value}\n${nap.value}\n${egyebInfo.value}\n${kep}`);
 }
 </script>
 
@@ -68,6 +76,9 @@ function send(event) {
 
     <label for="honnan">Egyéb információ</label>
     <CustomInput class="inputs" v-model="egyebInfo" placeholder="Pl. Más állatokkal jól kijön" />
+
+    <Button @click="uploadImage">Kép feltöltése</Button>
+    <input hidden type="file" accept="image/png, image/jpeg" id="image-file-input" v-on:change="imageAdded">
 
     <div class="button-container">
       <Button class="submit-button" v-if="auth.isLoggedIn()" @click="send">Leadás igénylése</Button>
