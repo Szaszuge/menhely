@@ -13,8 +13,8 @@ export enum Permits {
 @Entity()
 export class User {
 
-    @PrimaryGeneratedColumn()
-    id: number
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
 
     @Column()
     userName: string

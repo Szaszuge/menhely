@@ -11,8 +11,8 @@ export enum RequestType{
 
 @Entity()
 export class Request {
-    @PrimaryGeneratedColumn()
-    id: number
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
 
     @ManyToOne(() => User, (user) => user.requests)
     user: User;
