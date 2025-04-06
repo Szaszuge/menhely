@@ -9,14 +9,18 @@ const auth = useUserStore();
 
 const emit = defineEmits(['submit']);
 
-const honnan = ref('');
 const allatNeve = ref('');
+const honnan = ref('');
+const faj = ref('');
 const telepules = ref('');
-const kor = ref('');
-const egyebInfo = ref('');
 const ev = ref('');
 const ho = ref('');
 const nap = ref('');
+const egyebInfo = ref('');
+
+function send(event) {
+  console.log(`${allatNeve.value}\n${faj.value}\n${honnan.value}\n${telepules.value}\n${ev.value}\n${ho.value}\n${nap.value}\n${egyebInfo.value}`);
+}
 </script>
 
 <template>
@@ -26,19 +30,22 @@ const nap = ref('');
     </div>
     <div class="form-content">
     <p class="info-text">A csillaggal jelölt mezők kitöltése kötelező!</p>
-      <label for="honnan">Állat neve*</label>
+      <label for="honnan">Állat neve</label>
     <CustomInput class="inputs" v-model="allatNeve" placeholder="Pl. Morzsi" />
+
+    <label for="honnan">Állat fajtája*</label>
+    <select id="faj" v-model="faj" class="custom-select">
+      <option value="">Válassz egy lehetőséget</option>
+      <option value="dog">Kutya</option>
+      <option value="cat">Macska</option>
+    </select>
 
     <label for="honnan">Honnan származik (otthon/talált)*</label>
     <select id="honnan" v-model="honnan" class="custom-select">
       <option value="">Válassz egy lehetőséget</option>
-      <option value="otthonbol">Otthonból</option>
-      <option value="talalt">Talált</option>
+      <option value="home">Otthonból</option>
+      <option value="found">Talált</option>
     </select>
-
-
-    <label for="honnan">Kora*</label>
-    <CustomInput class="inputs" v-model="kor" placeholder="Pl. 2" />
 
     <label for="honnan">Település neve*</label>
     <CustomInput class="inputs" v-model="telepules" placeholder="Pl. Bajaszentistván" />
@@ -63,7 +70,7 @@ const nap = ref('');
     <CustomInput class="inputs" v-model="egyebInfo" placeholder="Pl. Más állatokkal jól kijön" />
 
     <div class="button-container">
-      <Button class="submit-button" v-if="auth.isLoggedIn()">Leadás igénylése</Button>
+      <Button class="submit-button" v-if="auth.isLoggedIn()" @click="send">Leadás igénylése</Button>
       <Button class="submit-button-disabled " v-if="!auth.isLoggedIn()" disabled>Jelentkezzen be!</Button>
     </div>
     </div> 
