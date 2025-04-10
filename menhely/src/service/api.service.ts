@@ -6,11 +6,6 @@ import type { Address } from '@/interfaces/address';
 export class ApiService {
     constructor(){ }
         private server = environment.serverUrl;
-        private tokenName = environment.tokenName;
-
-    getToken():String | null{
-        return localStorage.getItem(this.tokenName);
-    }
 
     userRegister(user:User, address:Address){
         console.log("Reservation request called.");

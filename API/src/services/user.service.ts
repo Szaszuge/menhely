@@ -104,7 +104,7 @@ const job = new CronJob(
 	async function () {
 
 		console.log("[SERVICE] DELETE EXPIRED USERS");
-        var date = new Date();
+        const date = new Date();
         date.setDate(date.getDate() - 1);
         let expired = await AppDataSource.manager.findBy(User, {created_at: LessThan(date), permit: Permits.limbo})
         console.log(`${expired.length} USERS ARE TO BE DELETED.`);

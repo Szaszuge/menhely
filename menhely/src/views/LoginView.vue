@@ -18,7 +18,7 @@ let user = {
 function login(event) {
     api.userLogin(user.name, user.pass).then((res) => {
         if (!res.data.token){
-            alert("Szar esett a bablevesbe");
+            alert("Hiányzó token!");
         }
         else{
         userStore.setToken(res.data.token)
