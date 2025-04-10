@@ -4,8 +4,10 @@ import CustomInput from '@/components/CustomInput.vue';
 import Button from '@/components/Button.vue';
 import PawFooter from '@/components/PawFooter.vue';
 import { useUserStore } from '@/stores/user';
+import { AnimalService } from '@/service/animal.service';
 
 const auth = useUserStore();
+const animal = new AnimalService();
 
 const emit = defineEmits(['submit']);
 
@@ -19,6 +21,13 @@ const nap = ref('');
 const egyebInfo = ref('');
 let kep = null;
 
+const fileName = ref("")
+
+function changeFileName(event) {
+   if (event.target.files[0] != null) {
+    fileName.value = event.target.files[0].name;
+   } else  fileName.value = "";
+}
 
 function uploadImage(event){
   document.getElementById("image-file-input").click()
@@ -26,8 +35,29 @@ function uploadImage(event){
 function imageAdded(event){
   kep = event.target.files[0] ?? null;
 }
-function send(event) {
-  console.log(`${allatNeve.value}\n${faj.value}\n${honnan.value}\n${telepules.value}\n${ev.value}\n${ho.value}\n${nap.value}\n${egyebInfo.value}\n${kep}`);
+function send(event:Event) {
+  const info = {
+    type: 'surrender',
+    user: auth.loggedUser().id,
+    details: {
+      name: allatNeve.value,
+      from: honnan.value,
+      type: faj.value,
+      city: telepules.value,
+      year: ev.value,
+      month: ho.value,
+      day: nap.value,
+      other: egyebInfo.value,
+    }
+  }
+  const formData = new FormData();
+  formData.append("file", kep);
+  formData.append("data", JSON.stringify(info));
+
+  const formDataEntries = Array.from(formData.entries());
+  console.log(formDataEntries);
+
+  animal.requestSurrender(formData).then((res) => {console.log(res.data.message)}); // Jegyzet: SOHA NE KÓDÓLJ BETEGEN!
 }
 </script>
 
@@ -80,8 +110,9 @@ function send(event) {
 
 
     <div class="button-container">
-      <Button class="imguploadbtn"  @click="uploadImage">Kép feltöltése</Button>
-      <input hidden type="file" accept="image/png, image/jpeg" id="image-file-input" v-on:change="imageAdded">
+      <p id="filename">{{ fileName }}</p>
+      <Button class="imguploadbtn" @click="uploadImage">Kép feltöltése</Button>
+      <input hidden type="file" accept="image/png, image/jpeg" id="image-file-input" v-on:change="imageAdded" @change="changeFileName">
       
       <Button class="submit-button" v-if="auth.isLoggedIn()" @click="send">Leadás igénylése</Button>
       <Button class="submit-button-disabled " v-if="!auth.isLoggedIn()" disabled>Jelentkezzen be!</Button>
@@ -94,6 +125,13 @@ function send(event) {
 </template>
 
 <style scoped>
+#filename{
+  color: #ff5722;
+  font-weight: 600;
+  font-size: 24;
+  max-width: 230px;
+  padding-right: 10px;
+}
 .form-container {
   background: #FED7AA;
   border-radius: 15px;

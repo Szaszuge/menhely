@@ -6,7 +6,7 @@ const upload = require('../middlewares/upload.middleware');
 
 const router = Router();
 
-router.post('/add', animalController.reserve);
+router.post('/add', upload.single('file'), animalController.reserve);
 
 
 module.exports = router;

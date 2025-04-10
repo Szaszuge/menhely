@@ -22,7 +22,7 @@ export class Request {
         enum: RequestType,
         default: RequestType.surrender
     })
-    Type: Kind
+    Type: RequestType
     // TODO: Add date property
     @Column({ type: 'json' })
     details
