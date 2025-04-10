@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import Button from './Button.vue';
+import { useUserStore } from '@/stores/user';
+
+const auth = useUserStore();
 </script>
 <template>
     <div id="main">
@@ -7,16 +10,31 @@ import Button from './Button.vue';
             <h1>Egy kis segítség is életeket menthet!</h1>
             <p>Oldalunk minden bajai kóbor kutyának és macskának ideiglenes otthont kíván, valamint szeretnénk megadni a lehetőséget hogy minden állat egy szerető gazdához kerüljön miharamabb.</p>
             <div class="buttonigazitas">
-                <RouterLink to="/login">
+
+                <RouterLink to="/login" v-if="!auth.isLoggedIn()">
                 <Button>
                     Bejelentkezés
                 </Button>
                 </RouterLink>
-                <RouterLink to="/register">
+
+                <RouterLink to="/register" v-if="!auth.isLoggedIn()">
                 <Button>
                     Regisztráció
                 </Button>
                 </RouterLink>
+
+                <RouterLink to="/petsurrender" v-if="auth.isLoggedIn()">
+                <Button>
+                    Leadok állatot
+                </Button>
+                </RouterLink>
+
+                <RouterLink to="/hogyansegithet" v-if="auth.isLoggedIn()">
+                <Button>
+                    Önkéntesség
+                </Button>
+                </RouterLink>
+
             </div>
         </div>
         <div class="kep"></div>
