@@ -11,11 +11,14 @@ export const reserve = async (req, res, next) => {
         console.log("Performing mandatory checks..");
 
         console.log("Checking missing data...");
-        if ( !user.fullName ||!user.userName || !user.password || !user.email || !user.phoneNumber || !user.address.city  || !user.address.postal  || !user.address.street  || !user.address.number ){
+        if ( user == undefined || address == undefined || !user.fullName ||!user.userName || !user.password || !user.email || !user.phoneNumber || !user.address.city  || !user.address.postal  || !user.address.street  || !user.address.number){
             console.log("Missing data. Returning...")
             return res.status(203).json({ message: 'Hiányzó adatok!'});
         }
         console.log("Data check passed!");
+
+        if (user.address.floor == undefined) user.address.floor = 0;
+        if (user.address.door == undefined) user.address.door = 1;
 
         console.log("Checking whether email is already in used...")
         if ((await userService.IsEmailUsed(user.email))){
