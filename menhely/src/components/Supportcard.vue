@@ -1,57 +1,66 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-const props = defineProps(['title']);
+defineProps({
+  title: {
+    type: String,
+    required: true
+  }
+});
 </script>
 
 <template>
-  <div id="supportCard" class="bg-orange-200">
-    <div id="supportCim" class="bg-orange-300 font-bold text-3xl items-center">
-      <h1>{{ props.title }}</h1>
+  <div class="support-card">
+    <div class="card-header">
+      <h2>{{ title }}</h2>
     </div>
-    <div id="content">
+    <div class="card-body">
       <slot></slot>
     </div>
   </div>
 </template>
 
 <style scoped>
-#supportCim {
-  padding: 20px;
+.support-card {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(254, 215, 170);
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  min-height: 500px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.support-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.card-header {
+  background-color: rgb(253, 186, 116);
+  padding: 1.25rem 1rem;
   text-align: center;
-  min-width: 30vw;
-  border: 0px black dotted;
-  border-radius: 20px 20px 0px 0px;
 }
 
-h1 {
-  font-size: 2vw;
+.card-header h2 {
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin: 0;
+  color: #333;
 }
 
-#jelentkezes {
-  margin-bottom: 30px;
-}
-
-#supportCard {
+.card-body {
   display: flex;
   flex-direction: column;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: space-between;
-  min-width: 300px;
-  width: 30vw;
-  min-height: 40vh;
-  min-height: 400px;
-  margin: 5rem;
-  border-radius: 20px;
+  flex-grow: 1;
+  padding: 1.5rem;
+  font-size: 1.15rem;
 }
 
-#content {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px;
+@media (max-width: 768px) {
+  .support-card {
+    max-width: 500px;
+    min-height: auto;
+  }
 }
-
 </style>

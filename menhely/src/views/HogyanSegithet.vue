@@ -1,147 +1,312 @@
 <script setup lang="ts">
-import Supportcard from "@/components/Supportcard.vue";
+import { ref, onMounted } from "vue";
+import SupportCard from "@/components/SupportCard.vue";
 import PawFooter from "@/components/PawFooter.vue";
-import Button from "../components/Button.vue";
 import CustomInput from "@/components/CustomInput.vue";
-import DualRangeSlider from "../components/DualRangeSlider.vue"
-import { ref } from "vue";
-const buttonText = ref("Jelentkezem");
-const valami = ref(true);
-function gonb() {
-  if (buttonText.value === "Jelentkezem") {
-    buttonText.value = "Vissza";
-    jelentkezesTitle.value = "Jelentkezés"
-  } else {
-    buttonText.value = "Jelentkezem";
-        jelentkezesTitle.value = "Adományozzon!"
-  }
-  valami.value = !valami.value;
+import DualRangeSlider from "@/components/DualRangeSlider.vue";
+
+// State management
+const showVolunteerForm = ref(false);
+const volunteerDate = ref({
+  year: "",
+  month: "",
+  day: ""
+});
+const volunteerReason = ref("");
+
+
+function toggleForm() {
+  showVolunteerForm.value = !showVolunteerForm.value;
 }
-const jelentkezesEv = ref('');
-const jelentkezesHonap = ref('');
-const jelentkezesNap = ref('');
-const jelentkezesOka = ref('');
-const jelentkezesTitle = ref('Adományozzon!');
-function kuldes() {
-  console.log("Bekuldes placeholder");
+
+// Form submission
+function submitVolunteerForm() {
+  console.log("Volunteer form submitted", {
+    date: `${volunteerDate.value.year}-${volunteerDate.value.month}-${volunteerDate.value.day}`,
+    reason: volunteerReason.value
+  });
 }
+
+const currentYear = new Date().getFullYear();
+const availableYears = Array.from({ length: 3 }, (_, i) => currentYear + i);
+
+const isMobile = ref(false);
+
+function checkScreenSize() {
+  isMobile.value = window.innerWidth <= 1000;
+}
+
+onMounted(() => {
+  checkScreenSize();
+  window.addEventListener("resize", checkScreenSize);
+});
 </script>
+
 <template>
-  <div class="kontent">
-    <Supportcard title="Jelentkezzen önkéntesnek!">
-      <p>
-        Menhelyünk meleg szívvel vár minden lelkes embert, aki segíteni szeretne
-        kiskedvenceink foglalkoztatásával, ezzel is a menhely működését segítve.
-      </p>
-      <ul style="list-style-type: disc">
-        <li>
-          Naptárunkban látható lesz melyik napokon tudnak segíteni
-          menhelyünknek.
-        </li>
-        <li>Egy adott napra maximum 2 embert bírunk foglalkoztatni.</li>
-        <li>A gombra nyomva a mezőket töltse ki adatainak megfelelően!</li>
-        <li>
-          Ha elküldte jelentkezését email-ben fogjuk jelezni önnek ha felvettük.
-        </li>
-      </ul>
-      <Button @click="gonb" id="jelentkezes">{{ buttonText }}</Button>
-    </Supportcard>
-    <img src="../assets/tamogatas.png" alt="Tamogatas" id="Tamogass" />
-    <Supportcard v-bind:title="jelentkezesTitle">
-      <template v-if="valami">
-        <p>
-          Segítsen, hogy még több kutyának és cicának adhassunk esélyt egy új,
-          boldog életre! Minden adomány, legyen az egyszeri vagy rendszeres,
-          hozzájárul ahhoz, hogy folytathassuk munkánkat. Hogyan támogathat
-          minket?
-        </p>
-        <ul style="list-style-type: disc">
-          <li>Pénzbeli adomány: Adjon online vagy banki átutalással.</li>
-          <li>
-            Rendszeres adomány: Havi hozzájárulással hosszú távon segíthet.
-          </li>
-          <li>Az adója 1%-át felajánlhatja menhelyünknek.</li>
-          <li>Adószámunk: 12345678-9-10</li>
-        </ul>
-        <p>
-          Minden segítség számít! Köszönjük, hogy velünk tart, és támogatja a
-          rászoruló állatokat!
-        </p>
-      </template>
-      <template v-else>
-        <h3 class="font-semibold text-center">
-  Itt tudja leadni jelentkezését önkéntes munkára hozzánk!
-  Jelentkezzenek bátran!
-</h3>
-        <div class="date-inputs">
-          <div class="date-input-container">
-            <h1 class="font-semibold">Év:</h1>
-            <CustomInput
-              type="text"
-              placeholder="Év"
-              v-model="jelentkezesEv"
-              class="narrow-input"
-            ></CustomInput>
-          </div>
-          <div class="date-input-container">
-            <h1 class="font-semibold">Hónap:</h1>
-            <CustomInput
-              type="text"
-              placeholder="Hónap"
-              v-model="jelentkezesHonap"
-              class="narrow-input"
-            ></CustomInput>
-          </div>
-          <div class="date-input-container">
-            <h1 class="font-semibold">Nap:</h1>
-            <CustomInput
-              type="text"
-              placeholder="Nap"
-              v-model="jelentkezesNap"
-              class="narrow-input"
-            ></CustomInput>
+  <div class="content-wrapper">
+    <div class="cards-container">
+      <!-- Volunteer Card -->
+      <SupportCard title="Jelentkezzen önkéntesnek!">
+        <div class="card-content">
+          <p class="intro-text">
+            Menhelyünk meleg szívvel vár minden lelkes embert, aki segíteni szeretne 
+            kiskedvenceink foglalkoztatásával, ezzel is a menhely működését segítve.
+          </p>
+          
+          <ul class="feature-list">
+            <li>Naptárunkban látható lesz melyik napokon tudnak segíteni menhelyünknek.</li>
+            <li>Egy adott napra maximum 2 embert bírunk foglalkoztatni.</li>
+            <li>A gombra nyomva a mezőket töltse ki adatainak megfelelően!</li>
+            <li>Ha elküldte jelentkezését email-ben fogjuk jelezni önnek ha felvettük.</li>
+          </ul>
+          
+          <div class="button-container">
+            <button class="primary-button" @click="toggleForm">
+              {{ showVolunteerForm ? "Vissza" : "Jelentkezem" }}
+            </button>
           </div>
         </div>
-        <h4 class="font-semibold">Munka ideje (órában):</h4>
-        <DualRangeSlider></DualRangeSlider>
-        <h1>Mit szeretnél nálunk dolgozni?</h1>
-        <CustomInput type="text" placeholder="Mi az ok?" v-model="jelentkezesOka"></CustomInput>
-        <Button id="bekuldes" @click="kuldes">Küldés</Button>
-      </template>
-    </Supportcard>
+      </SupportCard>
+
+
+      <div class="image-container">
+        <img src="@/assets/tamogatas.png" alt="Támogatás" class="support-image" />
+      </div>
+
+      <SupportCard :title="showVolunteerForm ? 'Jelentkezés' : 'Adományozzon!'">
+        <div class="card-content">
+          <template v-if="!showVolunteerForm">
+            <p class="intro-text">
+              Segítsen, hogy még több kutyának és cicának adhassunk esélyt egy új, 
+              boldog életre! Minden adomány, legyen az egyszeri vagy rendszeres, 
+              hozzájárul ahhoz, hogy folytathassuk munkánkat. Hogyan támogathat minket?
+            </p>
+            
+            <ul class="feature-list">
+              <li>Pénzbeli adomány: Adjon online vagy banki átutalással.</li>
+              <li>Rendszeres adomány: Havi hozzájárulással hosszú távon segíthet.</li>
+              <li>Az adója 1%-át felajánlhatja menhelyünknek.</li>
+              <li>Adószámunk: 12345678-9-10</li>
+            </ul>
+            
+            <p class="closing-text">
+              Minden segítség számít! Köszönjük, hogy velünk tart, és támogatja a
+              rászoruló állatokat!
+            </p>
+          </template>
+
+          <template v-else>
+            <div class="form-content">
+              <p class="form-intro">
+                Itt tudja leadni jelentkezését önkéntes munkára hozzánk! Jelentkezzenek bátran!
+              </p>
+
+              <!-- Date Selection -->
+              <div class="date-selection">
+                <div class="date-group">
+                  <label>Év:</label>
+                  <select v-model="volunteerDate.year" class="date-input">
+                    <option value="">Év</option>
+                    <option v-for="year in availableYears" :key="year" :value="year">
+                      {{ year }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="date-group">
+                  <label>Hónap:</label>
+                  <select v-model="volunteerDate.month" class="date-input">
+                    <option value="">Hó.</option>
+                    <option v-for="month in 12" :key="month" :value="month < 10 ? `0${month}` : month">
+                      {{ month }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="date-group">
+                  <label>Nap:</label>
+                  <select v-model="volunteerDate.day" class="date-input">
+                    <option value="">Nap</option>
+                    <option v-for="day in 31" :key="day" :value="day < 10 ? `0${day}` : day">
+                      {{ day }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="time-selection">
+                <label>Munka ideje (órában):</label>
+                <DualRangeSlider />
+              </div>
+
+              <div class="reason-input">
+                <label>Mit szeretnél nálunk dolgozni?</label>
+                <CustomInput class="munka-input" 
+                  type="text"
+                  placeholder="Írja le, milyen munkát vállalna"
+                  v-model="volunteerReason"
+                />
+              </div>
+
+              <div class="button-container">
+                <button class="primary-button" @click="submitVolunteerForm">
+                  Küldés
+                </button>
+              </div>
+            </div>
+          </template>
+        </div>
+      </SupportCard>
+    </div>
+
+
+    <PawFooter v-if="!isMobile" :is-sticky="true" />
   </div>
-  <PawFooter :is-sticky="true" />
 </template>
+
 <style scoped>
-.kontent {
-  width: 100vw;
-  justify-content: space-evenly;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-}
-img {
-  width: 12rem;
-  height: 12rem;
-}
-p {
-  padding: 20px;
-}
-ul {
-  padding: 0px 20px 20px 40px;
-}
-.date-inputs {
-  display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
-}
-.date-input-container {
+.content-wrapper {
+  width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
 }
-.narrow-input {
-  width: 100px; /* Sets a narrower width for date inputs */
+
+.cards-container {
+  width: 100%;
+  max-width: 1400px;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 3.5rem;
+  margin-top: 3rem;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.intro-text, .closing-text {
+  margin: 0.5rem 0;
+  line-height: 1.5;
+}
+
+.feature-list {
+  padding-left: 1.5rem;
+  list-style-type: disc;
+
+}
+
+.feature-list li {
+  margin : 1.35rem 0;
+
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: auto;
+  padding: 1rem 0;
+}
+
+.primary-button {
+  background-color: #E85B44;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.primary-button:hover {
+  background-color: #d44d37;
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.support-image {
   max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+
+.form-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.form-intro {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.munka-input {
+  width: 100%;
+  padding: 0.6rem;
+
+}
+.date-selection {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.date-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.date-group label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.date-input {
+  padding: 0.6rem;
+  border: 2px solid #6a7282;
+  border-radius: 0.5rem;
+  background-color: #f8f4f4;
+  font-size: 0.9rem;
+}
+
+.time-selection, .reason-input {
+  margin-bottom: 0.5rem;
+}
+
+.time-selection label, .reason-input label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+
+@media (max-width: 1000px) {
+  .cards-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .image-container {
+    width: 100%;
+    max-width: 250px;
+  }
+.primary-button{
+  margin-top: 1.5rem;
+}
 }
 </style>

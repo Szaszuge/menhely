@@ -1,117 +1,122 @@
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue';
+
+const minValue = ref(25);
+const maxValue = ref(75);
+
+
+const minTimeLabel = computed(() => formatTimeFromPercent(minValue.value));
+const maxTimeLabel = computed(() => formatTimeFromPercent(maxValue.value));
+
+
+const TOTAL_MINUTES = 12 * 60;
+const START_HOUR = 8;
+
+function formatTimeFromPercent(percent: number): string {
+  const minutesSinceMidnight = Math.round(START_HOUR * 60 + (percent / 100) * TOTAL_MINUTES);
+  
+  const roundedMinutes = Math.round(minutesSinceMidnight / 15) * 15;
+  
+  const hours = Math.floor(roundedMinutes / 60);
+  const minutes = roundedMinutes % 60;
+  
+  return `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+}
+
+function updateMinSlider() {
+  if (minValue.value > maxValue.value) {
+    minValue.value = maxValue.value;
+  }
+}
+
+function updateMaxSlider() {
+  if (maxValue.value < minValue.value) {
+    maxValue.value = minValue.value;
+  }
+}
+
+onMounted(() => {
+  updateMinSlider();
+  updateMaxSlider();
+});
+</script>
+
 <template>
-  <div class="range-container">
+  <div class="dual-range-slider">
+
     <div class="time-labels">
-      <div class="time-label start-label">8:00</div>
-      <div class="time-label end-label">20:00</div>
+      <div class="time-label">8:00</div>
+      <div class="time-label">20:00</div>
     </div>
+    
     <div class="slider-container">
       <div class="slider-track"></div>
-      <div
+      
+      <div 
         class="slider-range"
         :style="{
-          left: (fromValue / 100) * 100 + '%',
-          width: ((toValue - fromValue) / 100) * 100 + '%'
+          left: `${minValue}%`,
+          width: `${maxValue - minValue}%`
         }"
       ></div>
+      
       <input
-        id="fromSlider"
         type="range"
-        v-model="fromValue"
+        class="slider min-slider"
+        v-model="minValue"
         min="0"
         max="100"
-        @input="updateFromSlider"
-        class="slider from-slider"
+        step="1"
+        @input="updateMinSlider"
       />
+      
       <input
-        id="toSlider"
         type="range"
-        v-model="toValue"
+        class="slider max-slider"
+        v-model="maxValue"
         min="0"
         max="100"
-        @input="updateToSlider"
-        class="slider to-slider"
+        step="1"
+        @input="updateMaxSlider"
       />
     </div>
-    <div class="selected-time-range">{{ fromTime }}-{{ toTime }}</div>
+    
+    <div class="selected-time">
+      {{ minTimeLabel }} - {{ maxTimeLabel }}
+    </div>
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      fromValue: 25, // Set to 25% of the slider by default
-      toValue: 45, // Set to 45% of the slider by default
-      fromTime: "",
-      toTime: "",
-      totalMinutes: 12 * 60 // Total minutes between 8:00 and 20:00
-    };
-  },
-  methods: {
-    updateFromSlider() {
-      // Ensure fromValue doesn't exceed toValue
-      if (parseInt(this.fromValue) > parseInt(this.toValue)) {
-        this.fromValue = this.toValue;
-      }
-      this.fromTime = this.formatTime(this.fromValue);
-    },
-    updateToSlider() {
-      // Ensure toValue doesn't go below fromValue
-      if (parseInt(this.toValue) < parseInt(this.fromValue)) {
-        this.toValue = this.fromValue;
-      }
-      this.toTime = this.formatTime(this.toValue);
-    },
-    formatTime(value) {
-      // Convert slider value (0-100) to time (8:00-20:00) in 15-minute increments
-      const minutesTotal = (value / 100) * this.totalMinutes;
-      
-      // Round to nearest 15 minutes
-      const roundedMinutes = Math.round(minutesTotal / 15) * 15;
-      
-      const hours = Math.floor(roundedMinutes / 60) + 8;
-      const minutes = roundedMinutes % 60;
-      return `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
-    }
-  },
-  mounted() {
-    // Initialize with default values
-    this.fromTime = this.formatTime(this.fromValue);
-    this.toTime = this.formatTime(this.toValue);
-  }
-};
-</script>
-
 <style scoped>
-.range-container {
-  width: 90%;
-  max-width: 500px;
-  padding: 15px;
-  border-radius: 8px;
+.dual-range-slider {
+  width: 100%;
+  padding: 8px 0;
 }
+
 .time-labels {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+  color: #555;
+  font-size: 0.9rem;
+  font-weight: 500;
 }
-.time-label {
-  color: #E85B44;
-  font-weight: bold;
-}
+
 .slider-container {
   position: relative;
-  height: 30px;
-  margin-bottom: 10px;
+  height: 36px;
 }
+
 .slider-track {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   width: 100%;
   height: 4px;
-  background-color: #FFFFFF;
+  background-color: white;
   border-radius: 2px;
 }
+
 .slider-range {
   position: absolute;
   top: 50%;
@@ -120,9 +125,9 @@ export default {
   background-color: #E85B44;
   border-radius: 2px;
 }
+
 .slider {
   -webkit-appearance: none;
-  appearance: none;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -131,34 +136,41 @@ export default {
   background: transparent;
   border: none;
   pointer-events: none;
-  z-index: 2;
+  margin: 0;
 }
+
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
-  height: 18px;
-  width: 18px;
+  height: 20px;
+  width: 20px;
   border-radius: 50%;
   background: #E85B44;
   cursor: pointer;
   pointer-events: auto;
-  margin-top: -7px;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+
 .slider::-moz-range-thumb {
-  height: 18px;
-  width: 18px;
+  height: 20px;
+  width: 20px;
   border-radius: 50%;
   background: #E85B44;
   cursor: pointer;
   pointer-events: auto;
-  border: none;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+
 .slider:focus {
   outline: none;
 }
-.selected-time-range {
+
+.selected-time {
   text-align: center;
+  margin-top: 12px;
+  font-weight: 600;
   color: #E85B44;
-  font-weight: bold;
-  font-size: 16px;
+  font-size: 1rem;
 }
 </style>
