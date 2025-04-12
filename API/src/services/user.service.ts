@@ -2,6 +2,7 @@ import { Console } from "console";
 import { AppDataSource } from "../data-source";
 import { Address } from "../entity/Address";
 import { Permits, User } from "../entity/User";
+import { UserView } from "../entity/view/user.view";
 import { AnyARecord } from "dns";
 import { CronJob } from 'cron';
 import { LessThan } from "typeorm";
@@ -134,10 +135,8 @@ exports.loginUser = async (username, password) => {
     return { token }; 
 }
 
-/*
 exports.getAllUsers = async () => {
-    return await userMod.findAll({
-        attributes: {exclude: ['password']}
-    });
+    console.log("[SERVICE] GETTING ALL USERS...");
+    const users = await AppDataSource.manager.find(UserView);
+    return users;
 } 
-*/

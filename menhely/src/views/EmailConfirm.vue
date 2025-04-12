@@ -6,7 +6,9 @@ import Button from '@/components/Button.vue';
 import CustomInput from '@/components/CustomInput.vue';
 import { ApiService } from "@/service/api.service";
 
-let router = useRouter()
+const router = useRouter()
+const api = new ApiService();
+
 let id;
 let status = ref('loading');
 onMounted(() => {
@@ -26,7 +28,6 @@ onUnmounted(() => {
 });
 
 function activate(event) {
-    let api = new ApiService();
     api.userActivate(Number(document.getElementById("user_ID").innerHTML), confirm).then((res) =>{
         console.log(res.data.message);
         if (res.data.message == "Sikeres Aktiváció!"){

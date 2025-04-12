@@ -33,3 +33,7 @@ export const reserve = async (req, res, next) => {
     return res.status(200).json({message: 'Végigment'});
 
 }
+export const getAllAnimals = async (req, res, next) => {
+    const animals = await animalService.getAllAnimals();
+    return res.status(200).json({message: 'Sikeres lekérdezés!', animals: animals});
+}

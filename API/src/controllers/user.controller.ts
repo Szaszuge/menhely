@@ -121,3 +121,8 @@ export const login = async (req, res) => {
     }
     return res.status(200).json({ message: "Sikeres bejelentkezés!", token: Object.values(token)[0], success: true });
 }
+export const getAllUsers = async (req, res) => {
+    console.log("Fetching all users...");
+    const users = await userService.getAllUsers();
+    res.status(200).json({ message: "Sikeres lekérdezés!", users: users });
+}

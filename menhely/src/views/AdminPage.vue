@@ -3,34 +3,51 @@ import CustomInput from '@/components/CustomInput.vue';
 import Button from '@/components/Button.vue';
 import { onMounted, onUnmounted, ref } from 'vue';
 import PawFooter from '@/components/PawFooter.vue';
+import { ApiService } from "@/service/api.service";
 
-const activeTab = ref('Kérések');
+const activeTab = ref('');
 const search = ref('');
+const api = new ApiService();
+onMounted(() => {
+  console.log("a")
+  // Kérések
+  api.getAllRequests().then((res) => {
+    console.log(res.data);
+    requests = res.data.requests;
+  });
 
-const requests = [
-  { name: 'zikizoki121', type: 'Örökbefogadás' },
-  { name: 'zikizoki121', type: 'Leadás' },
-  { name: 'zikizoki121', type: 'Látogatás' },
-  { name: 'zikizoki121', type: 'Önkéntes munka' },
-  { name: 'zikizoki121', type: 'Örökbefogadás' },
-  { name: 'zikizoki121', type: 'Leadás' },
-];
+  console.log("b")
+  // Felhasználók
+  api.getAllUsers().then((res) => {
+    console.log(res.data);
+    users = res.data.users;
+  });
 
-const users = [
-  { name: 'user1', role: 'Felhasználó' },
-  { name: 'user2', role: 'Admin' },
-  { name: 'user3', role: 'Moderátor' },
-  { name: 'user4', role: 'Tiltott' },
-  { name: 'user5', role: 'Felhasználó' },
-];
+  api.getAllAnimals().then((res) => {
+    console.log(res.data);
+    animals = res.data.animals;
+  });
+});
 
-const animals = [
-  { name: 'Bodri', species: 'Kutya' },
-  { name: 'Cirmi', species: 'Macska' },
-  { name: 'Rex', species: 'Kutya' },
-  { name: 'Morzsi', species: 'Kutya' },
-  { name: 'Foltos', species: 'Macska' },
-];
+// Kérések
+let requests = [];
+
+function viewRequest(id:string) {
+  
+}
+function acceptRequest(id:string) {
+  
+}
+function refuseRequest(id:string) {
+  
+}
+
+// Kérések vége
+// Felhaszálók
+
+let users = [];
+
+let animals = [];
 </script>
 
 <template>
@@ -89,14 +106,14 @@ const animals = [
               <td class="column-middle">{{ request.type }}</td>
               <td class="column-actions">
                 <div class="actions-container">
-                  <button class="action-button" aria-label="Megtekintés">
+                  <button class="action-button" aria-label="Megtekintés" @click="viewRequest(request.id)">
                     <img src="../assets/view.png" alt="Megtekintés" class="action-icon">
                   </button>
                   <button class="action-button" aria-label="Elfogadás">
-                    <img src="../assets/check.png" alt="Elfogadás" class="action-icon">
+                    <img src="../assets/check.png" alt="Elfogadás" class="action-icon" @click="acceptRequest(request.id)">
                   </button>
                   <button class="action-button" aria-label="Elutasítás">
-                    <img src="../assets/restriction.png" alt="Elutasítás" class="action-icon">
+                    <img src="../assets/restriction.png" alt="Elutasítás" class="action-icon" @click="refuseRequest(request.id)">
                   </button>
                 </div>
               </td>
