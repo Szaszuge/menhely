@@ -35,4 +35,8 @@ export class ApiService {
         console.log("Fetching all animals.");
         return axios.get(this.server + "/animal/getAll");
     }
+    acceptRequest(id:number){
+        console.log("Accepting request.");
+        return axios.post(this.server + "/requests/accept", id);
+    }
 }

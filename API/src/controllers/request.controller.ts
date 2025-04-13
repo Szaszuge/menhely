@@ -9,3 +9,9 @@ export const getAllRequestsRaw = async (req, res) => {
     const requests = await requestService.getAllRaw();
     res.status(200).json({ message: "Sikeres lekérdezés", requests: requests });
 }
+export const acceptRequest = async (req, res) => {
+    console.log(`Accepting request... [${req.body.id}]`);
+    const id = req.body.id;
+    const request = await requestService.acceptRequest(id);
+    res.status(200).json({ message: "Sikeres fogadás", request: request });
+}

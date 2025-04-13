@@ -33,13 +33,15 @@ onMounted(() => {
 let requests = [];
 
 function viewRequest(id:string) {
-  
+  console.log("TBA");
 }
 function acceptRequest(id:string) {
-  
+  api.acceptRequest(id).then((res) => {
+    console.log(res.data);
+  });
 }
 function refuseRequest(id:string) {
-  
+  console.log("TBA");
 }
 
 // Kérések vége

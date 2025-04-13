@@ -11,7 +11,8 @@ export enum From {
 }
 export enum Gender {
     male = "male",
-    female = "female"
+    female = "female",
+    unknown = "unknown",
 }
 
 @Entity()
@@ -23,7 +24,9 @@ export class Animal {
     @Column()
     name: string
 
-    @Column()
+    @Column({
+        nullable: true,
+    })
     age: number
 
     @Column({
@@ -31,21 +34,21 @@ export class Animal {
         enum: Kind,
         default: Kind.dog
     })
-    Type: Kind
+    type: Kind
 
     @Column({
         type: 'enum',
         enum: From,
         default: From.home
     })
-    From: From
+    from: From
 
     @Column({
         type: 'enum',
         enum: Gender,
         default: Gender.male
     })
-    Gender: Gender
+    gender: Gender
 
     @Column()
     arrival: string
