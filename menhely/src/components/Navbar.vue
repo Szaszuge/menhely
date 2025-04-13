@@ -56,6 +56,7 @@ const closeMenu = () => {
         </RouterLink>
     </div>
     <div id="right" :class="{ 'mobile-menu-open': isMenuOpen }">
+        <RouterLink to="/adminpanel" class="link" v-if="userStore.loggedUser()?.role === 'admin'">Admin</RouterLink> 
         <RouterLink to="/petcatalog" class="link" @click="closeMenu">Állatkatalógus</RouterLink>
         <RouterLink to="/petsurrender" class="link" @click="closeMenu">Állat leadása</RouterLink>
         <RouterLink to="/hogyansegithet" class="link" @click="closeMenu">Hogyan segíthet?</RouterLink>

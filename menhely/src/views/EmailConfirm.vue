@@ -28,7 +28,7 @@ onUnmounted(() => {
 });
 
 function activate(event) {
-    api.userActivate(Number(document.getElementById("user_ID").innerHTML), confirm).then((res) =>{
+    api.userActivate(id, confirm).then((res) =>{
         console.log(res.data.message);
         if (res.data.message == "Sikeres Aktiváció!"){
             router.push("/");
