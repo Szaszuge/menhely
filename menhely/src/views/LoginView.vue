@@ -87,7 +87,7 @@ async function login() {
                   placeholder="Adja meg jelszavát"
                 />
               </div>
-              <a href="#" class="forgot-link">Elfelejtett jelszó?</a>
+              <RouterLink to="/passwordrecovery" class="forgot-link">Elfelejtett jelszó?</RouterLink>
             </div>
             
             <Button 
@@ -99,7 +99,7 @@ async function login() {
             </Button>
             
             <div class="register-link">
-              Még nincs fiókja? <RouterLink to="/register" class="register-router-link">Regisztráció</RouterLink>
+              Még nincs fiókja? <RouterLink to="/register" class="register-router-link">Regisztráció -></RouterLink>
             </div>
           </form>
         </div>
@@ -309,7 +309,7 @@ async function login() {
 
 .register-link {
   text-align: center;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 600;
 }
 

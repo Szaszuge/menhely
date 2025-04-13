@@ -74,6 +74,12 @@ const router = createRouter({
       path: '/petadoption',
       name: 'petadoption',
       component: () => import('../views/PetAdoption.vue')
+    },
+
+    {
+      path: '/passwordrecovery',
+      name: 'passwordrecovery',
+      component: () => import('../views/ForgotPasswordView.vue')
     }
   ],
 })
