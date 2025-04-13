@@ -90,8 +90,18 @@ exports.activateByID = async (ID, Confirm) => {
             else if (existant.permit == Permits.banned){
                 return "Banished";
             }
-            await AppDataSource.manager.update(User, {id: ID}, {permit: Permits.base})
-            return "Activated";
+            await AppDataSource
+            .createQueryBuilder()
+            .update(User)
+            .set({ permit: Permits.base })
+            .where("id = :id", { id: ID })
+            .execute();
+            console.log("[SERVICE] USER ACTIVATED?");
+            const activated = await AppDataSource.manager.findOneBy(User, {id: ID});
+            if (activated.permit == Permits.base) {
+                return "Activated";
+            }
+            return "Problem";
         }
         console.log("[SERVICE] PASSWORDS DO NOT MATCH. RETURNING FAILURE.");
         return "Incorrect";
@@ -131,7 +141,7 @@ exports.loginUser = async (username, password) => {
         return ":";
     }
 
-    const token = generateToken({ id: user.id, name: user.userName, email: user.email});
+    const token = generateToken({ id: user.id, name: user.userName, email: user.email, role: user.permit});
     return { token }; 
 }
 
