@@ -23,5 +23,16 @@ export class ApiService {
         console.log("Attempting to log user in.");
         return axios.post(this.server + "/users/login", [name, pass]);
     }
-    
+    getAllRequests(){
+        console.log("Fetching all requests.");
+        return axios.get(this.server + "/requests/getAll");
+    }
+    getAllUsers(){
+        console.log("Fetching all users.");
+        return axios.get(this.server + "/users/getAll");
+    }
+    getAllAnimals(){
+        console.log("Fetching all animals.");
+        return axios.get(this.server + "/animal/getAll");
+    }
 }

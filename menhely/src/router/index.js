@@ -1,8 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { useUserStore } from '@/stores/user';
+import { ApiService } from "@/service/api.service";
 
 
+const api = new ApiService();
+let user_status = null;
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -75,20 +78,32 @@ const router = createRouter({
   ],
 })
 
-// Guard, ami gyakorlatban csak az admin felületet védi, mert a többi úgy is megtekinthető
+// Guard
 
 router.beforeEach(async (to, from) => {
   const userStore = useUserStore();
   console.log(`${from.name} -> ${to.name}`);
+  if (userStore.isLoggedIn()){
+    api.userDataByID(userStore.loggedUser().id).then((res) => {
+      user_status = res.data.status;
+      
+    if (to.name == 'login' && userStore.isLoggedIn()){
+      return {name: 'home'};
+    }
+    
+    if (to.name == 'adminpage' && (user_status != 'admin' || user_status != 'moderator')){
+      return {name: from.name};
+    }
+    })
+  }
+  else{
+    if (to.name == 'adminpage'){
+      return {name: 'login'};
+    }
+  }
+  
 
-  if (to.name == 'login' && userStore.isLoggedIn()){
-    return {name: 'home'};
-  }
-  /*
-  if (to.name == 'adminpage'){
-    return {name: from.name};
-  }
-    */
+  
 })
 
 
