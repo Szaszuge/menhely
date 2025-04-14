@@ -27,7 +27,7 @@ export class Animal {
     @Column({
         nullable: true,
     })
-    age: number
+    age: string
 
     @Column({
         type: 'enum',
