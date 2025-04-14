@@ -80,6 +80,12 @@ const router = createRouter({
       path: '/passwordrecovery',
       name: 'passwordrecovery',
       component: () => import('../views/ForgotPasswordView.vue')
+    },
+
+    {
+      path: '/newpassword',
+      name: 'newpassword',
+      component: () => import('../views/NewPasswordView.vue')
     }
   ],
 })

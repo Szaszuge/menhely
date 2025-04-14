@@ -38,7 +38,7 @@ import { RouterLink } from 'vue-router';
             </Button>
             
             <div class="register-link">
-              <RouterLink to="/" class="register-router-link">Vissza a főoldalra -></RouterLink>
+              <RouterLink to="login" class="register-router-link">Vissza a bejelentkezéshez -></RouterLink>
             </div>
           </form>
         </div>
