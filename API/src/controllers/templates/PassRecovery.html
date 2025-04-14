@@ -72,8 +72,6 @@
             justify-content: space-between;
             padding: 1rem auto;
             font-weight: 600;
-        
-            
         }
         #empty{
             width: 100px;
@@ -83,6 +81,7 @@
         #mh-icon{
         margin-left: 0.5rem;
         }
+        
         p{
             font-size: 1.1rem;
             font-weight: 500;
@@ -139,7 +138,7 @@
 
 <p>Kérelmét megkaptuk új jelszó igénylésével kapcsolatban. A gombra kattintva vissza lesz vezetve a jelszóváltás oldalra, ahol további instrukciók segítségével megváltoztathatja véglegesen jelszavát.</p>
 
-<a href="https://gazdi-radar.example.com/confirm-registration?token=example-token"><div id="gomb"><p>Megerősítés</p></div></a>
+<a href="<%= content.link %>"><div id="gomb"><p>Megerősítés</p></div></a>
 <p id="warning">Ha nem Ön kezdeményezte a jelszócserét, kérjük hagyja figyelmen kívül ezt az emailt!</p>
 <p>Üdvözlettel: A GazdiRadar csapata</p>
 </div>

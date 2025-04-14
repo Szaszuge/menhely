@@ -5,9 +5,11 @@ import Button from '@/components/Button.vue';
 import PawFooter from '@/components/PawFooter.vue';
 import { useUserStore } from '@/stores/user';
 import { AnimalService } from '@/service/animal.service';
+import { MailService } from "@/service/mail.service";
 
 const auth = useUserStore();
 const animal = new AnimalService();
+let mail = new MailService();
 
 const emit = defineEmits(['submit']);
 
@@ -61,7 +63,21 @@ function send(event:Event) {
   animal.requestSurrender(formData).then((res) => {
     console.log(res.data.message)
     visszajelzes.value = res.data.message
+
+    let data = {"to": loggedUser().email,
+        "subject": "GazdiRadar Regisztráció",
+        "content": {
+            "userName": loggedUser().userName,
+            "link": `http://localhost:5173/newpassword/${loggedUser().id}`,
+            "year": info.details.year,
+            "month": info.details.month,
+            "day": info.details.day,
+            },
+        "template": "AnimalSent"
+        };
+
   }); // Jegyzet: SOHA NE KÓDÓLJ BETEGEN!
+  
 }
 </script>
 

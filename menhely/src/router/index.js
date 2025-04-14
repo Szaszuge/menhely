@@ -83,7 +83,7 @@ const router = createRouter({
     },
 
     {
-      path: '/newpassword',
+      path: '/newpassword/:id',
       name: 'newpassword',
       component: () => import('../views/NewPasswordView.vue')
     }
