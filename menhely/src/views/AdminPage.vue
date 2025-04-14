@@ -9,39 +9,37 @@ const activeTab = ref('');
 const search = ref('');
 const api = new ApiService();
 onMounted(() => {
-  console.log("a")
-  // Kérések
+  refresh();
+});
+
+function refresh() {
   api.getAllRequests().then((res) => {
-    console.log(res.data);
     requests = res.data.requests;
   });
-
-  console.log("b")
-  // Felhasználók
   api.getAllUsers().then((res) => {
-    console.log(res.data);
     users = res.data.users;
   });
-
   api.getAllAnimals().then((res) => {
-    console.log(res.data);
     animals = res.data.animals;
   });
-});
+}
 
 // Kérések
 let requests = [];
 
 function viewRequest(id:string) {
   console.log("TBA");
+  refresh();
 }
 function acceptRequest(id:string) {
   api.acceptRequest(id).then((res) => {
     console.log(res.data);
   });
+  refresh();
 }
 function refuseRequest(id:string) {
   console.log("TBA");
+  refresh();
 }
 
 // Kérések vége

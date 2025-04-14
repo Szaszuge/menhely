@@ -29,16 +29,14 @@ async function login() {
   try {
     isLoading.value = true;
     errorMessage.value = '';
-    const res = await api.userLogin(user.value.name, user.value.pass);
-    
-    if (!res.data.token) {
-      errorMessage.value = "Hiányzó token!";
-    } else {
+    const res = await api.userLogin(user.value.name, user.value.pass)
+    errorMessage.value = res.data.message;
+    if (res.data.token) {
       userStore.setToken(res.data.token);
       router.push("/");
     }
   } catch (error) {
-    errorMessage.value = "Bejelentkezési hiba. Kérjük ellenőrizze adatait.";
+    //errorMessage.value = "Bejelentkezési hiba. Kérjük ellenőrizze adatait.";
   } finally {
     isLoading.value = false;
   }
@@ -333,8 +331,8 @@ async function login() {
 
 .alert.error {
   background-color: #FFF3F3;
-  color: #E53935;
-  border-left: 4px solid #E53935;
+  color: var(--button-important);
+  border-left: 4px solid var(--button-important);
 }
 
 

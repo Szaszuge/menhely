@@ -88,16 +88,16 @@ export const activateById = async (req, res) => {
             res.status(200).json({ message: "Sikeres Aktiváció!"});
             break;
         case ("Incorrect"):
-            res.status(400).json({ message: "A jelszó nem egyezik!"});
+            res.status(203).json({ message: "A jelszó nem egyezik!"});
             break;
         case ("Already Active"):
-            res.status(403).json({ message: "A fiók már aktív!"});
+            res.status(203).json({ message: "A fiók már aktív!"});
             break; 
         case ("Banished"):
-            res.status(403).json({ message: "A fiók tiltott!"});
+            res.status(203).json({ message: "A fiók tiltott!"});
             break; 
         case ("Illegal"):
-            res.status(403).json({ message: "A fiók nem létezik!"});
+            res.status(203).json({ message: "A fiók nem létezik!"});
             break;
         default:
             res.status(400).json({message: "Van ami nem jó."})
@@ -113,16 +113,15 @@ export const login = async (req, res) => {
     const token = await userService.loginUser(userN, userP);
     if (token == ";") {
         console.log("Nem létező felhasználó");
-        return res.status(400).json({message: "Sikertelen bejelentkezés: Nem létező felhasználó"})
+        return res.status(203).json({message: "Nem létező felhasználó"})
     }
     else if (token == ":") {
         console.log("Rossz jelszó");
-        return res.status(400).json({message: "Sikertelen bejelentkezés: Rossz jelszó"})
+        return res.status(203).json({message: "Hibás jelszó"})
     }
     return res.status(200).json({ message: "Sikeres bejelentkezés!", token: Object.values(token)[0], success: true });
 }
 export const getAllUsers = async (req, res) => {
-    console.log("Fetching all users...");
     const users = await userService.getAllUsers();
     res.status(200).json({ message: "Sikeres lekérdezés!", users: users });
 }

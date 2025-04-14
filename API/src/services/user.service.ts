@@ -146,7 +146,6 @@ exports.loginUser = async (username, password) => {
 }
 
 exports.getAllUsers = async () => {
-    console.log("[SERVICE] GETTING ALL USERS...");
     const users = await AppDataSource.manager.find(UserView);
     return users;
 } 

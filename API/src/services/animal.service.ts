@@ -22,7 +22,6 @@ exports.reserveAnimalSurrenderRequest = async(data, filename) => {
     return animal_request;
 }
 exports.getAllAnimals = async() => {
-    console.log(`[SERVICE] GETTING ALL ANIMALS...`)
     const animals = await AppDataSource.manager.find(AnimalView);
     return animals;
 }

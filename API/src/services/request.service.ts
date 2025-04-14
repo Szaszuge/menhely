@@ -9,7 +9,6 @@ exports.getAllRaw = async () => {
     return requests;
 }
 exports.getAll = async () => {
-    console.log(`[SERVICE] GATHERING ALL REQUESTS...`)
     const requests = await AppDataSource.manager.find(RequestView);
     return requests;
 }
@@ -46,15 +45,14 @@ exports.acceptRequest = async (id) => {
                 city: request.details.city,
             };
             animal.details = details;
-            console.log(`[SERVICE] CREATING ANIMAL...`)
             const uploaded_animal = await AppDataSource.manager.save(animal);
-            const deleted_request = await AppDataSource.manager.delete(Request, {id: id}); // Nem törli ki ez a szar. Miért?
             console.log(`[SERVICE] SAVED ANIMAL`)
-            return deleted_request;
-
+            break;
         default:
             return "non-handled";
     }
+    const deleted_request = await AppDataSource.manager.delete(Request, {id: request.id});
+    console.log(deleted_request.affected)
+    return deleted_request;
 
-    return request;
 }

@@ -20,6 +20,7 @@ const ho = ref('');
 const nap = ref('');
 const egyebInfo = ref('');
 let kep = null;
+const visszajelzes = ref('A csillaggal jelölt mezők kitöltése kötelező!');
 
 const fileName = ref("")
 
@@ -57,7 +58,10 @@ function send(event:Event) {
   const formDataEntries = Array.from(formData.entries());
   console.log(formDataEntries);
 
-  animal.requestSurrender(formData).then((res) => {console.log(res.data.message)}); // Jegyzet: SOHA NE KÓDÓLJ BETEGEN!
+  animal.requestSurrender(formData).then((res) => {
+    console.log(res.data.message)
+    visszajelzes.value = res.data.message
+  }); // Jegyzet: SOHA NE KÓDÓLJ BETEGEN!
 }
 </script>
 
@@ -67,7 +71,7 @@ function send(event:Event) {
       <h2>Állat leadása</h2>
     </div>
     <div class="form-content">
-    <p class="info-text">A csillaggal jelölt mezők kitöltése kötelező!</p>
+    <p class="info-text">{{visszajelzes }}</p>
       <label for="honnan">Állat neve</label>
     <CustomInput class="inputs" v-model="allatNeve" placeholder="Pl. Morzsi" />
 
