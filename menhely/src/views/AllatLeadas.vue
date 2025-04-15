@@ -64,11 +64,11 @@ function send(event:Event) {
     console.log(res.data.message)
     visszajelzes.value = res.data.message
 
-    let data = {"to": loggedUser().email,
+    let data = {"to": auth.loggedUser().email,
         "subject": "GazdiRadar Regisztráció",
         "content": {
-            "userName": loggedUser().userName,
-            "link": `http://localhost:5173/newpassword/${loggedUser().id}`,
+            "userName": auth.loggedUser().userName,
+            "link": `http://localhost:5173/newpassword/${auth.loggedUser().id}`,
             "year": info.details.year,
             "month": info.details.month,
             "day": info.details.day,

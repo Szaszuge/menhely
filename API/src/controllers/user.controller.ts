@@ -113,14 +113,29 @@ export const login = async (req, res) => {
     const token = await userService.loginUser(userN, userP);
     if (token == ";") {
         console.log("Nem létező felhasználó");
-        return res.status(203).json({message: "Nem létező felhasználó"})
+        return res.status(203).json({message: "Nem létező felhasználó."})
     }
     else if (token == ":") {
         console.log("Rossz jelszó");
-        return res.status(203).json({message: "Hibás jelszó"})
+        return res.status(203).json({message: "Hibás jelszó."})
+    }
+    else if (token == "-"){
+        return res.status(203).json({message: "A fiókba nem léphet be."})
     }
     return res.status(200).json({ message: "Sikeres bejelentkezés!", token: Object.values(token)[0], success: true });
 }
+export const recover = async (req, res) => {
+    const userE = req.body[0];
+    if (await userService.IsEmailUsed(userE)) {
+        const answer = await userService.recover(userE);
+        if (answer) {
+            return res.status(200).json({message: "Most már lehet jelszót váltani."})
+        }
+        return res.status(100).json({message: "A fiók nem válthat jelszót."});
+    }
+    return res.status(100).json({message: "Nincs email-hez kötve fiók"});
+}
+
 export const getAllUsers = async (req, res) => {
     const users = await userService.getAllUsers();
     res.status(200).json({ message: "Sikeres lekérdezés!", users: users });

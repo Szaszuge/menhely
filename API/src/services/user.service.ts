@@ -145,6 +145,22 @@ exports.loginUser = async (username, password) => {
     return { token }; 
 }
 
+exports.recover = async (email) => {
+    
+    console.log(`[SERVICE] RECOVER BY EMAIL (${email})`);
+    const result = await AppDataSource.manager.findOneBy(User, {email: email});
+    if (result != null && (result.permit == Permits.base)){
+        await AppDataSource
+            .createQueryBuilder()
+            .update(User)
+            .set({ permit: Permits.pwedit })
+            .where("email = :email", { email: email })
+            .execute();
+            return true;
+    }
+    return false;
+}
+
 exports.getAllUsers = async () => {
     const users = await AppDataSource.manager.find(UserView);
     return users;

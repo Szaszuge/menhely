@@ -27,18 +27,18 @@ function refresh() {
 // Kérések
 let requests = [];
 
-function viewRequest(id:string) {
-  console.log("TBA");
+async function viewRequest(id:string) {
+  await console.log("TBA");
   refresh();
 }
-function acceptRequest(id:string) {
-  api.acceptRequest(id).then((res) => {
+async function acceptRequest(id:string) {
+  await api.acceptRequest(id).then((res) => {
     console.log(res.data);
   });
   refresh();
 }
-function refuseRequest(id:string) {
-  console.log("TBA");
+async function refuseRequest(id:string) {
+  await console.log("TBA");
   refresh();
 }
 

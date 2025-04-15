@@ -1,8 +1,23 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import PawFooter from '@/components/PawFooter.vue';
 import Button from '@/components/Button.vue';
 import CustomInput from '@/components/CustomInput.vue';
 import { RouterLink } from 'vue-router';
+import { ApiService } from '@/service/api.service';
+import { MailService } from "@/service/mail.service";
+
+const email = ref("");
+
+let api = new ApiService();
+let mail = new MailService();
+
+function AskForPass() {
+  api.userPassRecover(email.value).then((res) => {
+    
+  })
+}
+
 </script>
 
 <template>
@@ -29,11 +44,12 @@ import { RouterLink } from 'vue-router';
                   id="email"
                   class="styled-input"
                   placeholder="Adja meg email címét" 
+                  v-model="email" 
                 />
               </div>
             </div>
             
-            <Button class="login-button">
+            <Button class="login-button" @click="AskForPass()" type="button">
               Visszaállítás
             </Button>
             

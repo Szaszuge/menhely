@@ -8,7 +8,8 @@ export enum Permits {
     base = "user",
     elevated = "moderator",
     owner = "admin",
-    limbo = "inactive"
+    limbo = "inactive",
+    pwedit = "recovering",
 }
 @Entity()
 export class User {
