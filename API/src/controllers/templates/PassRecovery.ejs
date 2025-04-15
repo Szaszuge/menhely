@@ -133,13 +133,14 @@
 <img src="https://file.garden/Z1X6ItHu3lmreWfD/jelszoikon.png" alt="">
 
 <h1>Értesítő a jelszóváltással kapcsolatban</h1>
-<h2>Kedves Felhasználó!</h2>
+<h2>Kedves <%= content.userName %>!</h2>
 
 
 <p>Kérelmét megkaptuk új jelszó igénylésével kapcsolatban. A gombra kattintva vissza lesz vezetve a jelszóváltás oldalra, ahol további instrukciók segítségével megváltoztathatja véglegesen jelszavát.</p>
 
-<a href="<%= content.link %>"><div id="gomb"><p>Megerősítés</p></div></a>
-<p id="warning">Ha nem Ön kezdeményezte a jelszócserét, kérjük hagyja figyelmen kívül ezt az emailt!</p>
+<a href="<%= content.accept %>"><div id="gomb"><p>Megerősítés</p></div></a>
+<p id="warning">Ha nem Ön kezdeményezte a jelszócserét vagy meggondolta magát kérjük nyomjon a visszaállításra!</p>
+<a href="<%= content.refuse %>"><div id="gomb"><p>Visszaállítás</p></div></a>
 <p>Üdvözlettel: A GazdiRadar csapata</p>
 </div>
 

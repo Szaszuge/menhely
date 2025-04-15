@@ -1,3 +1,5 @@
+import { Permits } from "../entity/User";
+
 const userService = require('../services/user.service');
 
 export const reserve = async (req, res, next) => {  
@@ -131,9 +133,34 @@ export const recover = async (req, res) => {
         if (answer) {
             return res.status(200).json({message: "Most már lehet jelszót váltani."})
         }
-        return res.status(100).json({message: "A fiók nem válthat jelszót."});
+        return res.status(203).json({message: "A fiók nem válthat jelszót."});
     }
-    return res.status(100).json({message: "Nincs email-hez kötve fiók"});
+    return res.status(203).json({message: "Nincs email-hez kötve fiók."});
+}
+export const resetPass = async (req, res) => {
+    const id:string = req.body[0];
+    const pass:string = req.body[1];
+    const confirm:string = req.body[2];
+    const user:Permits = await userService.getStatusByID(id);
+    if (user != Permits.pwedit) {
+        return res.status(203).json({message: "A fiók nem kért jelszó váltást."});
+    }
+    if (pass != confirm){
+        return res.status(400).json({message: "A két jelszó nem egyezik!"});
+    }
+    const answer = await userService.changePWD(id, pass)
+    if (answer){
+        return res.status(202).json({message: "A fiók jelszava sikeresen frissült."});
+    }
+    return res.status(400).json({message: "Ismeretlen hiba..."});
+}
+
+export const mailData = async (req, res) => {
+    const userE = req.body[0];
+    if (await userService.IsEmailUsed(userE)) {
+        const answer = await userService.getMailDataByMail(userE);
+        return res.status(200).json({maildata: answer});
+    }
 }
 
 export const getAllUsers = async (req, res) => {

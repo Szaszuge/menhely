@@ -9,6 +9,8 @@ router.post('/getStatByID', userController.getStatusByID);
 router.post('/activateByID', userController.activateById);
 router.post('/login', userController.login);
 router.post('/recover', userController.recover);
+router.post('/resetPass', userController.resetPass)
+router.post('/mailData', userController.mailData);
 router.get('/getAll', userController.getAllUsers);
 
 

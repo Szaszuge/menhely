@@ -35,16 +35,17 @@ function register(event) {
     api.userRegister(user, address).then((res) => {
         console.log(res.data.message);
         if (res.data.message == "Sikeres Feljegyzés"){
-            let data = {"to": user.email,
-        "subject": "GazdiRadar Regisztráció",
-        "content": {
-            "userName": user.userName,
-            "link": `http://localhost:5173/emailconfirm/${res.data.user}`,
-            },
-        "template": "Register"
-        };
-        mail.sendMail(data);
-        router.push("/emailsent");
+            const data = {
+                "to": user.email,
+                "subject": "GazdiRadar Regisztráció",
+                "content": {
+                    "userName": user.userName,
+                    "link": `http://localhost:5173/emailconfirm/${res.data.user}`,
+                },
+                "template": "Register"
+            };
+            mail.sendMail(data);
+            router.push("/emailsent");
         }
     });
 }

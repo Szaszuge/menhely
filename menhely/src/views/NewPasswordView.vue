@@ -1,15 +1,47 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { useRouter, useRoute } from "vue-router";
+import { onMounted, onUnmounted, ref } from 'vue';
 import CustomInput from '../components/CustomInput.vue';
 import Button from '../components/Button.vue';
 import PawFooter from '../components/PawFooter.vue';
+import { ApiService } from "@/service/api.service";
+import { useUserStore } from '@/stores/user';
+
+const userStore = useUserStore();
+const router = useRouter()
+const api = new ApiService();
+
+const id = useRoute().params.id; // sír de ez jó
+let status = ref('loading');
 
 const password = ref('');
 const confirmPassword = ref('');
+
+onMounted(() => {
+  if (userStore.isLoggedIn()){
+    router.push("/");
+  }
+    console.log(id);
+    let api = new ApiService();
+    api.userDataByID(id).then((res) => {
+        if (res.data.status != "recovering"){
+          router.push("/");
+        }
+        status.value = res.data.status;
+    })
+    
+});
+function resetPassword() {
+  api.resetPassByID(id, password.value, confirmPassword.value).then((res) => {
+    if(res.data.message == "A fiók jelszava sikeresen frissült."){
+      router.push("/")
+    }
+  })
+}
 </script>
 
 <template>
-  <div class="reset-page">
+  <div class="reset-page" v-if="status == 'recovering'">
     <div class="reset-card">
       <div class="form-side">
         <div class="form-container">
@@ -53,6 +85,7 @@ const confirmPassword = ref('');
             <Button 
               type="button" 
               class="reset-button"
+              @click="resetPassword()"
             >
               Visszaállítás
             </Button>

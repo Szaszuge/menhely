@@ -160,6 +160,30 @@ exports.recover = async (email) => {
     }
     return false;
 }
+exports.changePWD = async (id, pass) => {
+    console.log(`[SERVICE] CHANGE PASSWORD (${id})`)
+    const result = await AppDataSource.manager.findOneBy(User, {id: id});
+    if (result != null) {
+        const hashedPassword = await bcrypt.hash(pass, 10);
+        await AppDataSource
+        .createQueryBuilder()
+        .update(User)
+        .set({ permit: Permits.base, password: hashedPassword })
+        .where("id = :id", { id: id })
+        .execute();
+        return true;
+    }
+    return false;
+}
+
+exports.getMailDataByMail = async (email) => {
+    const result = await AppDataSource.manager.findOneBy(User, {email: email});
+    const maildata = {
+        id: result.id,
+        userName: result.userName,
+    }
+    return maildata;
+}
 
 exports.getAllUsers = async () => {
     const users = await AppDataSource.manager.find(UserView);

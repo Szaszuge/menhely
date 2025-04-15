@@ -1,21 +1,45 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRouter, useRoute } from "vue-router";
 import PawFooter from '@/components/PawFooter.vue';
 import Button from '@/components/Button.vue';
 import CustomInput from '@/components/CustomInput.vue';
 import { RouterLink } from 'vue-router';
 import { ApiService } from '@/service/api.service';
 import { MailService } from "@/service/mail.service";
+import { useUserStore } from '@/stores/user';
 
-const email = ref("");
-
+const userStore = useUserStore();
+const router = useRouter()
 let api = new ApiService();
 let mail = new MailService();
 
+const email = ref("");
+
 function AskForPass() {
-  api.userPassRecover(email.value).then((res) => {
-    
-  })
+
+  if (!userStore.isLoggedIn()) {
+    api.userPassRecover(email.value).then(() => {
+      api.getMailDataByMail(email.value).then((res)=> {
+      const maildata = res.data.maildata;
+      console.log(maildata)
+        const data = {
+          "to": email,
+          "subject": "GazdiRadar Jelszó visszaállítás",
+          "content": {
+              "userName": maildata.userName,
+              "accept": `http://localhost:5173/newpassword/${maildata.id}`,
+              "refuse": `http://localhost:5173/revertpassword/${maildata.id}`,
+              },
+          "template": "PassRecovery"
+          };
+          mail.sendMail(data);
+      });
+    })
+  }
+  else{
+    router.push("/")
+  }
 }
 
 </script>

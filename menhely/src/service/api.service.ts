@@ -26,6 +26,12 @@ export class ApiService {
     userPassRecover(email:string){
         return axios.post(this.server + "/users/recover", [email])
     }
+    resetPassByID(id:string, pass:string, confirm:string){
+        return axios.post(this.server + "/users/resetPass", [id, pass, confirm])
+    }
+    getMailDataByMail(email:string){
+        return axios.post(this.server + "/users/mailData", [email])
+    }
 
     getAllRequests(){
         //console.log("Fetching all requests.");
