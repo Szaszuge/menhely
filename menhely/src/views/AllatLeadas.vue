@@ -82,160 +82,493 @@ function send(event:Event) {
 </script>
 
 <template>
-  <div class="form-container">
-    <div class="form-title-container">
-      <h2>Állat leadása</h2>
+  <div class="surrender-page">
+    <div class="surrender-card">
+      <div class="form-side">
+        <div class="form-container">
+          <div class="welcome-text">
+            <h2>Állat leadása</h2>
+            <p class="info-text" v-if="visszajelzes">{{ visszajelzes }}</p>
+          </div>
+          
+          <form @submit.prevent="send" class="surrender-form">
+            <div class="form-group">
+              <label for="allatNeve">Állat neve</label>
+              <div class="input-container">
+                <span class="input-icon pet-icon"></span>
+                <CustomInput 
+                  id="allatNeve"
+                  class="styled-input" 
+                  v-model="allatNeve" 
+                  placeholder="Pl. Morzsi"
+                />
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="faj">Állat fajtája*</label>
+              <div class="input-container">
+                <span class="input-icon cat-icon"></span>
+                <select id="faj" v-model="faj" class="styled-select">
+                  <option value="">Válassz egy lehetőséget</option>
+                  <option value="dog">Kutya</option>
+                  <option value="cat">Macska</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="honnan">Honnan származik (otthon/talált)*</label>
+              <div class="input-container">
+                <span class="input-icon home-icon"></span>
+                <select id="honnan" v-model="honnan" class="styled-select">
+                  <option value="">Válassz egy lehetőséget</option>
+                  <option value="home">Otthonból</option>
+                  <option value="found">Talált</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="telepules">Település neve*</label>
+              <div class="input-container">
+                <span class="input-icon location-icon"></span>
+                <CustomInput 
+                  id="telepules"
+                  class="styled-input" 
+                  v-model="telepules" 
+                  placeholder="Pl. Bajaszentistván"
+                />
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="lead-idopont">Leadás időpontja*</label>
+              <div class="date-container">
+                <select v-model="ev" class="date-select year-select">
+                  <option value="">Év</option>
+                  <option v-for="year in 3" :key="year" :value="2025 + year - 1">{{ 2025 + year - 1 }}</option>
+                </select>
+                
+                <select v-model="ho" class="date-select month-select">
+                  <option value="">Hónap</option>
+                  <option v-for="month in 12" :key="month" :value="month">{{ month }}</option>
+                </select>
+                
+                <select v-model="nap" class="date-select day-select">
+                  <option value="">Nap</option>
+                  <option v-for="day in 31" :key="day" :value="day">{{ day }}</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="egyebInfo">Egyéb információ</label>
+              <div class="input-container">
+                <span class="input-icon info-icon"></span>
+                <CustomInput 
+                  id="egyebInfo"
+                  class="styled-input" 
+                  v-model="egyebInfo" 
+                  placeholder="Pl. Más állatokkal jól kijön"
+                />
+              </div>
+            </div>
+            
+            <div class="form-group file-upload-group">
+              <label for="image-file-input">Feltöltött kép</label>
+              <div class="file-input-container">
+                <div class="input-container filename-container" :class="{'has-file': fileName}">
+                  <span class="input-icon image-icon"></span>
+                  <span v-if="fileName" class="file-name">{{ fileName }}</span>
+                  <span v-else class="file-placeholder">Nincs kiválasztott fájl</span>
+                </div>
+                <Button class="upload-button" @click="uploadImage" type="button">
+                  Kép feltöltése
+                </Button>
+                <input 
+                  hidden 
+                  type="file" 
+                  accept="image/png, image/jpeg" 
+                  id="image-file-input" 
+                  v-on:change="imageAdded" 
+                  @change="changeFileName"
+                >
+              </div>
+            </div>
+            
+            <div class="submit-container">
+              <Button 
+                class="submit-button" 
+                v-if="auth.isLoggedIn()" 
+                @click="send"
+                type="button"
+              >
+                Leadás
+              </Button>
+              <Button 
+                class="submit-button-disabled" 
+                v-if="!auth.isLoggedIn()" 
+                disabled
+              >
+                Jelentkezzen be!
+              </Button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="illustration-side"></div>
     </div>
-    <div class="form-content">
-    <p class="info-text">{{visszajelzes }}</p>
-      <label for="honnan">Állat neve</label>
-    <CustomInput class="inputs" v-model="allatNeve" placeholder="Pl. Morzsi" />
-
-    <label for="honnan">Állat fajtája*</label>
-    <select id="faj" v-model="faj" class="custom-select">
-      <option value="">Válassz egy lehetőséget</option>
-      <option value="dog">Kutya</option>
-      <option value="cat">Macska</option>
-    </select>
-
-    <label for="honnan">Honnan származik (otthon/talált)*</label>
-    <select id="honnan" v-model="honnan" class="custom-select">
-      <option value="">Válassz egy lehetőséget</option>
-      <option value="home">Otthonból</option>
-      <option value="found">Talált</option>
-    </select>
-
-    <label for="honnan">Település neve*</label>
-    <CustomInput class="inputs" v-model="telepules" placeholder="Pl. Bajaszentistván" />
-
-    <label for="lead-idopont">Leadás időpontja*</label>
-    <div class="date-container">
-      <select v-model="ev" class="date-select">
-        <option value="">Év</option>
-        <option v-for="year in 3" :key="year" :value="2025 + year - 1">{{ 2025 + year - 1 }}</option>
-      </select>
-      <select v-model="ho" class="date-select">
-        <option value="">Hó.</option>
-        <option v-for="month in 12" :key="month" :value="month">{{ month }}</option>
-      </select>
-      <select v-model="nap" class="date-select">
-        <option value="">Nap</option>
-        <option v-for="day in 31" :key="day" :value="day">{{ day }}</option>
-      </select>
-    </div>
-
-    <label for="honnan">Egyéb információ</label>
-    <CustomInput class="inputs" v-model="egyebInfo" placeholder="Pl. Más állatokkal jól kijön" />
-
-
-
-    <div class="button-container">
-      <p id="filename">{{ fileName }}</p>
-      <Button class="imguploadbtn" @click="uploadImage">Kép feltöltése</Button>
-      <input hidden type="file" accept="image/png, image/jpeg" id="image-file-input" v-on:change="imageAdded" @change="changeFileName">
-      
-      <Button class="submit-button" v-if="auth.isLoggedIn()" @click="send">Leadás igénylése</Button>
-      <Button class="submit-button-disabled " v-if="!auth.isLoggedIn()" disabled>Jelentkezzen be!</Button>
-    </div>
-    </div> 
-
-    
+    <PawFooter :is-sticky="true" />
   </div>
-  <PawFooter :is-sticky="true"/>
 </template>
 
 <style scoped>
-#filename{
-  color: #ff5722;
-  font-weight: 600;
-  font-size: 24;
-  max-width: 230px;
-  padding-right: 10px;
-}
-.form-container {
-  background: #FED7AA;
-  border-radius: 15px;
-  width: calc(100vw - 25px);
-  max-width: 635px; 
-  margin: auto;
-  margin-top: 3rem;
-}
-.form-content{
+.surrender-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 1.5rem;
 }
 
-.info-text {
-  font-size: 0.9rem;
-  font-weight: 600; 
-  color: #b33;
-  text-align: left; 
+.surrender-card {
+  display: flex;
+  width: 100%;
+  max-width: 1100px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  margin-top: -1rem;
+}
+
+.form-side {
+  flex: 1;
+  background-color: #FDBA74;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.illustration-side {
+  flex: 1.2;
+  background-color: #FDBA74;
+  background-image: url('../assets/catinshelter.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.form-container {
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+.welcome-text {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.welcome-text h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
   margin-bottom: 0.5rem;
 }
 
-.form-title-container{
-    font-weight: 600;
-    text-align: center;
-    font-size: 2rem;
-    background-color: #FDBA74;
-    padding: 0.5rem;
-    border-radius: 15px 15px 0 0;
+.info-text {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #833;
+  margin-top: 0.25rem;
 }
 
-label {
-  display: block;
-  font-weight: bold;
-  margin-top: 10px;
+.surrender-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
-.custom-select, .date-select {
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 1rem;
+  width: 20px;
+  height: 20px;
+  opacity: 0.6;
+}
+
+.pet-icon {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z' /%3E%3C/svg%3E") no-repeat center center;
+}
+
+.cat-icon {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M20 12v6a2 2 0 01-2 2H6a2 2 0 01-2-2v-6M14 9l-2-2m0 0L10 9m2-2v8' /%3E%3C/svg%3E") no-repeat center center;
+}
+
+.home-icon {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' /%3E%3C/svg%3E") no-repeat center center;
+}
+
+.location-icon {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z' /%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 11a3 3 0 11-6 0 3 3 0 016 0z' /%3E%3C/svg%3E") no-repeat center center;
+}
+
+.info-icon {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z' /%3E%3C/svg%3E") no-repeat center center;
+}
+
+.image-icon {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z' /%3E%3C/svg%3E") no-repeat center center;
+}
+
+.styled-input {
+  height: 42px;
   width: 100%;
-  padding: 10px;
-  border: 3px solid #6a7282;
-  border-radius: 15px;
-  background: #f8f4f4;
-  font-size: 1rem;
-  margin-top: 5px;
+  padding: 0 1rem 0 3rem;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  border: 2px solid #CBD5E0;
+  border-radius: 10px;
+}
+
+.styled-input:focus {
+  border-color: #E85B44;
+  box-shadow: 0 0 0 2px rgba(232, 91, 68, 0.2);
+  background-color: white;
+}
+
+.styled-select {
+  height: 42px;
+  width: 100%;
+  padding: 0 1rem 0 3rem;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  border: 2px solid #CBD5E0;
+  border-radius: 10px;
+  background-color: white;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7' /%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
+}
+
+.styled-select:focus {
+  border-color: #E85B44;
+  box-shadow: 0 0 0 2px rgba(232, 91, 68, 0.2);
 }
 
 .date-container {
   display: flex;
-  justify-content: space-between;
+  gap: 0.5rem;
 }
 
 .date-select {
-  width: 30%;
+  height: 42px;
+  padding: 0 0.5rem;
+  font-size: 0.9rem;
+  border: 2px solid #CBD5E0;
+  border-radius: 10px;
+  background-color: white;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7' /%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 1em;
 }
 
-.button-container {
+.year-select {
+  width: 33%;
+}
+
+.month-select {
+  width: 33%;
+}
+
+.day-select {
+  width: 33%;
+}
+
+.date-select:focus {
+  border-color: #E85B44;
+  box-shadow: 0 0 0 2px rgba(232, 91, 68, 0.2);
+}
+
+.file-upload-group {
+  margin-top: 0.5rem;
+}
+
+.file-input-container {
   display: flex;
-  justify-content: flex-end; 
-  margin-top: 15px;
-  gap: 1rem;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filename-container {
+  flex: 1;
+  min-height: 42px;
+  border-radius: 10px;
+  border: 2px solid #CBD5E0;
+  padding: 0 1rem 0 3rem;
+  display: flex;
+  align-items: center;
+  background-color: white;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-name {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1rem;
+}
+
+.file-placeholder {
+  color: #A0AEC0;
+  font-size: 0.9rem;
+}
+
+.upload-button {
+  height: 42px;
+  border-radius: 10px;
+  background: #E85B44;
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+  padding: 0 1rem;
+}
+
+.upload-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(232, 91, 68, 0.3);
+  background: #D85840;
+}
+
+.submit-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5rem;
 }
 
 .submit-button {
-  background: #ff5722;
+  height: 42px;
+  border-radius: 10px;
+  background: #E85B44;
   color: white;
-    width: 160px;
-  font-size: 1.1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  padding: 0 1.5rem;
+  min-width: 160px;
+}
 
+.submit-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(232, 91, 68, 0.3);
+  background: #D85840;
 }
+
 .submit-button-disabled {
-  background-color: #6a7282;
+  height: 42px;
+  border-radius: 10px;
+  background: #CBD5E0;
   color: white;
-    width: 160px;
-  font-size: 1.1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: none;
+  padding: 0 1.5rem;
+  min-width: 220px; /* Wider button to fit text better */
 }
+
 .submit-button-disabled:hover {
-  background-color: #6a7282;
-  cursor: default;
+  transform: none;
+  box-shadow: none;
+  background: #CBD5E0;
+  box-shadow: 0 4px 8px rgba(232, 91, 68, 0.3);
 }
-.inputs{
-  width: calc(100vw - 65px);
-  max-width: 587px;
+
+@media (max-width: 768px) {
+  .surrender-page {
+    padding: 1rem;
+  }
+  
+  .surrender-card {
+    flex-direction: column-reverse;
+    max-width: 500px;
+  }
+  
+  .illustration-side {
+    min-height: 240px;
+  }
+  
+  .form-side {
+    padding: 1.5rem 1rem;
+  }
+  
+  .file-input-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .upload-button {
+    width: 100%;
+  }
 }
-.imguploadbtn{
-  width: 160px;
-  font-size: 1.1rem;
+
+@media (max-width: 480px) {
+  .surrender-page {
+    padding: 0.5rem;
+  }
+  
+  .surrender-card {
+    border-radius: 15px;
+  }
+  
+  .form-side {
+    padding: 1rem 0.75rem;
+  }
+  
+  .welcome-text h2 {
+    font-size: 1.5rem;
+  }
+  
+  .styled-input, .styled-select, .date-select {
+    height: 40px;
+  }
+  
+  .submit-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .submit-button, .submit-button-disabled {
+    width: 100%;
+  }
 }
 </style>
