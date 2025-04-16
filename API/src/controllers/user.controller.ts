@@ -159,7 +159,7 @@ export const mailData = async (req, res) => {
     const userE = req.body[0];
     if (await userService.IsEmailUsed(userE)) {
         const answer = await userService.getMailDataByMail(userE);
-        return res.status(200).json({maildata: answer});
+        return res.status(200).json({maildata: answer, success: true});
     }
 }
 

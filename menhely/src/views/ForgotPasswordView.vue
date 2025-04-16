@@ -21,10 +21,10 @@ function AskForPass() {
   if (!userStore.isLoggedIn()) {
     api.userPassRecover(email.value).then(() => {
       api.getMailDataByMail(email.value).then((res)=> {
-      const maildata = res.data.maildata;
-      console.log(maildata)
-        const data = {
-          "to": email,
+        if (res.data.success){
+          const maildata = res.data.maildata;
+          const data = {
+          "to": email.value ,
           "subject": "GazdiRadar Jelszó visszaállítás",
           "content": {
               "userName": maildata.userName,
@@ -33,7 +33,10 @@ function AskForPass() {
               },
           "template": "PassRecovery"
           };
+          console.log(data);
           mail.sendMail(data);
+        }
+      
       });
     })
   }
