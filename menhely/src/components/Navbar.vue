@@ -166,7 +166,7 @@ const closeMenu = () => {
     }
 
     #right.mobile-menu-open {
-        max-height: 300px;
+        max-height: 330px;
         padding: 20px 0;
     }
 
