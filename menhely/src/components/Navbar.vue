@@ -148,7 +148,7 @@ const closeMenu = () => {
 }
 
 
-@media screen and (max-width: 1050px) {
+@media screen and (max-width: 1200px) {
     #right {
         position: absolute;
         top: 100%;

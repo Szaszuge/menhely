@@ -3,6 +3,7 @@ import CustomInput from '@/components/CustomInput.vue';
 import Button from '@/components/Button.vue';
 import { onMounted, onUnmounted, ref } from 'vue';
 import PawFooter from '@/components/PawFooter.vue';
+import AdminNav from '@/components/AdminNav.vue';
 import { ApiService } from "@/service/api.service";
 
 const activeTab = ref('');
@@ -53,31 +54,7 @@ let animals = [];
 <template>
   <div class="admin-container">
     <div class="content-wrapper">
-      <div class="navigation-container">
-        <div class="navigation-tabs">
-          <button 
-            class="nav-tab" 
-            :class="{ active: activeTab === 'Felhasználók'}"
-            @click="activeTab = 'Felhasználók'"
-          >
-            Felhasználók
-          </button>
-          <button 
-            class="nav-tab" 
-            :class="{ active: activeTab === 'Kérések'}"
-            @click="activeTab = 'Kérések'"
-          >
-            Kérések
-          </button>
-          <button 
-            class="nav-tab" 
-            :class="{ active: activeTab === 'Állatok'}"
-            @click="activeTab = 'Állatok'"
-          >
-            Állatok
-          </button>
-        </div>
-      </div>
+      <AdminNav v-model:activeTab="activeTab" />
 
       <div class="search-container">
         <CustomInput v-model="search" search class="search-input" />
@@ -309,65 +286,6 @@ let animals = [];
   margin: 0 auto;
 }
 
-.navigation-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-
-.navigation-tabs {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  border-bottom: 2px solid #FED7AA;
-  flex-wrap: wrap;
-}
-
-.nav-tab {
-  padding: 12px 24px;
-  cursor: pointer;
-  font-size: 1.1rem;
-  position: relative;
-  background: transparent;
-  border: none;
-  transition: all 0.2s ease-in-out;
-  margin: 0 4px;
-}
-
-.nav-tab:hover {
-  font-weight: 600;
-}
-
-.nav-tab::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 100%;
-  height: 3px;
-  background-color: #E85B44;
-  transform: scaleX(0);
-  transform-origin: center;
-  transition: transform 0.3s ease-in-out;
-}
-
-.nav-tab:hover::after {
-  transform: scaleX(0.8);
-}
-
-.nav-tab.active {
-  font-weight: 700;
-  background-color: #FED7AA;
-  border-radius: 8px 8px 0 0;
-}
-
-.nav-tab.active::after {
-  content: '';
-  transform: scaleX(1);
-  height: 4px;
-  background-color: #E85B44;
-}
-
 .search-container {
   margin-bottom: 1.5rem;
   display: flex;
@@ -376,14 +294,14 @@ let animals = [];
 }
 
 .search-input {
-  width: 100%;
-  max-width: 100%;
+  width: 50%;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .table-container {
   overflow-x: auto;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .admin-table {
@@ -538,15 +456,8 @@ let animals = [];
     padding: 12px;
   }
   
-  .navigation-tabs {
-    width: 100%;
-  }
-  
-  .nav-tab {
-    padding: 10px 16px;
-    font-size: 1rem;
-    flex: 1;
-    text-align: center;
+  .search-input {
+    width: 70%; 
   }
   
   .admin-table {
@@ -559,15 +470,6 @@ let animals = [];
 }
 
 @media (max-width: 480px) {
-  .navigation-tabs {
-    gap: 4px;
-  }
-  
-  .nav-tab {
-    padding: 8px 12px;
-    font-size: 0.9rem;
-  }
-  
   .mobile-actions {
     gap: 6px;
   }
@@ -580,6 +482,10 @@ let animals = [];
   .action-icon {
     width: 22px;
     height: 22px;
+  }
+  
+  .search-input {
+    width: 90%; 
   }
 }
 </style>
