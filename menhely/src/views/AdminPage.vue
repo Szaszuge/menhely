@@ -5,28 +5,37 @@ import { onMounted, onUnmounted, ref } from 'vue';
 import PawFooter from '@/components/PawFooter.vue';
 import AdminNav from '@/components/AdminNav.vue';
 import { ApiService } from "@/service/api.service";
+import { useUserStore } from '../stores/user';
 
 const activeTab = ref('');
 const search = ref('');
 const api = new ApiService();
+const userStore = useUserStore();
 
 const showRequestDetails = ref(false);
 const selectedRequestId = ref('');
+const temp = ref('')
 
 onMounted(() => {
   refresh();
 });
 
-function refresh() {
-  api.getAllRequests().then((res) => {
+async function refresh() {
+  await api.getAllRequests().then((res) => {
     requests = res.data.requests;
   });
-  api.getAllUsers().then((res) => {
+  await api.getAllUsers().then((res) => {
     users = res.data.users;
   });
-  api.getAllAnimals().then((res) => {
+  await api.getAllAnimals().then((res) => {
     animals = res.data.animals;
   });
+
+  temp.value = activeTab.value;
+  activeTab.value = '';
+  activeTab.value = temp.value;
+
+  console.log('refreshed.');
 }
 
 // Kérések
@@ -58,6 +67,20 @@ function closeRequestPopup() {
 
 let users = [];
 
+async function PromoteUser(id:string) {
+  await api.PromoteUser(id);
+  refresh();
+  
+}
+
+async function DemoteUser(id:string) {
+  await api.DemoteUser(id);
+  refresh();
+}
+
+// Felhaszálók vége
+// Állatok
+
 let animals = [];
 </script>
 
@@ -71,6 +94,7 @@ let animals = [];
       </div>
 
       <div class="table-container">
+        <!-- Kérések tábla-->
         <table v-if="activeTab === 'Kérések'" class="admin-table">
           <thead>
             <tr class="header-row">
@@ -107,7 +131,7 @@ let animals = [];
             </tr>
           </tbody>
         </table>
-
+        <!-- Felhasználók tábla-->
         <table v-if="activeTab === 'Felhasználók'" class="admin-table">
           <thead>
             <tr class="header-row">
@@ -126,14 +150,18 @@ let animals = [];
                 'last-row': index === users.length - 1 
               }"
             >
-              <td class="column-name">{{ user.name }}</td>
-              <td class="column-middle">{{ user.role }}</td>
+              <td class="column-name">{{ userStore.loggedUser().id == user.id ? '🜲 ' : '' }}{{ user.name }}</td>
+              <td class="column-middle">{{ user.role == "recovering" ? "user" : user.role }}</td>
               <td class="column-actions">
                 <div class="actions-container">
-                  <button class="action-button" aria-label="Előléptetés">
+                  <!-- Feltételek, hogy mi mikor jelenjen meg -->
+                  <button class="action-button" aria-label="Előléptetés" @click="PromoteUser(user.id)" v-if="user.role != 'admin' && user.role != 'moderator'">
                     <img src="../assets/user_promote.png" alt="Előléptetés" class="action-icon">
                   </button>
-                  <button class="action-button" aria-label="Kitiltás">
+                  <button class="action-button" aria-label="Lefokozás" @click="DemoteUser(user.id)" v-if="(user.role == 'moderator' || user.role == 'admin') && userStore.loggedUser().name != user.name">
+                    <img src="../assets/user_demote.png" alt="Lefokozás" class="action-icon">
+                  </button>
+                  <button class="action-button" aria-label="Kitiltás" @click="DemoteUser(user.id)" v-if="user.role != 'admin' && user.role != 'moderator' && user.role != 'banned'">
                     <img src="../assets/ban_user.png" alt="Kitiltás" class="action-icon">
                   </button>
                 </div>
@@ -141,7 +169,7 @@ let animals = [];
             </tr>
           </tbody>
         </table>
-
+        <!-- Állatok tábla-->
         <table v-if="activeTab === 'Állatok'" class="admin-table">
           <thead>
             <tr class="header-row">
@@ -178,7 +206,7 @@ let animals = [];
             </tr>
           </tbody>
         </table>
-
+        <!-- Kérés -->
         <div v-if="activeTab === 'Kérések'" class="mobile-table">
           <div
             v-for="(request, index) in requests"
@@ -212,7 +240,7 @@ let animals = [];
             </div>
           </div>
         </div>
-
+        <!-- Felhasználó -->
         <div v-if="activeTab === 'Felhasználók'" class="mobile-table">
           <div
             v-for="(user, index) in users"
@@ -234,16 +262,24 @@ let animals = [];
               </div>
             </div>
             <div class="mobile-actions">
+              <!--
+
+              Ideiglenesen ez el lett baszva
+
               <button class="action-button" aria-label="Előléptetés">
+                <img src="../assets/user_promote.png" alt="Előléptetés" class="action-icon">
+              </button>
+              <button class="action-button" aria-label="Lefokozás">
                 <img src="../assets/user_promote.png" alt="Előléptetés" class="action-icon">
               </button>
               <button class="action-button" aria-label="Kitiltás">
                 <img src="../assets/ban_user.png" alt="Kitiltás" class="action-icon">
               </button>
+              -->
             </div>
           </div>
         </div>
-
+        <!-- Állat -->
         <div v-if="activeTab === 'Állatok'" class="mobile-table">
           <div
             v-for="(animal, index) in animals"

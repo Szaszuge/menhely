@@ -5,7 +5,7 @@ import type { Address } from '../interfaces/address';
 
 export class ApiService {
     constructor(){ }
-        private server = environment.serverUrl;
+        private server:string = environment.serverUrl;
 
     userRegister(user:User, address:Address){
         //console.log("Reservation request called.");
@@ -50,7 +50,13 @@ export class ApiService {
         return axios.get(this.server + "/animal/getAll");
     }
 
-    acceptRequest(id:number){
+    PromoteUser(id:string){
+        return axios.post(this.server + "/users/promote", [id]);
+    }
+    DemoteUser(id:string){
+        return axios.post(this.server + "/users/demote", [id]);
+    }
+    acceptRequest(id:string){
         //console.log("Accepting request.");
         return axios.post(this.server + "/requests/accept", id);
     }

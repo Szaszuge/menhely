@@ -200,3 +200,63 @@ exports.getAllUsers = async () => {
     const users = await AppDataSource.manager.find(UserView);
     return users;
 } 
+exports.PromoteByID = async (id, role) => {
+    switch (role) {
+        case Permits.banned:
+        case Permits.limbo:
+            await AppDataSource
+            .createQueryBuilder()
+            .update(User)
+            .set({ permit: Permits.base})
+            .where("id = :id", { id: id })
+            .execute();
+            return true;
+        
+        case Permits.base:
+        case Permits.pwedit:
+            await AppDataSource
+            .createQueryBuilder()
+            .update(User)
+            .set({ permit: Permits.elevated})
+            .where("id = :id", { id: id })
+            .execute();
+            return true;
+
+        default:
+            console.log(`unimplemented: ${role}`)
+            return false;
+    }
+}
+exports.DemoteByID = async (id, role) => {
+    switch (role) {
+        case Permits.elevated:
+            await AppDataSource
+            .createQueryBuilder()
+            .update(User)
+            .set({ permit: Permits.base})
+            .where("id = :id", { id: id })
+            .execute();
+            return true;
+        case Permits.base:
+        case Permits.pwedit:
+            await AppDataSource
+            .createQueryBuilder()
+            .update(User)
+            .set({ permit: Permits.banned})
+            .where("id = :id", { id: id })
+            .execute();
+            return true;
+        case Permits.limbo:
+        case Permits.banned:
+            await AppDataSource
+            .createQueryBuilder()
+            .delete()
+            .from(User)
+            .where("id = :id", { id: id })
+            .execute();
+            return true;
+        default:
+            console.log("unimplemented.")
+            return false;
+    }
+}

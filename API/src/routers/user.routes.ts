@@ -13,8 +13,10 @@ router.post('/resetPass', userController.resetPass)
 router.post('/revertPass', userController.revertPass);
 
 router.post('/mailData', userController.mailData);
-router.get('/getAll', userController.getAllUsers);
 
+router.get('/getAll', userController.getAllUsers);
+router.post('/promote', userController.Promote);
+router.post('/demote', userController.Demote);
 
 router.get('/', (req, res) => {res.send("User routes are connected.")});
 

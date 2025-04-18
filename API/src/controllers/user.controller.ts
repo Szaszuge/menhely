@@ -176,5 +176,24 @@ export const mailData = async (req, res) => {
 }
 export const getAllUsers = async (req, res) => {
     const users = await userService.getAllUsers();
-    res.status(200).json({ message: "Sikeres lekérdezés!", users: users });
+    return res.status(200).json({ message: "Sikeres lekérdezés!", users: users });
+}
+export const Promote = async (req, res) => {
+    const id = req.body[0];
+    const role:Permits = await userService.getStatusByID(id);
+    const answer = await userService.PromoteByID(id, role);
+    if (answer) {
+        return res.status(200).json({message: "Jogosultság sikeresen módosítva.", success: true})
+    }
+    return res.status(203).json({message: "Valami történt.", success: false});
+}
+
+export const Demote = async (req, res) => {
+    const id = req.body[0];
+    const role:Permits = await userService.getStatusByID(id);
+    const answer = await userService.DemoteByID(id, role);
+    if (answer) {
+        return res.status(200).json({message: "Jogosultság sikeresen módosítva.", success: true})
+    }
+    return res.status(203).json({message: "Valami történt.", success: false});
 }

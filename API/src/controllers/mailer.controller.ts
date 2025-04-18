@@ -37,12 +37,12 @@ export const RenderMail = async (req, res, next) => {
         try {
             console.log("Attempting to send mail.")
             let result = await mailMan.sendMail(mailOptions);
-            res.send({ message: 'Az e-mail elküldve!' });
+            return res.send({ message: 'Az e-mail elküldve!' });
             console.log("Successful attempt.")
         } catch(error){
             console.log("Failed attempt.")
             console.log(error)
-            res.send({ message: error });
+            return res.send({ message: error });
             
         }
     });
