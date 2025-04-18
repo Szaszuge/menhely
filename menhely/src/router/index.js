@@ -86,6 +86,12 @@ const router = createRouter({
       path: '/newpassword/:id',
       name: 'newpassword',
       component: () => import('../views/NewPasswordView.vue')
+    },
+
+    {
+      path: '/revertpassword/:id',
+      name: 'revertpassword',
+      component: () => import('../views/RevertPasswordView.vue')
     }
   ],
 })

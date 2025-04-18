@@ -10,6 +10,8 @@ router.post('/activateByID', userController.activateById);
 router.post('/login', userController.login);
 router.post('/recover', userController.recover);
 router.post('/resetPass', userController.resetPass)
+router.post('/revertPass', userController.revertPass);
+
 router.post('/mailData', userController.mailData);
 router.get('/getAll', userController.getAllUsers);
 

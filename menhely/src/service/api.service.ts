@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { environment } from '../enviroments/testing';
-import type { User } from '@/interfaces/user';
-import type { Address } from '@/interfaces/address';
+import type { User } from '../interfaces/user';
+import type { Address } from '../interfaces/address';
 
 export class ApiService {
     constructor(){ }
@@ -29,6 +29,10 @@ export class ApiService {
     resetPassByID(id:string, pass:string, confirm:string){
         return axios.post(this.server + "/users/resetPass", [id, pass, confirm])
     }
+    revertPassword(id:string){
+        return axios.post(this.server + "/users/revertPass", [id])
+    }
+
     getMailDataByMail(email:string){
         return axios.post(this.server + "/users/mailData", [email])
     }

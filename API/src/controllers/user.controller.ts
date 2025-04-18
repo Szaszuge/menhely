@@ -154,7 +154,19 @@ export const resetPass = async (req, res) => {
     }
     return res.status(400).json({message: "Ismeretlen hiba..."});
 }
+export const revertPass = async (req, res) => {
+    const id:string = req.body[0];
+    const user:Permits = await userService.getStatusByID(id);
+    if (user != Permits.pwedit) {
+        return res.status(203).json({message: "A fiók nem kért jelszó váltást.", success: false})
+    }
+    const result:boolean = await userService.RevertPasswordChange(id);
+    if (result) {
+        return res.status(200).json({message: "Jelszó változtatási kérelem sikeresen visszavonva.", success: true})
+    }
+    return res.status(203).json({message: "Valami történt.", success: false});
 
+}
 export const mailData = async (req, res) => {
     const userE = req.body[0];
     if (await userService.IsEmailUsed(userE)) {
@@ -162,7 +174,6 @@ export const mailData = async (req, res) => {
         return res.status(200).json({maildata: answer, success: true});
     }
 }
-
 export const getAllUsers = async (req, res) => {
     const users = await userService.getAllUsers();
     res.status(200).json({ message: "Sikeres lekérdezés!", users: users });

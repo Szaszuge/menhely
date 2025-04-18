@@ -22,7 +22,6 @@ onMounted(() => {
     router.push("/");
   }
     console.log(id);
-    let api = new ApiService();
     api.userDataByID(id).then((res) => {
         if (res.data.status != "recovering"){
           router.push("/");

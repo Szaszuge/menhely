@@ -175,7 +175,19 @@ exports.changePWD = async (id, pass) => {
     }
     return false;
 }
-
+exports.RevertPasswordChange = async (id) => {
+    const result = await AppDataSource.manager.findOneBy(User, {id: id});
+    if (result != null) {
+        await AppDataSource
+        .createQueryBuilder()
+        .update(User)
+        .set({ permit: Permits.base})
+        .where("id = :id", { id: id })
+        .execute();
+        return true;
+    }
+    return false;
+}
 exports.getMailDataByMail = async (email) => {
     const result = await AppDataSource.manager.findOneBy(User, {email: email});
     const maildata = {
@@ -184,7 +196,6 @@ exports.getMailDataByMail = async (email) => {
     }
     return maildata;
 }
-
 exports.getAllUsers = async () => {
     const users = await AppDataSource.manager.find(UserView);
     return users;

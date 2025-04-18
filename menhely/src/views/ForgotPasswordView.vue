@@ -11,8 +11,8 @@ import { useUserStore } from '@/stores/user';
 
 const userStore = useUserStore();
 const router = useRouter()
-let api = new ApiService();
-let mail = new MailService();
+const api = new ApiService();
+const mail = new MailService();
 
 const email = ref("");
 
