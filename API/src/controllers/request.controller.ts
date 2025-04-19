@@ -10,6 +10,13 @@ export const getAllRequestsRaw = async (req, res) => {
 export const acceptRequest = async (req, res) => {
     const id = req.body.id;
     console.log(`Accepting request... [${id}]`);
-    const request = await requestService.acceptRequest(id);
-    return res.status(200).json({ message: "Sikeres fogadás", request: request });
+    await requestService.acceptRequest(id);
+    return res.status(200).json({ message: "Sikeres fogadás"});
+}
+export const refuseRequest = async (req, res) => {
+    const id = req.body.id;
+    console.log(`Refusing request... [${id}]`);
+    const answer = await requestService.refuseRequest(id);
+    if (answer) return res.status(200).json({ message: "Sikeres elutasítás"});
+    return res.status(203).json({ message: "Sikertelen elutasítás"});
 }

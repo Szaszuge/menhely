@@ -497,7 +497,7 @@ function send(event:Event) {
 .submit-button-disabled {
   height: 42px;
   border-radius: 10px;
-  background: #CBD5E0;
+  background-color: var(--button-disabled);
   color: white;
   font-weight: 600;
   font-size: 0.9rem;
@@ -509,7 +509,7 @@ function send(event:Event) {
 .submit-button-disabled:hover {
   transform: none;
   box-shadow: none;
-  background: #CBD5E0;
+  background-color: var(--button-disabled);
   box-shadow: 0 4px 8px rgba(232, 91, 68, 0.3);
 }
 

@@ -56,8 +56,12 @@ export class ApiService {
     DemoteUser(id:string){
         return axios.post(this.server + "/users/demote", [id]);
     }
+
     acceptRequest(id:string){
         //console.log("Accepting request.");
         return axios.post(this.server + "/requests/accept", id);
+    }
+    refuseRequest(id:string){
+        return axios.post(this.server + "/requests/refuse", id)
     }
 }
