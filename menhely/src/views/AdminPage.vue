@@ -20,26 +20,35 @@ onMounted(() => {
   refresh();
 });
 
+function nagybetu(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1)
+}
+
 async function refresh() {
   await api.getAllRequests().then((res) => {
-    requests = res.data.requests;
+    requests.value = res.data.requests;
   });
   await api.getAllUsers().then((res) => {
-    users = res.data.users;
+    users.value = res.data.users;
   });
   await api.getAllAnimals().then((res) => {
-    animals = res.data.animals;
+    animals.value = res.data.animals;
   });
+  if (search.value == ""){
+    filtered_requests.value = requests.value;
+    filtered_users.value = users.value;
+    filtered_animals.value = animals.value;
+  }
 
   temp.value = activeTab.value;
   activeTab.value = '';
   activeTab.value = temp.value;
 
-  console.log('refreshed.');
 }
 
 // Kérések
-let requests = [];
+let requests = ref([]);
+let filtered_requests = ref([]);
 
 async function viewRequest(id:string) {
   selectedRequestId.value = id;
@@ -47,14 +56,14 @@ async function viewRequest(id:string) {
 }
 
 async function acceptRequest(id:string) {
-  await api.acceptRequest(id).then((res) => {
-    console.log(res.data);
-  });
+  await api.acceptRequest(id);
+  // TODO: Mail user about accepted request based on request type
   refresh();
 }
 
 async function refuseRequest(id:string) {
-  await console.log("TBA");
+  await api.refuseRequest(id);
+  // TODO: Mail user about refused request based on request type
   refresh();
 }
 
@@ -65,7 +74,8 @@ function closeRequestPopup() {
 // Kérések vége
 // Felhaszálók
 
-let users = [];
+let users = ref([]);
+let filtered_users = ref([]);
 
 async function PromoteUser(id:string) {
   await api.PromoteUser(id);
@@ -81,7 +91,41 @@ async function DemoteUser(id:string) {
 // Felhaszálók vége
 // Állatok
 
-let animals = [];
+let animals = ref([]);
+let filtered_animals = ref([]);
+
+// Állatok vége
+function lookUp() {
+  if (search.value != "") {
+    let temp_request = [];
+    let temp_user = [];
+    let temp_animal = [];
+
+    animals.value.forEach(element => {
+      if (element.name.toLowerCase().includes(search.value.toLowerCase())) {
+        temp_animal.push(element);
+      }
+    });
+    users.value.forEach(element => {
+      if (element.name.toLowerCase().includes(search.value.toLowerCase())) {
+        temp_user.push(element);
+      }
+    });
+    requests.value.forEach(element => {
+      if (element.name.toLowerCase().includes(search.value.toLowerCase())) {
+        temp_request.push(element);
+      }
+    });
+    filtered_requests.value = temp_request;
+    filtered_users.value = temp_user;
+    filtered_animals.value = temp_animal;
+  }
+  else{
+    filtered_requests.value = requests.value;
+    filtered_users.value = users.value;
+    filtered_animals.value = animals.value;
+  }
+} 
 </script>
 
 <template>
@@ -90,7 +134,7 @@ let animals = [];
       <AdminNav v-model:activeTab="activeTab" />
 
       <div class="search-container">
-        <CustomInput v-model="search" search class="search-input" />
+        <CustomInput v-model="search" search class="search-input" @input="lookUp()"/>
       </div>
 
       <div class="table-container">
@@ -105,7 +149,7 @@ let animals = [];
           </thead>
           <tbody>
             <tr 
-              v-for="(request, index) in requests" 
+              v-for="(request, index) in filtered_requests" 
               :key="index" 
               :class="{ 
                 'even-row': index % 2 !== 0, 
@@ -142,7 +186,7 @@ let animals = [];
           </thead>
           <tbody>
             <tr 
-              v-for="(user, index) in users" 
+              v-for="(user, index) in filtered_users" 
               :key="index" 
               :class="{ 
                 'even-row': index % 2 !== 0, 
@@ -151,17 +195,29 @@ let animals = [];
               }"
             >
               <td class="column-name">{{ userStore.loggedUser().id == user.id ? '🜲 ' : '' }}{{ user.name }}</td>
-              <td class="column-middle">{{ user.role == "recovering" ? "user" : user.role }}</td>
+              <td class="column-middle">{{ user.role == "recovering" ? "User" : nagybetu(user.role) }}</td>
               <td class="column-actions">
                 <div class="actions-container">
-                  <!-- Feltételek, hogy mi mikor jelenjen meg -->
-                  <button class="action-button" aria-label="Előléptetés" @click="PromoteUser(user.id)" v-if="user.role != 'admin' && user.role != 'moderator'">
+                  <!-- 
+                  Feltételek, hogy mi mikor jelenjen meg.
+                  Esetleg késöbb v-binding-al meg lehet oldani hogy jobb legyen.
+                   -->
+                  <button class="action-button"  aria-label="Előléptetés" @click="PromoteUser(user.id)" v-if="user.role != 'admin' && user.role != 'moderator'">
+                    <img src="../assets/user_promote.png" alt="Előléptetés" class="action-icon">
+                  </button>
+                  <button class="disabled-action-button" aria-label="Előléptetés" disabled v-else>
                     <img src="../assets/user_promote.png" alt="Előléptetés" class="action-icon">
                   </button>
                   <button class="action-button" aria-label="Lefokozás" @click="DemoteUser(user.id)" v-if="(user.role == 'moderator' || user.role == 'admin') && userStore.loggedUser().name != user.name">
                     <img src="../assets/user_demote.png" alt="Lefokozás" class="action-icon">
                   </button>
+                  <button class="disabled-action-button" aria-label="Lefokozás" disabled v-else>
+                    <img src="../assets/user_demote.png" alt="Lefokozás" class="action-icon">
+                  </button>
                   <button class="action-button" aria-label="Kitiltás" @click="DemoteUser(user.id)" v-if="user.role != 'admin' && user.role != 'moderator' && user.role != 'banned'">
+                    <img src="../assets/ban_user.png" alt="Kitiltás" class="action-icon">
+                  </button>
+                  <button class="disabled-action-button" aria-label="Kitiltás" disabled v-else>
                     <img src="../assets/ban_user.png" alt="Kitiltás" class="action-icon">
                   </button>
                 </div>
@@ -180,7 +236,7 @@ let animals = [];
           </thead>
           <tbody>
             <tr 
-              v-for="(animal, index) in animals" 
+              v-for="(animal, index) in filtered_animals" 
               :key="index" 
               :class="{ 
                 'even-row': index % 2 !== 0, 
@@ -209,7 +265,7 @@ let animals = [];
         <!-- Kérés -->
         <div v-if="activeTab === 'Kérések'" class="mobile-table">
           <div
-            v-for="(request, index) in requests"
+            v-for="(request, index) in filtered_requests"
             :key="`mobile-${index}`"
             class="mobile-card"
             :class="{
@@ -243,7 +299,7 @@ let animals = [];
         <!-- Felhasználó -->
         <div v-if="activeTab === 'Felhasználók'" class="mobile-table">
           <div
-            v-for="(user, index) in users"
+            v-for="(user, index) in filtered_users"
             :key="`mobile-${index}`"
             class="mobile-card"
             :class="{
@@ -282,7 +338,7 @@ let animals = [];
         <!-- Állat -->
         <div v-if="activeTab === 'Állatok'" class="mobile-table">
           <div
-            v-for="(animal, index) in animals"
+            v-for="(animal, index) in filtered_animals"
             :key="`mobile-${index}`"
             class="mobile-card"
             :class="{
@@ -487,12 +543,25 @@ let animals = [];
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.action-button:hover {
+.disabled-action-button {
+  width: 40px;
+  height: 40px;
+  background-color: var(--button-disabled);
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.action-button:hover, .disabled-action-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 
-.action-button:active {
+.action-button:active, .disabled-action-button:active {
   transform: translateY(0);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }

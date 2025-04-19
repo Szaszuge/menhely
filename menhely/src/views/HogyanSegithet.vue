@@ -4,7 +4,9 @@ import SupportCard from "@/components/SupportCard.vue";
 import PawFooter from "@/components/PawFooter.vue";
 import CustomInput from "@/components/CustomInput.vue";
 import DualRangeSlider from "@/components/DualRangeSlider.vue";
+import { useUserStore } from '@/stores/user';
 
+const userStore = useUserStore();
 // State management
 const showVolunteerForm = ref(false);
 const volunteerDate = ref({
@@ -21,10 +23,7 @@ function toggleForm() {
 
 // Form submission
 function submitVolunteerForm() {
-  console.log("Volunteer form submitted", {
-    date: `${volunteerDate.value.year}-${volunteerDate.value.month}-${volunteerDate.value.day}`,
-    reason: volunteerReason.value
-  });
+  console.log("TBA");
 }
 
 const currentYear = new Date().getFullYear();
@@ -148,9 +147,14 @@ onMounted(() => {
                 />
               </div>
 
-              <div class="button-container">
-                <button class="primary-button" @click="submitVolunteerForm">
+              <div class="button-container" v-if="userStore.isLoggedIn()">
+                <button class="primary-button" @click="submitVolunteerForm()">
                   Küldés
+                </button>
+              </div>
+              <div class="button-container" v-else>
+                <button class="disabled-button" disabled>
+                  Kérem jelentkezzen be!
                 </button>
               </div>
             </div>
@@ -214,6 +218,17 @@ onMounted(() => {
 
 .primary-button {
   background-color: #E85B44;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.disabled-button {
+  background-color: var(--button-disabled);
   color: white;
   border: none;
   border-radius: 0.5rem;
