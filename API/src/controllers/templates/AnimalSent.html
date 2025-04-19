@@ -1,11 +1,10 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        
-        body {
-            background: linear-gradient(#FFF4E4 50%, rgba(255, 98, 0, 0.25) 100%);
+        body{
+            background:linear-gradient(#FFF4E4 50%,  rgba(255, 98, 0, 0.25) 100%);
             min-height: 100vh;
             display: flex;
             flex-flow: column nowrap;
@@ -27,55 +26,29 @@
             text-rendering: optimizeLegibility;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            padding: 0 calc(2rem + 5vw);
             margin: 0;
             text-align: center;
-            overflow-x: hidden; 
         }
         
-        .content-wrapper {
-            padding: 0 calc(2rem + 5vw);
-            width: 100%;
-            max-width: 1200px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        #pawfooter {
+        #pawfooter{
             background-image: url("https://file.garden/Z1X6ItHu3lmreWfD/paws.png");
+            position: fixed;
+            bottom: 0;
             width: 100%;
+            z-index: -1;
             background-repeat: repeat-x;
             height: 200px;
-            margin-top: auto; 
+            margin-top: 1.5rem;
         }
-        
-        #gomb {
-            height: 60px;
-            width: 160px;
-            border-radius: 15px;
-            color: white;
-            font-weight: 600;
-            box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.4);
-            cursor: pointer;
-            background-color: #E85B44;
-            display: flex;
-            flex-flow: column nowrap;
-            align-items: center;
-            justify-content: center;
-            margin-top: 0.5rem;
+        img{
+        height: 160px;
+        width: 160px;
+        margin-top: 3rem;
         }
-        
-        img {
-            height: 160px;
-            width: 160px;
-            margin-top: 3rem;
-        }
-        
-        a {
+        a{
             text-decoration: none;
         }
-        
-        
         #header{
             background-color: #FDBA74;
             width: 100vw;
@@ -84,6 +57,8 @@
             justify-content: space-between;
             padding: 1rem auto;
             font-weight: 600;
+        
+            
         }
         #empty{
             width: 100px;
@@ -93,93 +68,19 @@
         #mh-icon{
         margin-left: 0.5rem;
         }
-        
-        p {
+        p{
             font-size: 1.1rem;
             font-weight: 500;
-        }
         
+        }
         #warning {
             font-weight: 600;
             margin-top: 1.5rem;
         }
-        
-        .pet-card {
-            margin: 1rem auto;
-            max-width: 440px;
-            width: 100%;
-        }
-        
-        .image-container {
-            display: flex;
-            flex-flow: column nowrap;
-            justify-content: center;
-            max-width: 440px;
-            width: 100%;
-            margin: 0 auto;
-        }
-        
-        .allatkep {
-            width: 100%;
-            max-width: 440px;
-            height: auto;
-            aspect-ratio: 440/490;
-            border-radius: 40px 40px 0px 0px;
-            object-fit: cover;
-            margin: 0;
-        }
-        
-        .white-rectangle {
-            width: 100%;
-            max-width: 440px;
-            background-color: white;
-            border-bottom-left-radius: 40px;
-            border-bottom-right-radius: 40px;
-            padding: 20px;
-            box-sizing: border-box;
-            display: flex;
-            flex-flow: column nowrap;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.4);
-            margin-top: -5px;
-        }
-        
-        h2 {
-            font-weight: bold;
-            font-size: 1.3rem;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        
-        .igazitas {
-            display: flex;
-            flex-flow: row nowrap;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            max-width: 365px;
-        }
-        
-        .pet-info {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: #64748b;
-        }
-        
-        .acceptance-message {
-            margin: 1rem 0;
-            padding: 0 1rem;
-            max-width: 1000px;
-        }
-        
-        #cimtext {
-            font-size: 1.6rem;
-            margin-top: 2rem;
-        }
     </style>
 </head>
-<body><div id="header">
+<body>
+<div id="header">
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:serif="http://www.serif.com/" width="100px" height="auto" viewBox="0 0 3200 2134" version="1.1" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;" id="mh-icon">
         <g id="Radar">
             <circle cx="1590.03" cy="977.467" r="52.083" style="fill:none;stroke:#000;stroke-width:33.33px;"></circle>
@@ -215,29 +116,18 @@
   <h1 id="headertext">GazdiRadar</h1>
   <p id="empty"></p>
 </div>
+<img src="https://file.garden/Z1X6ItHu3lmreWfD/pet.png" alt="">
 
-    <div class="content-wrapper">
-        <h1 id="cimtext">Kedves <%= content.userName %>!</h1>
+<h1>Értesítő a sikeres leadással kapcsolatban!</h1>
+<h2>Kedves <%= content.userName %>!</h2>
 
-        <div class="acceptance-message">
-            <p>Örömmel értesítjük, hogy az Ön által beküldött állat leadását elfogadtuk!</p>
-            <p>Az Ön által küldött kisállatot a következő napon tudjuk fogadni:</p>
-            <h2><%= content.year %>-<%= content.month %>-<%= content.day %></h2>
-        </div>
 
-        <div class="pet-card">
-            <div class="image-container">
-                <img src="../../../../menhely/src/assets/allatkep.png" alt="Kutya kép" class="allatkep">
-                <div class="white-rectangle">
-                    <h2>Sztárforsíp terijer kiskutyuska</h2>
-                    <div class="igazitas">
-                        <p class="pet-info">Nőstény, 2 hónapos</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<p>Köszönjük, hogy [állat neve] állatot A GazdiRadar csapatjára bízza! Csapatunk gondoskodik róla, hogy a kérelmét elfogadjuk és az állat hozzánk kerülése megkezdőthessen. Ha bármi probléma közbe jön, nyugodtan értesítsen minket erről!</p>
 
-    <div id="pawfooter"></div>
+<p id="warning">Ha nem Ön adott le állatot, kérjük hagyja figyelmen kívül ezt az emailt!</p>
+<p>Üdvözlettel: A GazdiRadar csapata</p>
+</div>
+
+<div id="pawfooter"></div>
 </body>
 </html>
