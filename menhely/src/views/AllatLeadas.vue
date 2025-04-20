@@ -61,21 +61,19 @@ function send(event:Event) {
   console.log(formDataEntries);
 
   animal.requestSurrender(formData).then((res) => {
-    console.log(res.data.message)
     visszajelzes.value = res.data.message
 
-    let data = {"to": auth.loggedUser().email,
-        "subject": "GazdiRadar Regisztráció",
+    console.log(auth.loggedUser())
+    let data = {
+      "to": auth.loggedUser().email,
+        "subject": "GazdiRadar | Állat leadás",
         "content": {
-            "userName": auth.loggedUser().userName,
-            "link": `http://localhost:5173/newpassword/${auth.loggedUser().id}`,
-            "year": info.details.year,
-            "month": info.details.month,
-            "day": info.details.day,
+            "userName": auth.loggedUser().name,
+            "animalname": allatNeve.value,
             },
-        "template": "AnimalSent"
+        "template": "request/AnimalSent"
         };
-
+        mail.sendMail(data);
   }); // Jegyzet: SOHA NE KÓDÓLJ BETEGEN!
   
 }

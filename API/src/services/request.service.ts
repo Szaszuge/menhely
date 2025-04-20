@@ -51,15 +51,12 @@ exports.acceptRequest = async (id) => {
         default:
             return "non-handled";
     }
-    // Elöbb el kell küldeni az üzenetet, szóval majd kell middleware cucc.
-    // const deleted_request = await AppDataSource.manager.delete(Request, {id: request.id});
-
     return true;
 
 }
 
-exports.refuseRequest = async (id) => {
-    console.log(`[SERVICE] REFUSING REQUEST...`)
+exports.deleteRequest = async (id) => {
+    console.log(`[SERVICE] DELETING REQUEST...`)
     const request = await AppDataSource.manager.findOneBy(Request, {id: id})
     if (!request){
         console.log(`[SERVICE] REQUEST NON-EXISTANT. RETURNING...`)

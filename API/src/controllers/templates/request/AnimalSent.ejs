@@ -122,7 +122,7 @@
 <h2>Kedves <%= content.userName %>!</h2>
 
 
-<p>Köszönjük, hogy [állat neve] állatot A GazdiRadar csapatjára bízza! Csapatunk gondoskodik róla, hogy a kérelmét elfogadjuk és az állat hozzánk kerülése megkezdőthessen. Ha bármi probléma közbe jön, nyugodtan értesítsen minket erről!</p>
+<p>Köszönjük, hogy <%= content.animalname == '' ? "az ön által beküldött állatát" : `${content.animalname} nevű állatát` %> a GazdiRadar csapatjára kívánja bízni! Csapatunk gondoskodik róla, hogy a kérelmét elfogadjuk és az állat hozzánk kerülése megkezdőthessen. Ha bármi probléma közbe jön, nyugodtan értesítsen minket erről!</p>
 
 <p id="warning">Ha nem Ön adott le állatot, kérjük hagyja figyelmen kívül ezt az emailt!</p>
 <p>Üdvözlettel: A GazdiRadar csapata</p>

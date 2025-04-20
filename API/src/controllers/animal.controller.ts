@@ -27,8 +27,7 @@ export const reserve = async (req, res, next) => {
         return res.status(203).json({ message: 'Nincs idő a feldolgozásra! (A kérés és leadás közt legalább 2 nap legyen!)'});
     }
     
-    // TODO: Kérelem feltöltése
-    animalService.reserveAnimalSurrenderRequest(request, req.file.filename);
+    animalService.reserveAnimalSurrenderRequest(request, req.file?.filename);
     
     return res.status(200).json({message: 'Végigment'});
 

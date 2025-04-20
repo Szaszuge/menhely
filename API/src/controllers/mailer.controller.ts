@@ -12,10 +12,10 @@ const mailMan = nodemailer.createTransport({
 
 export const RenderMail = async (req, res, next) => {
     console.log(req.body);
-    let to = req.body.to;
-    let subject = req.body.subject;
-    let content = req.body.content;
-    let template = req.body.template;
+    const to = req.body.to;
+    const subject = req.body.subject;
+    const content = req.body.content;
+    const template = req.body.template;
 
     const templatePath = path.join(__dirname, 'templates', template + '.ejs');
     console.log("Signal recived.")
@@ -39,6 +39,42 @@ export const RenderMail = async (req, res, next) => {
             let result = await mailMan.sendMail(mailOptions);
             return res.send({ message: 'Az e-mail elküldve!' });
             console.log("Successful attempt.")
+        } catch(error){
+            console.log("Failed attempt.")
+            console.log(error)
+            return res.send({ message: error });
+            
+        }
+    });
+}
+export const RenderMailThen = async (req, res, next) => {
+    console.log(req.body.mail);
+    const to = req.body.mail.to;
+    const subject = req.body.mail.subject;
+    const content = req.body.mail.content;
+    const template = req.body.mail.template;
+
+    const templatePath = path.join(__dirname, 'templates', template + '.ejs');
+    console.log("Signal recived. (next)")
+    ejs.renderFile(templatePath, {content}, async (err, html)=>{
+
+        console.log("Render attempt.")
+        if (err){
+            return res.send(`Error rendering email template: ${err}`);
+        }
+        console.log("Render success.")
+        const mailOptions = {
+            from: 'Csipicsipi csapacsapa rubirubi rabaraba <' + process.env.SMTP_USER + '>',
+            to: to,
+            subject: subject,
+            html: html
+        }
+
+        console.log("Options set.")
+        try {
+            console.log("Attempting to send mail.")
+            let result = await mailMan.sendMail(mailOptions);
+            next();
         } catch(error){
             console.log("Failed attempt.")
             console.log(error)

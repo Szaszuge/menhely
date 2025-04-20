@@ -4,7 +4,7 @@ import Button from '@/components/Button.vue';
 import { onMounted, onUnmounted, ref } from 'vue';
 import PawFooter from '@/components/PawFooter.vue';
 import AdminNav from '@/components/AdminNav.vue';
-import { ApiService } from "@/service/api.service";
+import { ApiService } from "../service/api.service";
 import { useUserStore } from '../stores/user';
 
 const activeTab = ref('');

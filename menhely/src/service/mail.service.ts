@@ -1,7 +1,5 @@
 import axios from 'axios';
 import { environment } from '../enviroments/testing';
-import type { User } from '@/interfaces/user';
-import type { Address } from '@/interfaces/address';
 
 export class MailService {
     constructor(){ }

@@ -13,7 +13,7 @@ exports.reserveAnimalSurrenderRequest = async(data, filename) => {
     pushed_animal_request.Type = RequestType.surrender;
 
     pushed_animal_request.details = data.details;
-    pushed_animal_request.details.image = filename;
+    pushed_animal_request.details.image = filename ? filename : null ;
     
     console.log(`[SERVICE] PUSHING GENERATED REQUEST INSTANCE...`)
 
