@@ -14,7 +14,8 @@ const userStore = useUserStore();
 
 const showRequestDetails = ref(false);
 const selectedRequestId = ref('');
-const temp = ref('')
+const temp = ref('');
+const reasonGiven = ref('');
 
 onMounted(() => {
   refresh();
@@ -56,14 +57,73 @@ async function viewRequest(id:string) {
 }
 
 async function acceptRequest(id:string) {
-  await api.acceptRequest(id);
-  // TODO: Mail user about accepted request based on request type
+  let  mailData = ref({});
+  let current_request = undefined;
+  await api.RequestByID(id).then((res) => {
+    current_request = res.data.request;
+  })
+
+  console.log(current_request);
+
+  if (current_request == null) {
+    return console.log("Bad request.");
+  }
+  
+  switch (current_request.Type){
+    case "Leadás":
+      mailData.value = {
+        to: userStore.loggedUser().email,
+        subject: "GazdiRadar | Állat leadás elfogadva",
+        content: {
+          userName: userStore.loggedUser().name,
+          year: current_request.details.year,
+          month: current_request.details.month,
+          day: current_request.details.day,
+          animalname: (current_request.details.name == null ? '' :  current_request.details.name),
+        },
+        template: "request/AnimalAccept"
+      }
+      break;
+    default:
+      return console.log("TBA");
+  }
+
+  await api.acceptRequest(id, mailData.value);
+
   refresh();
 }
 
 async function refuseRequest(id:string) {
-  await api.refuseRequest(id);
-  // TODO: Mail user about refused request based on request type
+  let  mailData = ref({});
+  let current_request = undefined;
+  await api.RequestByID(id).then((res) => {
+    current_request = res.data.request;
+  })
+
+  console.log(current_request);
+
+  if (current_request == null) {
+    return console.log("Bad request.");
+  }
+  
+  switch (current_request.Type){
+    case "Leadás":
+      mailData.value = {
+        to: userStore.loggedUser().email,
+        subject: "GazdiRadar | Állat leadás elutasítva",
+        content: {
+          userName: userStore.loggedUser().name,
+          reason: reasonGiven.value,
+        },
+        template: "request/AnimalDecline"
+      }
+      break;
+    default:
+      return console.log("TBA");
+  }
+
+  await api.refuseRequest(id, mailData.value);
+
   refresh();
 }
 

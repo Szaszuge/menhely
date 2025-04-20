@@ -64,7 +64,7 @@ function send(event:Event) {
     visszajelzes.value = res.data.message
 
     console.log(auth.loggedUser())
-    let data = {
+    const data = {
       "to": auth.loggedUser().email,
         "subject": "GazdiRadar | Állat leadás",
         "content": {
@@ -72,7 +72,7 @@ function send(event:Event) {
             "animalname": allatNeve.value,
             },
         "template": "request/AnimalSent"
-        };
+    };
         mail.sendMail(data);
   }); // Jegyzet: SOHA NE KÓDÓLJ BETEGEN!
   

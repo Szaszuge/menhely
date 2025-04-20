@@ -7,6 +7,7 @@ const router = Router();
 
 router.get('/getAll', requestController.getAllRequests);
 router.get('/getAllRaw', requestController.getAllRequestsRaw);
+router.post('/getByID', requestController.getByID);
 router.post('/accept', requestController.acceptRequest, mailController.RenderMailThen, requestController.deleteRequest);
 router.post('/refuse', mailController.RenderMailThen, requestController.deleteRequest);
 

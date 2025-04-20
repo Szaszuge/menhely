@@ -48,11 +48,12 @@ export const RenderMail = async (req, res, next) => {
     });
 }
 export const RenderMailThen = async (req, res, next) => {
-    console.log(req.body.mail);
-    const to = req.body.mail.to;
-    const subject = req.body.mail.subject;
-    const content = req.body.mail.content;
-    const template = req.body.mail.template;
+    console.log("mail time");
+    console.log(req.body[1]);
+    const to = req.body[1].to;
+    const subject = req.body[1].subject;
+    const content = req.body[1].content;
+    const template = req.body[1].template;
 
     const templatePath = path.join(__dirname, 'templates', template + '.ejs');
     console.log("Signal recived. (next)")

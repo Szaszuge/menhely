@@ -66,3 +66,10 @@ exports.deleteRequest = async (id) => {
     return true;
     // TODO: E-mail küldése elutasítás esetén
 }
+exports.getByID = async (id) => {
+    const request = await AppDataSource.manager.findOneBy(Request, {id: id})
+    if (!request){
+        return null;
+    }
+    return request
+}
