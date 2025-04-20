@@ -4,7 +4,7 @@ import SupportCard from "@/components/SupportCard.vue";
 import PawFooter from "@/components/PawFooter.vue";
 import CustomInput from "@/components/CustomInput.vue";
 import DualRangeSlider from "@/components/DualRangeSlider.vue";
-import { useUserStore } from '@/stores/user';
+import { useUserStore } from '../stores/user';
 
 const userStore = useUserStore();
 // State management

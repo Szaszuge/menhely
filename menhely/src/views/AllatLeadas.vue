@@ -3,9 +3,9 @@ import { ref, defineEmits } from 'vue';
 import CustomInput from '@/components/CustomInput.vue';
 import Button from '@/components/Button.vue';
 import PawFooter from '@/components/PawFooter.vue';
-import { useUserStore } from '@/stores/user';
-import { AnimalService } from '@/service/animal.service';
-import { MailService } from "@/service/mail.service";
+import { useUserStore } from '../stores/user';
+import { AnimalService } from '../service/animal.service';
+import { MailService } from "../service/mail.service";
 
 const auth = useUserStore();
 const animal = new AnimalService();
