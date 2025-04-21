@@ -33,6 +33,10 @@ export class ApiService {
         return axios.post(this.server + "/users/revertPass", [id])
     }
 
+    submitVolunteerRequest(data){
+        return axios.post(this.server + "/requests/volunteer", data)
+    }
+
     getMailDataByMail(email:string){
         return axios.post(this.server + "/users/mailData", [email])
     }

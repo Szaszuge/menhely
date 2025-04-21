@@ -1,7 +1,8 @@
 import { describe } from "node:test";
 import { AppDataSource } from "../data-source";
 import { Animal, Kind, From, Gender } from "../entity/Animal";
-import { Request } from "../entity/Requests";
+import { User } from "../entity/User";
+import { Request, RequestType } from "../entity/Requests";
 import { RequestView } from "../entity/view/request.view";
 exports.getAllRaw = async () => {
     console.log(`[SERVICE] GATHERING ALL REQUESTS RAW...`)
@@ -12,6 +13,31 @@ exports.getAll = async () => {
     const requests = await AppDataSource.manager.find(RequestView);
     return requests;
 }
+exports.getByID = async (id) => {
+    const request = await AppDataSource.manager.findOneBy(Request, {id: id})
+    if (!request){
+        return null;
+    }
+    return request
+}
+
+exports.reserveVolunteer = async (data) => {
+    const pushed_volunteer_request = new Request();
+    const user = await AppDataSource.manager.findOneBy(User, { id: data.user })
+    pushed_volunteer_request.user = user;
+    pushed_volunteer_request.Type = RequestType.work;
+
+    pushed_volunteer_request.details = data.details;
+
+    const volunteer_request = AppDataSource.manager.save(Request, pushed_volunteer_request);
+    
+    if (!!volunteer_request){
+        return true;
+    }
+
+    return false;
+};
+
 exports.acceptRequest = async (id) => {
     console.log(`[SERVICE] ACCEPTING REQUEST...`)
     const request = await AppDataSource.manager.findOneBy(Request, {id: id})
@@ -54,7 +80,6 @@ exports.acceptRequest = async (id) => {
     return true;
 
 }
-
 exports.deleteRequest = async (id) => {
     console.log(`[SERVICE] DELETING REQUEST...`)
     const request = await AppDataSource.manager.findOneBy(Request, {id: id})
@@ -65,11 +90,4 @@ exports.deleteRequest = async (id) => {
     await AppDataSource.manager.delete(Request, {id: request.id});
     return true;
     // TODO: E-mail küldése elutasítás esetén
-}
-exports.getByID = async (id) => {
-    const request = await AppDataSource.manager.findOneBy(Request, {id: id})
-    if (!request){
-        return null;
-    }
-    return request
 }

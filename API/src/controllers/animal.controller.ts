@@ -12,7 +12,7 @@ export const reserve = async (req, res, next) => {
         return res.status(203).json({ message: 'Hibás vagy helytelen kérelem tipus!'});
     }
 
-    if (!request.details.from || !request.details.type || !request.details.from || !request.details.city || !request.details.year || !request.details.month || !request.details.day){
+    if (!request.user || !request.details.type || !request.details.from || !request.details.city || !request.details.year || !request.details.month || !request.details.day){
         return res.status(203).json({ message: 'Hiányzó adatok!'});
     }
     const request_date = new Date(`${request.details.year}-${request.details.month}-${request.details.day}`);

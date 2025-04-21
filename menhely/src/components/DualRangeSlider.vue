@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watchEffect, ComputedRef } from 'vue';
 
-const minValue = ref(25);
-const maxValue = ref(75);
+const minValue = computed(() => model.value[0]);
+const maxValue = computed(() => model.value[1]);
+
+const model = defineModel<[number, number]>();
+
 const minSliderRef = ref<HTMLInputElement | null>(null);
 const maxSliderRef = ref<HTMLInputElement | null>(null);
 
@@ -31,13 +34,13 @@ function updateMinSlider(event: Event) {
   
 
   if (maxValue.value - newValue < MIN_GAP_PERCENT) {
-    minValue.value = maxValue.value - MIN_GAP_PERCENT;
+    model.value[0] = maxValue.value - MIN_GAP_PERCENT;
     
     if (minSliderRef.value) {
       minSliderRef.value.value = minValue.value.toString();
     }
   } else {
-    minValue.value = newValue;
+    model.value[0] = newValue;
   }
 }
 
@@ -45,21 +48,21 @@ function updateMaxSlider(event: Event) {
   const newValue = Number((event.target as HTMLInputElement).value);
   
   if (newValue - minValue.value < MIN_GAP_PERCENT) {
-    maxValue.value = minValue.value + MIN_GAP_PERCENT;
+    model.value[1] = minValue.value + MIN_GAP_PERCENT;
     
     if (maxSliderRef.value) {
       maxSliderRef.value.value = maxValue.value.toString();
     }
   } else {
-    maxValue.value = newValue;
+    model.value[1] = newValue;
   }
 }
 
 onMounted(() => {
   if (maxValue.value - minValue.value < MIN_GAP_PERCENT) {
     const midPoint = (maxValue.value + minValue.value) / 2;
-    minValue.value = Math.max(0, midPoint - MIN_GAP_PERCENT / 2);
-    maxValue.value = Math.min(100, midPoint + MIN_GAP_PERCENT / 2);
+    model.value[0] = Math.max(0, midPoint - MIN_GAP_PERCENT / 2);
+    model.value[1] = Math.min(100, midPoint + MIN_GAP_PERCENT / 2);
   }
 });
 </script>

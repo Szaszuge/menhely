@@ -5,8 +5,10 @@ import PawFooter from "@/components/PawFooter.vue";
 import CustomInput from "@/components/CustomInput.vue";
 import DualRangeSlider from "@/components/DualRangeSlider.vue";
 import { useUserStore } from '../stores/user';
+import { ApiService } from "../service/api.service";
 
 const userStore = useUserStore();
+const api = new ApiService();
 // State management
 const showVolunteerForm = ref(false);
 const volunteerDate = ref({
@@ -16,6 +18,7 @@ const volunteerDate = ref({
 });
 const volunteerReason = ref("");
 
+const values = ref([25, 75]);
 
 function toggleForm() {
   showVolunteerForm.value = !showVolunteerForm.value;
@@ -23,7 +26,18 @@ function toggleForm() {
 
 // Form submission
 function submitVolunteerForm() {
-  console.log("TBA");
+  const data = {
+    type: 'volunteer',
+    user: userStore.loggedUser().id,
+    details: {
+      date: volunteerDate.value,
+      fromTo: values.value,
+      reason: volunteerReason.value
+    }
+  }
+  api.submitVolunteerRequest(data).then((res) => {
+    console.log(res.data.message);
+  });
 }
 
 const currentYear = new Date().getFullYear();
@@ -135,7 +149,7 @@ onMounted(() => {
 
               <div class="time-selection">
                 <label>Munka ideje (órában):</label>
-                <DualRangeSlider />
+                <DualRangeSlider v-model="values" />
               </div>
 
               <div class="reason-input">

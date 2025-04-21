@@ -15,13 +15,12 @@ export const getByID = async (req, res) => {
     }
     return res.status(200).json({ message: "Kérelem lekérve", request: found});
 }
-
 export const acceptRequest = async (req, res, next) => {
     const id = req.body.id;
     console.log(`Accepting request... [${id}]`);
     const answer = await requestService.acceptRequest(id);
     if (!answer) {
-        res.status(203).json({message: "Valami történt"});
+        return res.status(203).json({message: "Valami történt"});
     }
     next();
 }
@@ -31,3 +30,54 @@ export const deleteRequest = async (req, res) => {
     if (answer) return res.status(200).json({ message: "Sikeres törlés"});
     return res.status(203).json({ message: "Sikertelen törlés"});
 }
+
+export const volunteer = async (req, res) => {
+    let request = req.body;
+    const rawTime = [req.body.details.fromTo[0], req.body.details.fromTo[1]];
+
+    const computedTime = [formatTimeFromPercent(rawTime[0]), formatTimeFromPercent(rawTime[1])];
+    request.details.fromTo = computedTime;
+
+    if (request.type != 'volunteer'){
+        return res.status(203).json({ message: 'Hibás vagy helytelen kérelem tipus!'});
+    }
+    if (!request.user || !request.details.date || !request.details.fromTo || !request.details.reason){
+        return res.status(203).json({ message: 'Hiányzó adatok!'});
+    }
+    const request_date = new Date(`${request.details.date.year}-${request.details.date.month}-${request.details.date.day}`);
+    const current_date = new Date();
+    
+        if (request_date < current_date){
+            return res.status(203).json({ message: 'A dátum a múltban van!'});
+        }
+        current_date.setDate(current_date.getDate() + 7)
+    
+    if (request_date < current_date){
+        return res.status(203).json({ message: 'Nincs idő a feldolgozásra! (A jelentkezés és a munka napja közt legyen legalább 7 nap legyen!)'});
+    }
+    // TODO: Van-e már két önkéntes azon a napon: Dobja vissza.
+
+    console.log(request);
+    const answer = requestService.reserveVolunteer(request);
+
+    if (!answer) {
+        return res.status(203).json({message: "Hiba történt a mentéskor!"});
+    }
+
+    return res.status(203).json({message: "Kérelem továbbítva!"});
+}
+
+const TOTAL_MINUTES = 12 * 60; 
+const START_HOUR = 8;
+
+function formatTimeFromPercent(percent: number): string {
+    const minutesSinceMidnight = Math.round(START_HOUR * 60 + (percent / 100) * TOTAL_MINUTES);
+    
+    // Round to nearest 15 minutes
+    const roundedMinutes = Math.round(minutesSinceMidnight / 15) * 15;
+    
+    const hours = Math.floor(roundedMinutes / 60);
+    const minutes = roundedMinutes % 60;
+    
+    return `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+  }
