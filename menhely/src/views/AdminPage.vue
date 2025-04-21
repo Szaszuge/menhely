@@ -13,7 +13,7 @@ const search = ref('');
 const api = new ApiService();
 const userStore = useUserStore();
 
-const showRequestDetails = ref(false);
+const showRequestDetails = ref([false, '']);
 const selectedRequestId = ref('');
 const temp = ref('');
 const reasonGiven = ref('');
@@ -52,9 +52,13 @@ async function refresh() {
 let requests = ref([]);
 let filtered_requests = ref([]);
 
-async function viewRequest(id:string) {
+async function viewRequest(id:string, type:string) {
   selectedRequestId.value = id;
-  showRequestDetails.value = true; 
+  showRequestDetails.value[0] = true; 
+  showRequestDetails.value[1] = type;
+}
+function closeRequestPopup() {
+  showRequestDetails.value[0] = false;
 }
 
 async function acceptRequest(id:string) {
@@ -63,13 +67,10 @@ async function acceptRequest(id:string) {
   await api.RequestByID(id).then((res) => {
     current_request = res.data.request;
   })
-
   console.log(current_request);
-
   if (current_request == null) {
     return console.log("Bad request.");
   }
-  
   switch (current_request.Type){
     case "Leadás":
       mailData.value = {
@@ -88,25 +89,19 @@ async function acceptRequest(id:string) {
     default:
       return console.log("TBA");
   }
-
   await api.acceptRequest(id, mailData.value);
-
   refresh();
 }
-
 async function refuseRequest(id:string) {
   let  mailData = ref({});
   let current_request = undefined;
   await api.RequestByID(id).then((res) => {
     current_request = res.data.request;
   })
-
   console.log(current_request);
-
   if (current_request == null) {
     return console.log("Bad request.");
   }
-  
   switch (current_request.Type){
     case "Leadás":
       mailData.value = {
@@ -122,15 +117,10 @@ async function refuseRequest(id:string) {
     default:
       return console.log("TBA");
   }
-
   await api.refuseRequest(id, mailData.value);
-
   refresh();
 }
 
-function closeRequestPopup() {
-  showRequestDetails.value = false;
-}
 
 // Kérések vége
 // Felhaszálók
@@ -222,7 +212,7 @@ function lookUp() {
               <td class="column-middle">{{ request.type }}</td>
               <td class="column-actions">
                 <div class="actions-container">
-                  <button class="action-button" aria-label="Megtekintés" @click="viewRequest(request.id)">
+                  <button class="action-button" aria-label="Megtekintés" @click="viewRequest(request.id, request.type)">
                     <img src="../assets/view.png" alt="Megtekintés" class="action-icon">
                   </button>
                   <button class="action-button" aria-label="Elfogadás">
@@ -345,7 +335,7 @@ function lookUp() {
               </div>
             </div>
             <div class="mobile-actions">
-              <button class="action-button" aria-label="Megtekintés" @click="viewRequest(request.id)">
+              <button class="action-button" aria-label="Megtekintés" @click="viewRequest(request.id, request.type)">
                 <img src="../assets/view.png" alt="Megtekintés" class="action-icon">
               </button>
               <button class="action-button" aria-label="Elfogadás" @click="acceptRequest(request.id)">
@@ -379,20 +369,30 @@ function lookUp() {
               </div>
             </div>
             <div class="mobile-actions">
-              <!--
+              
 
-              Ideiglenesen nem működik
 
-              <button class="action-button" aria-label="Előléptetés">
-                <img src="../assets/user_promote.png" alt="Előléptetés" class="action-icon">
-              </button>
-              <button class="action-button" aria-label="Lefokozás">
-                <img src="../assets/user_promote.png" alt="Előléptetés" class="action-icon">
-              </button>
-              <button class="action-button" aria-label="Kitiltás">
-                <img src="../assets/ban_user.png" alt="Kitiltás" class="action-icon">
-              </button>
-              -->
+              <button class="action-button"  aria-label="Előléptetés" @click="PromoteUser(user.id)" v-if="user.role != 'admin' && user.role != 'moderator'">
+                    <img src="../assets/user_promote.png" alt="Előléptetés" class="action-icon">
+                  </button>
+                  <button class="disabled-action-button" aria-label="Előléptetés" disabled v-else>
+                    <img src="../assets/user_promote.png" alt="Előléptetés" class="action-icon">
+                  </button>
+                  <button class="action-button" aria-label="Lefokozás" @click="DemoteUser(user.id)" v-if="(user.role == 'moderator' || user.role == 'admin') && userStore.loggedUser().name != user.name">
+                    <img src="../assets/user_demote.png" alt="Lefokozás" class="action-icon">
+                  </button>
+                  <button class="disabled-action-button" aria-label="Lefokozás" disabled v-else>
+                    <img src="../assets/user_demote.png" alt="Lefokozás" class="action-icon">
+                  </button>
+                  <button class="action-button" aria-label="Kitiltás" @click="DemoteUser(user.id)" v-if="user.role != 'admin' && user.role != 'moderator' && user.role != 'banned'">
+                    <img src="../assets/ban_user.png" alt="Kitiltás" class="action-icon">
+                  </button>
+                  <button class="disabled-action-button" aria-label="Kitiltás" disabled v-else>
+                    <img src="../assets/ban_user.png" alt="Kitiltás" class="action-icon">
+                  </button>
+              
+
+
             </div>
           </div>
         </div>
@@ -435,8 +435,8 @@ function lookUp() {
   </div>
   <PawFooter :is-sticky="true"/>
 
-  <div v-if="showRequestDetails" class="request-popup-overlay">
-    <RequestPopup @close-popup="closeRequestPopup"/>
+  <div v-if="showRequestDetails[0]" class="request-popup-overlay">
+    <RequestPopup @close-popup="closeRequestPopup" :request-type="showRequestDetails[1]" />
   </div>
 </template>
 

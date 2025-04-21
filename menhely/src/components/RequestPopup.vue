@@ -1,13 +1,23 @@
 <script setup lang="ts">
-/*
+import { ref, watch } from 'vue';
+
 const props = defineProps({
-    type: {
+    requestType: {
         type: String,
         required: false, 
         default: "Leadás",
+    },
+    currentId: {
+        type: String,
+        required: false,
+        default: '',
     }
 })
-*/
+
+// TODO: Watch, hogy ID alapján változzon dinamikusan a Pop-up
+
+const name = ref('Szárforsíp terijer kiskutyuska')
+
 </script>
 
 <template>
@@ -17,13 +27,13 @@ const props = defineProps({
           <img src="../assets/close-dark.png" alt="Bezárás" class="request-close-icon" @click="$emit('closePopup')"/>
         </div>
         
-        <div class="request-dog-details">
+        <div class="request-dog-details" v-if="props.requestType == 'Leadás'">
           <div class="request-image-container">
             <img src="../assets/allatkep.png" alt="Kutya" class="request-dog-image" />
           </div>
           
           <div class="request-details-content">
-            <h2 class="request-dog-name">Sztárforsip terijer kiskutyus</h2>
+            <h2 class="request-dog-name">{{ name }}</h2>
             
             <div class="request-tags-container">
               <div class="request-tag">
@@ -64,6 +74,8 @@ const props = defineProps({
             </div>
           </div>
         </div>
+        <!-- TODO: Többi tipusra Popup kinézet -->
+
       </div>
     </div>
 </template>

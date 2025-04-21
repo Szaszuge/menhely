@@ -3,10 +3,10 @@ import { Permits, User } from "../entity/User";
 import { Kind } from "./Animal";
 
 export enum RequestType{
-        check = "Látogatás",
-        work = "Önkéntes munka",
-        adopt = "Örökbefogadás",
         surrender = "Leadás",
+        work = "Önkéntes munka",
+        check = "Látogatás",
+        adopt = "Örökbefogadás",
 }
 
 @Entity()
