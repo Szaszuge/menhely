@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed, provide, watch } from 'vue';
+import { useRouter, useRoute } from "vue-router";
+import { AnimalService } from '../service/animal.service';
 import CustomInput from '../components/CustomInput.vue';
 import Button from '../components/Button.vue';
 import PawFooter from '../components/PawFooter.vue';
 import FilterDropdown from '../components/FilterDropdown.vue';
+
+const router = useRouter()
+const animSer = new AnimalService();
 
 const personalityOptions = ref([
   { id: 1, label: 'Játékos', selected: false },
@@ -29,14 +34,46 @@ const admissionOptions = ref([
   { id: 2, label: 'Leadott', selected: false }
 ]);
 
+const id = useRoute().params.id; // sír de ez jó
+
+const imageURL = ref("");
+
 const name = ref('');
 const breed = ref('');
 const color = ref('');
-const diseases = ref('');
-const otherInfo = ref('');
+
+const paragraphs = ref([]);
+
 const isChipped = ref(false);
 const isNeutered = ref(false);
 const hasPassport = ref(false);
+
+onMounted(() => {
+    animSer.GetAnimalDataByID(id).then((res) => {
+      console.log(res.data.animal)
+      const animal = res.data.animal;
+
+      imageURL.value = `http://localhost:3000/uploads/${!!animal.details.image ? animal.details.image : 'placeholder/animal.png'}`;
+
+      name.value = animal.name;
+      breed.value = (animal.details.type == 'dog' ? 'Kutya' : 'Macska');
+      color.value = (!!animal.details.color ? animal.details.color : '');
+
+      isChipped.value = !!animal.details.chipped ? true : false;
+      isNeutered.value = !!animal.details.neutered ? true : false;
+      hasPassport.value = !!animal.details.passported ? true : false;
+
+      if (animal.type == "dog"){
+        breedOptions.value.find(x => x.label == 'Kutya').selected = true;
+      }
+      else {
+        breedOptions.value.find(x => x.label == 'Macska').selected = true;
+      }
+
+    })
+});
+
+
 
 const activeDropdown = ref<string | null>(null);
 const setActiveDropdown = (id: string | null) => {
@@ -175,21 +212,17 @@ const toggleCheckbox = (type: 'chip' | 'neuter' | 'passport') => {
   if (type === 'passport') hasPassport.value = !hasPassport.value;
 };
 
-const navigateToAdmin = () => {
-  console.log('Navigate to admin page');
-};
+const savePet = (id) => {
+  let reconstructed_animal;
+  reconstructed_animal.name = name.value;
+  reconstructed_animal.type = breedOptions.value.find(x => x.label == 'Kutya').selected ? 'dog' : 'cat';
+  reconstructed_animal.gender = '-'; // TODO: Add gender
+  reconstructed_animal.age = '0 Évezredes'; // TODO: Add age
 
-const updatePersonalityOptions = (options) => {
-  personalityOptions.value = options;
-  
-  characteristics.value = personalityOptions.value
-    .filter(option => option.selected)
-    .map(option => ({
-      id: option.id,
-      label: option.label,
-      selected: true
-    }));
-};
+  // TODO: Details
+
+}
+
 </script>
 
 <template>
@@ -202,7 +235,7 @@ const updatePersonalityOptions = (options) => {
       <div class="card-content">
         <!-- Pet image section -->
         <div class="image-section">
-          <img src="../assets/allatkep.png" alt="Pet photo" class="pet-image" />
+          <img v-bind:src="imageURL" alt="Pet photo" class="pet-image" />
           <div class="image-modify-text">Kép módosítása</div>
         </div>
         
@@ -226,7 +259,7 @@ const updatePersonalityOptions = (options) => {
           
           <!-- Breed dropdown -->
           <div class="form-group dropdown-container">
-            <div class="label">Fajtája</div>
+            <div class="label">Fajtája*</div>
             <div 
               class="custom-dropdown" 
               :class="{ 'active': activeDropdown === 'breed' }"
@@ -348,7 +381,9 @@ const updatePersonalityOptions = (options) => {
             </div>
           </div>
         </div>
-        
+        <button></button>
+        <!--
+
         <div class="form-group full-width">
           <div class="label">Betegségek</div>
           <CustomInput v-model="diseases" placeholder="Input" class="form-input" />
@@ -358,12 +393,14 @@ const updatePersonalityOptions = (options) => {
           <div class="label">Egyéb infó</div>
           <CustomInput v-model="otherInfo" placeholder="Input" class="form-input" />
         </div>
+
+        -->
         
         <div class="nav-buttons">
           <RouterLink to="/adminpage" class="back-link">
             Vissza az admin felületre →
           </RouterLink>
-          <Button class="save-button">Mentés</Button>
+          <Button class="save-button" @click="savePet(id)">Mentés</Button>
         </div>
       </div>
     </div>
