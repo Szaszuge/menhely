@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { onBeforeMount, ref, watch } from 'vue';
+import { ApiService } from "../service/api.service";
+
+const api = new ApiService();
+
+const parsed_request = ref({id: 0, Type: "", details: {}})
+const imageURL = ref("");
 
 const props = defineProps({
     requestType: {
@@ -7,12 +13,16 @@ const props = defineProps({
         required: false, 
         default: "Leadás",
     },
-    currentId: {
-        type: String,
+    currentRequest: {
+        type: Object,
         required: false,
         default: '',
     }
 })
+
+watch(() => props.currentRequest, (value, oldvalue) => {
+  imageURL.value = `http://localhost:3000/uploads/${value.details.image}`;
+}, {immediate: true})
 
 // TODO: Watch, hogy ID alapján változzon dinamikusan a Pop-up
 
@@ -29,47 +39,40 @@ const name = ref('Szárforsíp terijer kiskutyuska')
         
         <div class="request-dog-details" v-if="props.requestType == 'Leadás'">
           <div class="request-image-container">
-            <img src="../assets/allatkep.png" alt="Kutya" class="request-dog-image" />
+            <img v-bind:src="imageURL" alt="Kutya" class="request-dog-image" />
           </div>
           
           <div class="request-details-content">
-            <h2 class="request-dog-name">{{ name }}</h2>
+            <h2 class="request-dog-name">{{ currentRequest.details.name ? currentRequest.details.name : "Névtelen" }}</h2>
             
             <div class="request-tags-container">
               <div class="request-tag">
-                <img src="../assets/home_icon.png" alt="Otthon ikon" class="request-tag-icon" />
-                <span>Otthonból</span>
+                <img src="../assets/home_icon.png" alt="Otthon ikon" class="request-tag-icon" v-if="currentRequest.details.from == 'home'" />
+                <img src="../assets/glass_icon.png" alt="Otthon ikon" class="request-tag-icon" v-else />
+                <span>{{ currentRequest.details.from == "home" ? "Otthonból" : "Talált" }}</span>
               </div>
               
               <div class="request-tag">
-                <img src="../assets/dog_icon.png" alt="Kutya ikon" class="request-tag-icon" />
-                <span>Kutya</span>
+                <img src="../assets/cat_icon.png" alt="Macska ikon" class="request-tag-icon" v-if="currentRequest.details.type == 'cat'" />
+                <img src="../assets/dog_icon.png" alt="Kutya ikon" class="request-tag-icon" v-else />
+                <span>{{ currentRequest.details.type == "cat" ? "Macska" : "Kutya" }}</span>
               </div>
               
               <div class="request-tag">
                 <img src="../assets/location_icon.png" alt="Hely ikon" class="request-tag-icon" />
-                <span>Baja</span>
+                <span>{{ currentRequest.details.city }}</span>
               </div>
             </div>
             
             <div class="request-info-section">
               <p class="request-info-label">Tervezett leadás időpontja:</p>
-              <p class="request-info-value">2025-04-22</p>
+              <p class="request-info-value">{{ currentRequest.details.year }}-{{ currentRequest.details.month }}-{{ currentRequest.details.day }}</p>
             </div>
             
             <div class="request-info-section">
               <p class="request-info-label">Egyéb információ:</p>
               <div class="request-info-text">
-                A híresebb sárga terrier kiskutya nagyon barátságos és játékos természetű. 
-                Szereti a gyerekeket és jól kijön más kutyákkal is. Már be van oltva és 
-                rendelkezik mikrochippel. Családi körülmények között nevelkedett, szobatiszta 
-                és alapvető parancsokat ismer. Ideális egy aktív családnak, ahol sok figyelmet 
-                és szeretetet kap.
-                A híresebb sárga terrier kiskutya nagyon barátságos és játékos természetű. 
-                Szereti a gyerekeket és jól kijön más kutyákkal is. Már be van oltva és 
-                rendelkezik mikrochippel. Családi körülmények között nevelkedett, szobatiszta 
-                és alapvető parancsokat ismer. Ideális egy aktív családnak, ahol sok figyelmet 
-                és szeretetet kap.
+                {{ currentRequest.details.other == '' ? "Ehhez az állathoz nem írtak leírást." : currentRequest.details.other }}
               </div>
             </div>
           </div>

@@ -15,6 +15,7 @@ router.use('/mails', mailRoutes);
 router.use('/animal', animalRoutes);
 router.use('/requests', requestRoutes);
 
+
 router.get('/', (req, res) => {
     res.send(`Router pinged.`);
   });

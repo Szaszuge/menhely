@@ -49,6 +49,10 @@ export class ApiService {
         //console.log("Fetching all requests.");
         return axios.get(this.server + "/requests/getAll");
     }
+    getAllRequestsRaw(){
+        //console.log("Fetching all requests.");
+        return axios.get(this.server + "/requests/getAllRaw");
+    }
     getAllUsers(){
         //console.log("Fetching all users.");
         return axios.get(this.server + "/users/getAll");

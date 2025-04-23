@@ -14,7 +14,7 @@ const api = new ApiService();
 const userStore = useUserStore();
 
 const showRequestDetails = ref([false, '']);
-const selectedRequestId = ref('');
+const selectedRequest = ref('');
 const temp = ref('');
 const reasonGiven = ref('');
 
@@ -29,6 +29,9 @@ function nagybetu(string) {
 async function refresh() {
   await api.getAllRequests().then((res) => {
     requests.value = res.data.requests;
+  });
+  await api.getAllRequestsRaw().then((res) => {
+    raw_requests.value = res.data.requests;
   });
   await api.getAllUsers().then((res) => {
     users.value = res.data.users;
@@ -49,11 +52,12 @@ async function refresh() {
 }
 
 // Kérések
-let requests = ref([]);
-let filtered_requests = ref([]);
+const requests = ref([]);
+const raw_requests = ref([]);
+const filtered_requests = ref([]);
 
 async function viewRequest(id:string, type:string) {
-  selectedRequestId.value = id;
+  selectedRequest.value = raw_requests.value.find(x => x.id == id);
   showRequestDetails.value[0] = true; 
   showRequestDetails.value[1] = type;
 }
@@ -436,7 +440,7 @@ function lookUp() {
   <PawFooter :is-sticky="true"/>
 
   <div v-if="showRequestDetails[0]" class="request-popup-overlay">
-    <RequestPopup @close-popup="closeRequestPopup" :request-type="showRequestDetails[1]" />
+    <RequestPopup @close-popup="closeRequestPopup" :request-type="showRequestDetails[1]" :current-request="selectedRequest" />
   </div>
 </template>
 
