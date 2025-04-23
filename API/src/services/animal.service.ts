@@ -16,12 +16,12 @@ exports.reserveAnimalSurrenderRequest = async(data, filename) => {
     pushed_animal_request.details.image = filename ? filename : null ;
     
     console.log(`[SERVICE] PUSHING GENERATED REQUEST INSTANCE...`)
-
-    const animal_request = AppDataSource.manager.save(Request, pushed_animal_request);
     
-    return animal_request;
+    return AppDataSource.manager.save(Request, pushed_animal_request);
+}
+exports.getByID = async(id:string) => {
+    return await AppDataSource.manager.findOneBy(Animal, {id: id});
 }
 exports.getAllAnimals = async() => {
-    const animals = await AppDataSource.manager.find(AnimalView);
-    return animals;
+    return await AppDataSource.manager.find(AnimalView);
 }
