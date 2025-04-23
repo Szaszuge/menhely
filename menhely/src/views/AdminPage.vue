@@ -309,9 +309,9 @@ function lookUp() {
                   <button class="action-button" aria-label="Törlés">
                     <img src="../assets/close.png" alt="Törlés" class="action-icon">
                   </button>
-                  <button class="action-button" aria-label="Módosítás">
-                    <img src="../assets/modify.png" alt="Módosítás" class="action-icon">
-                  </button>
+                  <RouterLink to="/peteditor" class="action-button" aria-label="Módosítás">
+                      <img src="../assets/modify.png" alt="Módosítás" class="action-icon">
+                  </RouterLink>
                 </div>
               </td>
             </tr>

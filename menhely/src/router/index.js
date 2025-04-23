@@ -92,6 +92,12 @@ const router = createRouter({
       path: '/revertpassword/:id',
       name: 'revertpassword',
       component: () => import('../views/RevertPasswordView.vue')
+    },
+
+    {
+      path: '/peteditor',
+      name: 'peteditor',
+      component: () => import('../views/PetEditPage.vue')
     }
   ],
 })
