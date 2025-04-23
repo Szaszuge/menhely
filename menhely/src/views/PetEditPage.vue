@@ -29,18 +29,26 @@ const breedOptions = ref([
   { id: 2, label: 'Macska', selected: false }
 ]);
 
+const genderOptions = ref([
+  { id: 1, label: 'Kan', selected: false },
+  { id: 2, label: 'Szuka', selected: false }
+]);
+
 const admissionOptions = ref([
   { id: 1, label: 'Talált', selected: false },
   { id: 2, label: 'Leadott', selected: false }
 ]);
 
-const id = useRoute().params.id; // sír de ez jó
+const id = useRoute().params.id;
 
 const imageURL = ref("");
+const admissionDate = ref('');
 
 const name = ref('');
 const breed = ref('');
 const color = ref('');
+const age = ref('');
+const gender = ref('');
 
 const paragraphs = ref([]);
 
@@ -54,10 +62,20 @@ onMounted(() => {
       const animal = res.data.animal;
 
       imageURL.value = `http://localhost:3000/uploads/${!!animal.details.image ? animal.details.image : 'placeholder/animal.png'}`;
+      admissionDate.value = '2025-06-10'; 
 
       name.value = animal.name;
       breed.value = (animal.details.type == 'dog' ? 'Kutya' : 'Macska');
       color.value = (!!animal.details.color ? animal.details.color : '');
+      age.value = (!!animal.details.age ? animal.details.age : '');
+      
+      if (animal.details.gender === 'male') {
+        genderOptions.value.find(x => x.label === 'Kan').selected = true;
+        gender.value = 'Kan';
+      } else if (animal.details.gender === 'female') {
+        genderOptions.value.find(x => x.label === 'Szuka').selected = true;
+        gender.value = 'Szuka';
+      }
 
       isChipped.value = !!animal.details.chipped ? true : false;
       isNeutered.value = !!animal.details.neutered ? true : false;
@@ -70,10 +88,21 @@ onMounted(() => {
         breedOptions.value.find(x => x.label == 'Macska').selected = true;
       }
 
+      if (animal.details.characteristics && Array.isArray(animal.details.characteristics)) {
+        animal.details.characteristics.forEach(char => {
+          const matchingOption = personalityOptions.value.find(opt => opt.label === char);
+          if (matchingOption) {
+            matchingOption.selected = true;
+            characteristics.value.push({
+              id: matchingOption.id,
+              label: matchingOption.label,
+              selected: true
+            });
+          }
+        });
+      }
     })
 });
-
-
 
 const activeDropdown = ref<string | null>(null);
 const setActiveDropdown = (id: string | null) => {
@@ -86,6 +115,7 @@ provide('setActiveDropdown', setActiveDropdown);
 const breedDropdownRef = ref<HTMLElement | null>(null);
 const personalityDropdownRef = ref<HTMLElement | null>(null); 
 const admissionDropdownRef = ref<HTMLElement | null>(null);
+const genderDropdownRef = ref<HTMLElement | null>(null);
 
 const handleClickOutside = (event: MouseEvent) => {
   const target = event.target as Node;
@@ -107,6 +137,12 @@ const handleClickOutside = (event: MouseEvent) => {
       !admissionDropdownRef.value.contains(target)) {
     setActiveDropdown(null);
   }
+
+  if (activeDropdown.value === 'gender' && 
+      genderDropdownRef.value && 
+      !genderDropdownRef.value.contains(target)) {
+    setActiveDropdown(null);
+  }
 };
 
 onMounted(() => {
@@ -119,6 +155,11 @@ onUnmounted(() => {
 
 const selectedBreed = computed(() => {
   const selected = breedOptions.value.find(item => item.selected);
+  return selected ? selected.label : '';
+});
+
+const selectedGender = computed(() => {
+  const selected = genderOptions.value.find(item => item.selected);
   return selected ? selected.label : '';
 });
 
@@ -189,6 +230,25 @@ const toggleBreedOption = (optionId) => {
   setActiveDropdown(null);
 };
 
+const toggleGenderOption = (optionId) => {
+  const option = genderOptions.value.find(item => item.id === optionId);
+  
+  if (option && option.selected) {
+    genderOptions.value.forEach(item => {
+      item.selected = false;
+    });
+    gender.value = '';
+  } 
+  else {
+    genderOptions.value.forEach(item => {
+      item.selected = item.id === optionId;
+    });
+    gender.value = option?.label || '';
+  }
+  
+  setActiveDropdown(null);
+};
+
 const toggleAdmissionOption = (optionId) => {
   const option = admissionOptions.value.find(item => item.id === optionId);
   
@@ -213,14 +273,22 @@ const toggleCheckbox = (type: 'chip' | 'neuter' | 'passport') => {
 };
 
 const savePet = (id) => {
-  let reconstructed_animal;
-  reconstructed_animal.name = name.value;
-  reconstructed_animal.type = breedOptions.value.find(x => x.label == 'Kutya').selected ? 'dog' : 'cat';
-  reconstructed_animal.gender = '-'; // TODO: Add gender
-  reconstructed_animal.age = '0 Évezredes'; // TODO: Add age
+  let reconstructed_animal = {
+    name: name.value,
+    type: breedOptions.value.find(x => x.label == 'Kutya').selected ? 'dog' : 'cat',
+    gender: genderOptions.value.find(x => x.label == 'Kan').selected ? 'male' : 'female',
+    age: age.value,
+    details: {
+      color: color.value,
+      chipped: isChipped.value,
+      neutered: isNeutered.value,
+      passported: hasPassport.value,
+      characteristics: characteristics.value.map(char => char.label)
+    }
+  };
 
-  // TODO: Details
-
+  // Call API to save the data
+  console.log("Saving animal:", reconstructed_animal);
 }
 
 </script>
@@ -233,10 +301,16 @@ const savePet = (id) => {
       </div>
       
       <div class="card-content">
-        <!-- Pet image section -->
-        <div class="image-section">
-          <img v-bind:src="imageURL" alt="Pet photo" class="pet-image" />
-          <div class="image-modify-text">Kép módosítása</div>
+        <div class="pet-info-section">
+          <div class="image-section">
+            <img v-bind:src="imageURL" alt="Pet photo" class="pet-image" />
+            <div class="image-modify-text">Kép módosítása</div>
+          </div>
+          
+          <div class="admission-info">
+            <div class="admission-label">Menhelyre kerülés dátuma:</div>
+            <div class="admission-date">{{ admissionDate }}</div>
+          </div>
         </div>
         
         <div class="characteristics-section" v-if="characteristics.length > 0">
@@ -280,6 +354,46 @@ const savePet = (id) => {
                     class="dropdown-item"
                     :class="{ 'selected': option.selected }"
                     @click.stop="toggleBreedOption(option.id)"
+                  >
+                    <div class="checkbox">
+                      <div v-if="option.selected" class="checkbox-checked"></div>
+                    </div>
+                    <span>{{ option.label }}</span>
+                  </div>
+                </div>
+              </transition>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="label">Kora</div>
+            <CustomInput v-model="age" placeholder="Input" class="form-input" />
+          </div>
+        </div>
+        
+        <div class="form-grid second-row">
+          <div class="form-group dropdown-container">
+            <div class="label">Neme</div>
+            <div 
+              class="custom-dropdown" 
+              :class="{ 'active': activeDropdown === 'gender' }"
+              @click.stop="setActiveDropdown(activeDropdown === 'gender' ? null : 'gender')"
+              ref="genderDropdownRef"
+            >
+              <div class="dropdown-value">{{ selectedGender || 'Input' }}</div>
+              <svg class="chevron-icon" :class="{ 'rotated': activeDropdown === 'gender' }" 
+                width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              
+              <transition name="dropdown">
+                <div v-if="activeDropdown === 'gender'" class="dropdown-menu">
+                  <div 
+                    v-for="option in genderOptions" 
+                    :key="option.id" 
+                    class="dropdown-item"
+                    :class="{ 'selected': option.selected }"
+                    @click.stop="toggleGenderOption(option.id)"
                   >
                     <div class="checkbox">
                       <div v-if="option.selected" class="checkbox-checked"></div>
@@ -381,20 +495,6 @@ const savePet = (id) => {
             </div>
           </div>
         </div>
-        <button></button>
-        <!--
-
-        <div class="form-group full-width">
-          <div class="label">Betegségek</div>
-          <CustomInput v-model="diseases" placeholder="Input" class="form-input" />
-        </div>
-        
-        <div class="form-group full-width">
-          <div class="label">Egyéb infó</div>
-          <CustomInput v-model="otherInfo" placeholder="Input" class="form-input" />
-        </div>
-
-        -->
         
         <div class="nav-buttons">
           <RouterLink to="/adminpage" class="back-link">
@@ -447,16 +547,23 @@ const savePet = (id) => {
   padding: 20px;
 }
 
+.pet-info-section {
+  display: flex;
+  margin-bottom: 20px;
+  align-items: center;
+  margin-left: 8rem;
+}
+
 .image-section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 20px;
+  flex-shrink: 0;
 }
 
 .pet-image {
-  width: 250px;
-  height: 250px;
+  width: 200px;
+  height: 200px;
   object-fit: cover;
   border-radius: 24px;
   border: 1px solid black;
@@ -466,6 +573,27 @@ const savePet = (id) => {
   margin-top: 10px;
   font-size: 1rem;
   font-weight: 600;
+}
+
+.admission-info {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 30px;
+  padding: 20px;
+}
+
+.admission-label {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-left: 2rem;
+}
+
+.admission-date {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-left: 6rem;
 }
 
 .characteristics-section {
@@ -518,6 +646,10 @@ const savePet = (id) => {
   grid-template-columns: repeat(3, 1fr);
   gap: 15px;
   margin-bottom: 20px;
+}
+
+.second-row {
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .form-group {
@@ -713,6 +845,27 @@ const savePet = (id) => {
 }
 
 @media (max-width: 768px) {
+  .pet-info-section {
+    flex-direction: column;
+  }
+    .admission-date {
+      margin-left: 0;
+  }
+
+  .admission-label {
+    margin-left: 0;
+  }
+
+  .pet-info-section {
+    margin-left: 0;
+  }
+
+  .admission-info {
+    margin-left: 0;
+    margin-top: 15px;
+    text-align: center;
+  }
+  
   .form-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -736,6 +889,10 @@ const savePet = (id) => {
     grid-template-columns: 1fr;
   }
   
+  .second-row {
+    grid-template-columns: 1fr;
+  }
+  
   .checkbox-section {
     flex-direction: column;
     gap: 10px;
@@ -753,6 +910,18 @@ const savePet = (id) => {
   
   .back-link {
     align-self: center;
+  }
+
+  .admission-date {
+      margin-left: 0;
+  }
+
+  .admission-label {
+    margin-left: 0;
+  }
+
+  .pet-info-section {
+    margin-left: 0;
   }
 }
 </style>
