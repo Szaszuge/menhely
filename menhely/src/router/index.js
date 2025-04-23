@@ -95,7 +95,7 @@ const router = createRouter({
     },
 
     {
-      path: '/peteditor',
+      path: '/peteditor/:id',
       name: 'peteditor',
       component: () => import('../views/PetEditPage.vue')
     }

@@ -7,11 +7,13 @@ import AdminNav from '@/components/AdminNav.vue';
 import { ApiService } from "../service/api.service";
 import { useUserStore } from '../stores/user';
 import RequestPopup from '../components/RequestPopup.vue';
+import { useRouter } from 'vue-router';
 
 const activeTab = ref('');
 const search = ref('');
 const api = new ApiService();
 const userStore = useUserStore();
+const router = useRouter()
 
 const showRequestDetails = ref([false, '']);
 const selectedRequest = ref('');
@@ -181,6 +183,10 @@ function lookUp() {
     filtered_animals.value = animals.value;
   }
 } 
+
+function moveToPetEditor(ID:string) {
+  router.push(`/peteditor/${ID}`);
+}
 </script>
 
 <template>
@@ -309,9 +315,9 @@ function lookUp() {
                   <button class="action-button" aria-label="Törlés">
                     <img src="../assets/close.png" alt="Törlés" class="action-icon">
                   </button>
-                  <RouterLink to="/peteditor" class="action-button" aria-label="Módosítás">
-                      <img src="../assets/modify.png" alt="Módosítás" class="action-icon">
-                  </RouterLink>
+                  <button class="action-button" aria-label="Módosítás" @click="moveToPetEditor(animal.id)">
+                    <img src="../assets/modify.png" alt="Módosítás" class="action-icon">
+                  </button>
                 </div>
               </td>
             </tr>
