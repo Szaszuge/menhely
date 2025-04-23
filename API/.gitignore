@@ -6,4 +6,5 @@ build/
 tmp/
 temp/
 
-src/uploads/
+src/uploads/*.png
+src/uploads/*.jpg

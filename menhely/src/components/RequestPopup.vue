@@ -21,7 +21,7 @@ const props = defineProps({
 })
 
 watch(() => props.currentRequest, (value, oldvalue) => {
-  imageURL.value = `http://localhost:3000/uploads/${value.details.image}`;
+  imageURL.value = `http://localhost:3000/uploads/${!!value.details.image ? value.details.image : 'placeholder/animal.png'}`;
 }, {immediate: true})
 
 // TODO: Watch, hogy ID alapján változzon dinamikusan a Pop-up
