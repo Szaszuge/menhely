@@ -67,9 +67,10 @@ function closeRequestPopup() {
   showRequestDetails.value[0] = false;
 }
 
-async function acceptRequest(id:string) {
-  let  mailData = ref({});
+async function acceptRequest(id:string, email:string, name:string) {
+  let mailData = ref({});
   let current_request = undefined;
+  console.log(email, name)
   await api.RequestByID(id).then((res) => {
     current_request = res.data.request;
   })
@@ -80,10 +81,10 @@ async function acceptRequest(id:string) {
   switch (current_request.Type){
     case "Leadás":
       mailData.value = {
-        to: userStore.loggedUser().email,
+        to: email,
         subject: "GazdiRadar | Állat leadás elfogadva",
         content: {
-          userName: userStore.loggedUser().name,
+          userName: name,
           year: current_request.details.year,
           month: current_request.details.month,
           day: current_request.details.day,
@@ -92,14 +93,27 @@ async function acceptRequest(id:string) {
         template: "request/AnimalAccept"
       }
       break;
+    case "Önkéntes munka":
+      mailData.value = {
+        to: email,
+        subject: "GazdiRadar | Önkéntes munka elfogadva",
+        content: {
+          userName: name,
+          year: current_request.details.year,
+          month: current_request.details.month,
+          day: current_request.details.day,
+        },
+        template: "request/VoluntaryJobAccepted"
+      }
+      break;
     default:
       return console.log("TBA");
   }
   await api.acceptRequest(id, mailData.value);
   refresh();
 }
-async function refuseRequest(id:string) {
-  let  mailData = ref({});
+async function refuseRequest(id:string, email:string, name:string) {
+  let mailData = ref({});
   let current_request = undefined;
   await api.RequestByID(id).then((res) => {
     current_request = res.data.request;
@@ -111,7 +125,7 @@ async function refuseRequest(id:string) {
   switch (current_request.Type){
     case "Leadás":
       mailData.value = {
-        to: userStore.loggedUser().email,
+        to: email,
         subject: "GazdiRadar | Állat leadás elutasítva",
         content: {
           userName: userStore.loggedUser().name,
@@ -226,10 +240,10 @@ function moveToPetEditor(ID:string) {
                     <img src="../assets/view.png" alt="Megtekintés" class="action-icon">
                   </button>
                   <button class="action-button" aria-label="Elfogadás">
-                    <img src="../assets/check.png" alt="Elfogadás" class="action-icon" @click="acceptRequest(request.id)">
+                    <img src="../assets/check.png" alt="Elfogadás" class="action-icon" @click="acceptRequest(request.id, request.targetEmail, request.name)">
                   </button>
                   <button class="action-button" aria-label="Elutasítás">
-                    <img src="../assets/restriction.png" alt="Elutasítás" class="action-icon" @click="refuseRequest(request.id)">
+                    <img src="../assets/restriction.png" alt="Elutasítás" class="action-icon" @click="refuseRequest(request.id, request.targetEmail, request.name)">
                   </button>
                 </div>
               </td>
@@ -348,10 +362,10 @@ function moveToPetEditor(ID:string) {
               <button class="action-button" aria-label="Megtekintés" @click="viewRequest(request.id, request.type)">
                 <img src="../assets/view.png" alt="Megtekintés" class="action-icon">
               </button>
-              <button class="action-button" aria-label="Elfogadás" @click="acceptRequest(request.id)">
+              <button class="action-button" aria-label="Elfogadás" @click="acceptRequest(request.id, request.targetEmail, request.name)">
                 <img src="../assets/check.png" alt="Elfogadás" class="action-icon">
               </button>
-              <button class="action-button" aria-label="Elutasítás" @click="refuseRequest(request.id)">
+              <button class="action-button" aria-label="Elutasítás" @click="refuseRequest(request.id, request.targetEmail, request.name)">
                 <img src="../assets/restriction.png" alt="Elutasítás" class="action-icon">
               </button>
             </div>

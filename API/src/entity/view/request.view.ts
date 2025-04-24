@@ -6,6 +6,7 @@ import { AppDataSource } from "../../data-source";
 
     expression: (AppDataSource:DataSource) => AppDataSource.createQueryBuilder()
     .select("request.id", "id")
+    .addSelect("user.email", "targetEmail")
     .addSelect("request.Type", "type")
     .addSelect("user.userName", "name")
     .from("request", "request")
@@ -14,6 +15,8 @@ import { AppDataSource } from "../../data-source";
 export class RequestView {
 @ViewColumn()
 id: string;
+@ViewColumn()
+targetEmail: string;
 @ViewColumn()
 type: string;
 @ViewColumn()

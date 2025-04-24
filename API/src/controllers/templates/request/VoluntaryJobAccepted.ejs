@@ -134,13 +134,13 @@
 <img src="https://file.garden/Z1X6ItHu3lmreWfD/jobAccepted.png" alt="">
 
 <h1>Értesítő az önkéntes munkára jelentkezéssel kapcsolatban</h1>
-<h2>Kedves Felhasználó!</h2>
+<h2>Kedves <%= content.userName %>!</h2>
 
 
 <p>Örömmel jelezzük, hogy az önkéntes munkára való jelentkezését csapatunk felülvizsgálta és minden szempontból megfelel, ezért elfogadtuk. Ha további kérdései vannak kérjük, telefonon keressen minket!</p>
 
 <h2>A következő időpontra várjuk:</h2>
-<p>2025. július 13. 16:30-19:30</p>
+<p><%= content.year %>. <%= content.month %>. <%= content.day %>. 16:30-19:30</p>
 
 <p id="warning">Ha nem kérvényezett önkéntes munkát menhelyünkre, kérjük hagyja figyelmen kívül ezt az emailt!</p>
 <p>Üdvözlettel: A GazdiRadar csapata</p>
