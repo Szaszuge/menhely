@@ -25,8 +25,8 @@ export const acceptRequest = async (req, res, next) => {
     next();
 }
 export const deleteRequest = async (req, res) => {
-    console.log(`Deleting request... [${req.body.id}]`);
-    const answer = await requestService.deleteRequest(req.body.id);
+    console.log(`Deleting request... [${req.body[0]}]`);
+    const answer = await requestService.deleteRequest(req.body[0]);
     if (answer) return res.status(200).json({ message: "Sikeres törlés"});
     return res.status(203).json({ message: "Sikertelen törlés"});
 }
