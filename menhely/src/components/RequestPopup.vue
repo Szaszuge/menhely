@@ -77,7 +77,37 @@ const name = ref('Szárforsíp terijer kiskutyuska')
             </div>
           </div>
         </div>
-        <!-- TODO: Többi tipusra Popup kinézet -->
+        <!-- TODO: Önkéntes munka popup / Állat meglátogatása popup / Állat leadása popup -->
+
+        <div v-else-if="props.requestType == 'Önkéntes munka'">
+    <div class="request-volunteer-details">
+      <h2 class="request-title">Önkéntes munka jelentkezés adatai</h2>
+      
+      <div class="request-info-section">
+        <p class="request-info-label">Jelentkező neve:</p>
+        <p class="request-info-value volunteer-info-value">Auer Zoltán</p>
+      </div>
+      
+      <div class="request-info-section">
+        <p class="request-info-label">Munka dátuma:</p>
+        <p class="request-info-value volunteer-info-value">2025-07-18</p>
+      </div>
+      
+      <div class="request-info-section">
+        <p class="request-info-label">Munka ideje:</p>
+        <p class="request-info-value volunteer-info-value">12:30-15:30</p>
+      </div>
+      
+      <div class="request-info-section">
+        <p class="request-info-label">Miért jelentkezett munkára:</p>
+        <div class="request-info-text">
+          Szeretek állatokkal foglalkozni és szeretnék segíteni a menhelyüknek ezúton
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 
       </div>
     </div>
@@ -114,6 +144,8 @@ const name = ref('Szárforsíp terijer kiskutyuska')
   width: 30px;
   height: 30px;
   cursor: pointer;
+  margin-right: 0.2rem;
+  margin-top: 0.2rem;
 }
 
 .request-dog-details {
@@ -164,8 +196,8 @@ const name = ref('Szárforsíp terijer kiskutyuska')
 }
 
 .request-info-value {
-  font-size: 1.2rem;
-  font-weight: 700;
+  font-size: 1.1rem;
+  font-weight: 600;
   text-align: center;
   margin: 0;
 }
@@ -200,6 +232,27 @@ const name = ref('Szárforsíp terijer kiskutyuska')
   height: 20px;
   margin-right: 6px;
 }
+
+.request-volunteer-details {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+}
+
+.request-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+
+.volunteer-info-value {
+  text-align: left !important;
+  margin-left: 1.5rem;
+}
+
 
 @media (min-width: 768px) {
   .request-dog-details {
