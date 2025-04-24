@@ -560,10 +560,8 @@ const savePet = (id) => {
             <img src="../assets/add.png" class="add-paragraph-button" @click="addParagraph()" />
           </div>
           <div class="paragraph-list">
-            <div v-for="paragraph in paragraphs">
+            <div v-for="(paragraph, index) in paragraphs">
             <div class="form-group">
-
-              <hr class="paragraph-line"></hr>
 
               <div class="paragraph-top-row">
                 <input type="text" 
@@ -581,6 +579,8 @@ const savePet = (id) => {
                       @input="updateParagraphDescription(paragraph.id, ($event.target as HTMLInputElement).value)">
 
               </textarea>
+
+              <hr class="paragraph-line" v-if="index != paragraphs.length-1"></hr>
             </div>
 
             </div>
@@ -621,7 +621,8 @@ const savePet = (id) => {
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
-  margin: 0rem 1rem;
+  align-items: center;
+  margin: 1.2rem 1rem 0.5rem;
 }
 
 .add-paragraph-text {
@@ -630,8 +631,8 @@ const savePet = (id) => {
 }
 
 .add-paragraph-button {
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
   max-width: 30px;
   max-height: 30px;
   cursor: pointer;
@@ -700,7 +701,34 @@ const savePet = (id) => {
   margin-top: 10px;
   font-size: 1rem;
   font-weight: 600;
+  position: relative;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out;
 }
+
+.image-modify-text:hover {
+  color: #ff6600;
+}
+
+.image-modify-text::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 100%;
+  height: 3px;
+  background-color: #ff6600;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease-in-out;
+}
+
+.image-modify-text:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+
 
 .admission-info {
   flex-grow: 1;
@@ -990,7 +1018,7 @@ const savePet = (id) => {
   }
 
   .pet-info-section {
-    margin-left: 0;
+    margin-left: 4rem;
   }
 
   .admission-info {
@@ -1054,7 +1082,7 @@ const savePet = (id) => {
   }
 
   .pet-info-section {
-    margin-left: 0;
+    margin-left: 4rem;
   }
 }
 </style>
