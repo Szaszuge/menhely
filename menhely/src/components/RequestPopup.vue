@@ -38,7 +38,7 @@ const name = ref('Szárforsíp terijer kiskutyuska')
         </div>
         
         <div class="request-dog-details" v-if="props.requestType == 'Leadás'">
-          <div class="request-image-container">
+          <div class="request-image-container"  id="petvisitimage">
             <img v-bind:src="imageURL" alt="Kutya" class="request-dog-image" />
           </div>
           
@@ -77,40 +77,65 @@ const name = ref('Szárforsíp terijer kiskutyuska')
             </div>
           </div>
         </div>
-        <!-- TODO: Önkéntes munka popup / Állat meglátogatása popup / Állat leadása popup -->
 
         <div v-else-if="props.requestType == 'Önkéntes munka'">
-    <div class="request-volunteer-details">
-      <h2 class="request-title">Önkéntes munka jelentkezés adatai</h2>
-      
-      <div class="request-info-section">
-        <p class="request-info-label">Jelentkező neve:</p>
-        <p class="request-info-value volunteer-info-value">Auer Zoltán</p>
-      </div>
-      
-      <div class="request-info-section">
-        <p class="request-info-label">Munka dátuma:</p>
-        <p class="request-info-value volunteer-info-value">2025-07-18</p>
-      </div>
-      
-      <div class="request-info-section">
-        <p class="request-info-label">Munka ideje:</p>
-        <p class="request-info-value volunteer-info-value">12:30-15:30</p>
-      </div>
-      
-      <div class="request-info-section">
-        <p class="request-info-label">Miért jelentkezett munkára:</p>
-        <div class="request-info-text">
-          Szeretek állatokkal foglalkozni és szeretnék segíteni a menhelyüknek ezúton
+          <div class="request-volunteer-details">
+            <h2 class="request-title">Önkéntes munka jelentkezés adatai</h2>
+            
+            <div class="volunteer-info-row">
+              <div class="volunteer-info-item">
+                <p class="request-info-label">Jelentkező neve:</p>
+                <p class="request-info-value">Auer Zoltán</p>
+              </div>
+              
+              <div class="volunteer-info-item">
+                <p class="request-info-label">Munka dátuma:</p>
+                <p class="request-info-value">2025-07-18</p>
+              </div>
+              
+              <div class="volunteer-info-item">
+                <p class="request-info-label">Munka ideje:</p>
+                <p class="request-info-value">12:30-15:30</p>
+              </div>
+            </div>
+            
+            <div class="request-info-section">
+              <p class="request-info-label">Miért jelentkezett munkára:</p>
+              <div class="request-info-text">
+                Szeretek állatokkal foglalkozni és szeretnék segíteni a menhelyüknek ezúton
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div v-else-if="props.requestType == 'Meglátogatás'">
+          <div class="request-dog-details">
+            <div class="request-image-container" id="petvisitimage">
+              <img src="../assets/allatkep.png" alt="Kutya" class="request-dog-image" />
+            </div>
+            
+            <div class="request-details-content" id="petvisit">
+              <h2 class="request-dog-name">Morzsi</h2>
+              
+              <div class="request-info-section">
+                <p class="request-info-label">Látogatást kérelmező neve:</p>
+                <p class="request-info-value pet-visit-value">Auer Zoltán</p>
+              </div>
+              
+              <div class="request-info-section">
+                <p class="request-info-label">Meglátogatás dátuma:</p>
+                <p class="request-info-value pet-visit-value">2025-10-21</p>
+              </div>
+              
+              <div class="request-info-section">
+                <p class="request-info-label">Meglátogatás ideje pontosan (óra:perc):</p>
+                <p class="request-info-value pet-visit-value">15:30</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-
-
-
-      </div>
-    </div>
+</div>
 </template>
 
 <style lang="css" scoped>
@@ -182,7 +207,10 @@ const name = ref('Szárforsíp terijer kiskutyuska')
   display: flex;
   flex-direction: column;
   align-items: center;
+}
 
+#petvisitimage{
+  margin-top: -3rem;
 }
 
 .request-info-section {
@@ -195,11 +223,20 @@ const name = ref('Szárforsíp terijer kiskutyuska')
   margin-bottom: 0.5rem;
 }
 
+.pet-visit-value {
+  text-align: left !important;
+}
+
 .request-info-value {
   font-size: 1.1rem;
   font-weight: 600;
   text-align: center;
   margin: 0;
+  text-align: left !important;
+}
+
+#petvisit{
+  margin-top: 1rem;
 }
 
 .request-info-text {
@@ -211,7 +248,6 @@ const name = ref('Szárforsíp terijer kiskutyuska')
   overflow-y: auto;
   overflow-wrap: anywhere;
 }
-
 
 .request-tags-container {
   display: flex;
@@ -248,12 +284,34 @@ const name = ref('Szárforsíp terijer kiskutyuska')
   text-align: center;
 }
 
-
 .volunteer-info-value {
   text-align: left !important;
   margin-left: 1.5rem;
 }
 
+.volunteer-info-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  margin-left: 6rem;
+  margin-top: 1rem;
+}
+
+.volunteer-info-item {
+  flex: 1;
+  min-width: 200px;
+  margin-bottom: 1rem;
+}
+
+.volunteer-info-item .request-info-label {
+  margin-bottom: 0.25rem;
+}
+
+.volunteer-info-item .request-info-value {
+  font-weight: 600;
+}
 
 @media (min-width: 768px) {
   .request-dog-details {
@@ -276,6 +334,14 @@ const name = ref('Szárforsíp terijer kiskutyuska')
 }
 
 @media (max-width: 768px) {
+  .volunteer-info-row {
+    flex-direction: column;
+    margin-left: 0;
+  }
+  
+  .volunteer-info-item {
+    width: 100%;
+  }
   
   .request-tags-container {
     flex-wrap: wrap;
@@ -286,6 +352,13 @@ const name = ref('Szárforsíp terijer kiskutyuska')
   .request-dog-image {
     margin-top: 1rem;
   }
-  
+
+  #petvisitimage{
+    margin-top: 0;
+  }
+
+  #petvisit{
+    margin-top: 0;
+  } 
 }
 </style>
