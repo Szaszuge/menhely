@@ -209,6 +209,7 @@ const name = ref('Szárforsíp terijer kiskutyuska')
   max-height: 200px;
   line-height: 1.5;
   overflow-y: auto;
+  overflow-wrap: anywhere;
 }
 
 

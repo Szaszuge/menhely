@@ -43,6 +43,24 @@ const id = useRoute().params.id;
 
 const imageURL = ref("");
 const admissionDate = ref('');
+const details = ref('');
+
+let kep = null;
+const file = ref("")
+
+function changeFileName(event) {
+   if (event.target.files[0] != null) {
+    imageURL.value = `http://localhost:3000/uploads/placeholder/animal.png`
+   }
+  imageURL.value = URL.createObjectURL(event.target.files[0])
+}
+
+function uploadImage(event){
+  document.getElementById("image-file-input").click()
+}
+function imageAdded(event){
+  kep = event.target.files[0] ?? null;
+}
 
 const name = ref('');
 const breed = ref('');
@@ -57,35 +75,45 @@ const isNeutered = ref(false);
 const hasPassport = ref(false);
 
 onMounted(() => {
+    document.addEventListener('click', handleClickOutside);
+
     animSer.GetAnimalDataByID(id).then((res) => {
       console.log(res.data.animal)
       const animal = res.data.animal;
 
       imageURL.value = `http://localhost:3000/uploads/${!!animal.details.image ? animal.details.image : 'placeholder/animal.png'}`;
-      admissionDate.value = '2025-06-10'; 
+      admissionDate.value = animal.arrival; 
 
       name.value = animal.name;
       breed.value = (animal.details.type == 'dog' ? 'Kutya' : 'Macska');
-      color.value = (!!animal.details.color ? animal.details.color : '');
-      age.value = (!!animal.details.age ? animal.details.age : '');
+      color.value = (animal.details.color ?? '');
+      age.value = (animal.age ?? '');
       
-      if (animal.details.gender === 'male') {
+      details.value = (animal.details.description ?? '');
+
+      if (animal.gender == 'male') {
         genderOptions.value.find(x => x.label === 'Kan').selected = true;
-        gender.value = 'Kan';
-      } else if (animal.details.gender === 'female') {
+      } else if (animal.gender == 'female') {
         genderOptions.value.find(x => x.label === 'Szuka').selected = true;
-        gender.value = 'Szuka';
       }
 
-      isChipped.value = !!animal.details.chipped ? true : false;
-      isNeutered.value = !!animal.details.neutered ? true : false;
-      hasPassport.value = !!animal.details.passported ? true : false;
+      isChipped.value = animal.details.chipped ?? false;
+      isNeutered.value = animal.details.neutered ?? false;
+      hasPassport.value = animal.details.passported ?? false;
 
       if (animal.type == "dog"){
         breedOptions.value.find(x => x.label == 'Kutya').selected = true;
       }
       else {
         breedOptions.value.find(x => x.label == 'Macska').selected = true;
+      }
+
+      
+      if (animal.from == "home"){
+        admissionOptions.value.find(x => x.label == 'Leadott').selected = true;
+      }
+      else {
+        admissionOptions.value.find(x => x.label == 'Talált').selected = true;
       }
 
       if (animal.details.characteristics && Array.isArray(animal.details.characteristics)) {
@@ -103,6 +131,24 @@ onMounted(() => {
       }
     })
 });
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside);
+});
+
+const graphID = ref(0);
+const addParagraph = () => {
+  paragraphs.value.push({id:graphID.value++,title:'',description:''});
+}
+const removeParagraph = (id) => {
+  paragraphs.value = paragraphs.value.filter(paragraph => paragraph.id != id)
+}
+const updateParagraphTitle = (id, value) => {
+  paragraphs.value.find(x => x.id == id).title = value;
+}
+const updateParagraphDescription = (id, value) => {
+  paragraphs.value.find(x => x.id == id).description = value;
+}
 
 const activeDropdown = ref<string | null>(null);
 const setActiveDropdown = (id: string | null) => {
@@ -144,14 +190,6 @@ const handleClickOutside = (event: MouseEvent) => {
     setActiveDropdown(null);
   }
 };
-
-onMounted(() => {
-  document.addEventListener('click', handleClickOutside);
-});
-
-onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside);
-});
 
 const selectedBreed = computed(() => {
   const selected = breedOptions.value.find(item => item.selected);
@@ -273,18 +311,28 @@ const toggleCheckbox = (type: 'chip' | 'neuter' | 'passport') => {
 };
 
 const savePet = (id) => {
+  let paragraph_copy = paragraphs.value;
+  paragraph_copy.forEach(paragraph => {
+    delete paragraph.id;
+  })  
   let reconstructed_animal = {
+    id: id,
     name: name.value,
     type: breedOptions.value.find(x => x.label == 'Kutya').selected ? 'dog' : 'cat',
-    gender: genderOptions.value.find(x => x.label == 'Kan').selected ? 'male' : 'female',
     age: age.value,
+    gender: genderOptions.value.find(x => x.label == 'Kan').selected ? 'male' : 'female',
     details: {
       color: color.value,
       chipped: isChipped.value,
       neutered: isNeutered.value,
-      passported: hasPassport.value,
-      characteristics: characteristics.value.map(char => char.label)
-    }
+      passported: hasPassport.value,  
+      characteristics: characteristics.value.map(char => char.label),
+      paragraphs: paragraph_copy,
+      image: null
+    },
+    from: admissionOptions.value.find(x => x.label == 'Talált').selected ? 'found' : 'home',
+    // TODO: Paragraph
+    isPublicable: false,
   };
 
   // Call API to save the data
@@ -303,13 +351,22 @@ const savePet = (id) => {
       <div class="card-content">
         <div class="pet-info-section">
           <div class="image-section">
-            <img v-bind:src="imageURL" alt="Pet photo" class="pet-image" />
-            <div class="image-modify-text">Kép módosítása</div>
+            <img v-bind:src="imageURL" alt="Pet photo" class="pet-image"  @click="uploadImage"/>
+            <div class="image-modify-text" @click="uploadImage">Kép módosítása</div>
+                <input 
+                  hidden 
+                  type="file" 
+                  accept="image/png, image/jpeg" 
+                  id="image-file-input" 
+                  v-on:change="imageAdded" 
+                  @change="changeFileName"
+                >
           </div>
           
           <div class="admission-info">
             <div class="admission-label">Menhelyre kerülés dátuma:</div>
             <div class="admission-date">{{ admissionDate }}</div>
+            <div class="admission-description">"{{ details }}"</div>
           </div>
         </div>
         
@@ -366,14 +423,14 @@ const savePet = (id) => {
           </div>
           
           <div class="form-group">
-            <div class="label">Kora</div>
+            <div class="label">Kora*</div>
             <CustomInput v-model="age" placeholder="Input" class="form-input" />
           </div>
         </div>
         
         <div class="form-grid second-row">
           <div class="form-group dropdown-container">
-            <div class="label">Neme</div>
+            <div class="label">Neme*</div>
             <div 
               class="custom-dropdown" 
               :class="{ 'active': activeDropdown === 'gender' }"
@@ -496,6 +553,41 @@ const savePet = (id) => {
           </div>
         </div>
         
+
+        <div class="paragraphs">
+          <div class="add-paragraph-row">
+            <p class="add-paragraph-text">Új paragrafus hozzáadása</p>
+            <img src="../assets/add.png" class="add-paragraph-button" @click="addParagraph()" />
+          </div>
+          <div class="paragraph-list">
+            <div v-for="paragraph in paragraphs">
+            <div class="form-group">
+
+              <hr class="paragraph-line"></hr>
+
+              <div class="paragraph-top-row">
+                <input type="text" 
+                        placeholder="Cím" 
+                        class="border-3 border-gray-500 text-gray-500 bg-gray-100 p-2 focus:outline-none focus:ring-1 focus:ring-gray-500 shadow-base"
+                        style="height: 44px;font-weight: 600;border-radius: 15px; flex-grow: 5;"
+                        @input="updateParagraphTitle(paragraph.id, ($event.target as HTMLInputElement).value)">
+                </input>
+                <img src="../assets/close-dark.png" class="add-paragraph-button" style="flex-grow: 1;" @click="removeParagraph(paragraph.id)" />
+              </div>
+              <textarea class="border-3 border-gray-500 text-gray-500 bg-gray-100 p-2 focus:outline-none focus:ring-1 focus:ring-gray-500 shadow-base"
+                      style="height: 220px;font-size: 1rem;font-weight: 600;border-radius: 15px; min-height: 220px; resize: none;"
+                      value=""
+                      placeholder="Leírás"
+                      @input="updateParagraphDescription(paragraph.id, ($event.target as HTMLInputElement).value)">
+
+              </textarea>
+            </div>
+
+            </div>
+          </div>
+        </div>
+
+
         <div class="nav-buttons">
           <RouterLink to="/adminpage" class="back-link">
             Vissza az admin felületre →
@@ -510,6 +602,41 @@ const savePet = (id) => {
 </template>
 
 <style scoped>
+.paragraph-line {
+  border-color: var(--button-important);
+  border-width: 2px;
+  border-radius: 2px;
+  margin: 1rem 0rem;
+}
+.paragraph-top-row {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  margin-right: 0.5rem;
+}
+.add-paragraph-row {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  margin: 0rem 1rem;
+}
+
+.add-paragraph-text {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.add-paragraph-button {
+  width: 30px;
+  height: 30px;
+  max-width: 30px;
+  max-height: 30px;
+  cursor: pointer;
+}
+
 .pet-modification-container {
   display: flex;
   flex-direction: column;
@@ -551,7 +678,7 @@ const savePet = (id) => {
   display: flex;
   margin-bottom: 20px;
   align-items: center;
-  margin-left: 8rem;
+  margin: 0rem 4rem;
 }
 
 .image-section {
@@ -587,15 +714,21 @@ const savePet = (id) => {
 .admission-label {
   font-weight: 600;
   font-size: 1.1rem;
-  margin-left: 2rem;
+  text-align: center;
 }
 
 .admission-date {
   font-size: 1.3rem;
   font-weight: bold;
-  margin-left: 6rem;
+  text-align: center;
 }
-
+.admission-description {
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 500;
+  font-style: italic;
+  overflow-wrap: anywhere;
+}
 .characteristics-section {
   margin-bottom: 20px;
 }
