@@ -8,8 +8,7 @@ const emit = defineEmits(['close']);
 const ev = ref('');
 const ho = ref('');
 const nap = ref('');
-const ora = ref('');
-const perc = ref('');
+const time = ref(''); 
 
 const closePopup = () => {
   emit('close');
@@ -57,25 +56,13 @@ const closePopup = () => {
           
           <div class="input-group">
             <label for="time">Időpont (óra:perc)</label>
-            <div class="time-container">
-              <input 
-                type="number" 
-                v-model="ora" 
-                min="0" 
-                max="23" 
-                placeholder="Óra" 
-                class="time-input"
-              />
-              <span>:</span>
-              <input 
-                type="number" 
-                v-model="perc" 
-                min="0" 
-                max="59" 
-                placeholder="Perc" 
-                class="time-input"
-              />
-            </div>
+            <input 
+              type="time" 
+              v-model="time" 
+              id="time"
+              class="time-input"
+              placeholder="00:00"
+            />
           </div>
         </div>
         
@@ -99,12 +86,13 @@ const closePopup = () => {
   justify-content: center;
   align-items: center;
   z-index: 100;
+  padding: 10px;
 }
 
 .popup-container {
   background: #FED7AA;
   border-radius: 15px;
-  width: calc(100vw - 25px);
+  width: 100%;
   max-width: 650px;  
   margin: auto;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -136,24 +124,22 @@ const closePopup = () => {
 
 .close-icon {
   position: absolute;
-  right: 25px; 
+  right: 15px; 
   top: 50%;
   transform: translateY(-50%);
   width: 26px;
   height: 26px;
   cursor: pointer;
-  margin-right: 10px; 
 }
 
 .popup-content {
-  padding: 2rem; 
+  padding: 1.5rem; 
   flex-grow: 1;
-  min-height: 400px; 
 }
 
 .description-text {
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   font-size: 1.1rem; 
   font-weight: 600;
 }
@@ -162,7 +148,22 @@ const closePopup = () => {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem; 
-  padding: 0 1rem; 
+  padding: 0 0.5rem; 
+}
+
+@media (max-width: 600px) {
+  .date-time-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .popup-title-container h2 {
+    font-size: 1.5rem;
+  }
+  
+  .description-text {
+    font-size: 1rem;
+  }
 }
 
 label {
@@ -181,14 +182,9 @@ label {
   font-size: 1rem;
 }
 
-.time-container {
-  display: flex;
-  align-items: center;
-  gap: 8px; 
-}
-
 .time-input {
-  flex: 1;
+  display: block;
+  width: 100%;
 }
 
 .button-container {
@@ -203,5 +199,15 @@ label {
   width: 230px; 
   font-size: 1.2rem; 
   padding: 12px; 
+}
+
+@media (max-width: 400px) {
+  .submit-button {
+    width: 100%;
+  }
+  
+  .popup-content {
+    padding: 1rem;
+  }
 }
 </style>
