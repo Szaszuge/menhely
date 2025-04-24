@@ -129,6 +129,11 @@ onMounted(() => {
           }
         });
       }
+
+      animal.details.paragraphs.forEach(paragraph => {
+        paragraphs.value.push({id:graphID.value++,title:paragraph.title,description:paragraph.description});
+      })
+
     })
 });
 
@@ -315,7 +320,7 @@ const savePet = (id) => {
   paragraph_copy.forEach(paragraph => {
     delete paragraph.id;
   })  
-  let reconstructed_animal = {
+  let data = {
     id: id,
     name: name.value,
     type: breedOptions.value.find(x => x.label == 'Kutya').selected ? 'dog' : 'cat',
@@ -331,12 +336,21 @@ const savePet = (id) => {
       image: null
     },
     from: admissionOptions.value.find(x => x.label == 'Talált').selected ? 'found' : 'home',
-    // TODO: Paragraph
     isPublicable: false,
   };
+  console.log("Saving animal:", data);
+  
+  const formData = new FormData();
+  formData.append("file", kep);
+  formData.append("data", JSON.stringify(data));
+  
+  const formDataEntries = Array.from(formData.entries());
+  console.log(formDataEntries);
 
+  animSer.updateAnimal(formData).then((res) => {
+    console.log(res.data);
+  })
   // Call API to save the data
-  console.log("Saving animal:", reconstructed_animal);
 }
 
 </script>
@@ -366,7 +380,7 @@ const savePet = (id) => {
           <div class="admission-info">
             <div class="admission-label">Menhelyre kerülés dátuma:</div>
             <div class="admission-date">{{ admissionDate }}</div>
-            <div class="admission-description">"{{ details }}"</div>
+            <div class="admission-description">{{ details }}</div>
           </div>
         </div>
         
@@ -561,28 +575,27 @@ const savePet = (id) => {
           </div>
           <div class="paragraph-list">
             <div v-for="(paragraph, index) in paragraphs">
-            <div class="form-group">
+              <div class="form-group">
 
-              <div class="paragraph-top-row">
-                <input type="text" 
-                        placeholder="Cím" 
-                        class="border-3 border-gray-500 text-gray-500 bg-gray-100 p-2 focus:outline-none focus:ring-1 focus:ring-gray-500 shadow-base"
-                        style="height: 44px;font-weight: 600;border-radius: 15px; flex-grow: 5;"
-                        @input="updateParagraphTitle(paragraph.id, ($event.target as HTMLInputElement).value)">
-                </input>
-                <img src="../assets/close-dark.png" class="add-paragraph-button" style="flex-grow: 1;" @click="removeParagraph(paragraph.id)" />
+                <div class="paragraph-top-row">
+                  <input type="text" 
+                          placeholder="Cím" 
+                          class="border-3 border-gray-500 text-gray-500 bg-gray-100 p-2 focus:outline-none focus:ring-1 focus:ring-gray-500 shadow-base"
+                          style="height: 44px;font-weight: 600;border-radius: 15px; flex-grow: 5;"
+                          :value=paragraph.title
+                          @input="updateParagraphTitle(paragraph.id, ($event.target as HTMLInputElement).value)">
+                  </input>
+                  <img src="../assets/close-dark.png" class="add-paragraph-button" style="flex-grow: 1;" @click="removeParagraph(paragraph.id)" />
+                </div>
+                <textarea class="border-3 border-gray-500 text-gray-500 bg-gray-100 p-2 focus:outline-none focus:ring-1 focus:ring-gray-500 shadow-base"
+                        style="height: 220px;font-size: 1rem;font-weight: 600;border-radius: 15px; min-height: 220px; resize: none;"
+                        :value=paragraph.description
+                        placeholder="Leírás"
+                        @input="updateParagraphDescription(paragraph.id, ($event.target as HTMLInputElement).value)">
+                </textarea>
+
+                <hr class="paragraph-line" v-if="index != paragraphs.length-1"></hr>
               </div>
-              <textarea class="border-3 border-gray-500 text-gray-500 bg-gray-100 p-2 focus:outline-none focus:ring-1 focus:ring-gray-500 shadow-base"
-                      style="height: 220px;font-size: 1rem;font-weight: 600;border-radius: 15px; min-height: 220px; resize: none;"
-                      value=""
-                      placeholder="Leírás"
-                      @input="updateParagraphDescription(paragraph.id, ($event.target as HTMLInputElement).value)">
-
-              </textarea>
-
-              <hr class="paragraph-line" v-if="index != paragraphs.length-1"></hr>
-            </div>
-
             </div>
           </div>
         </div>

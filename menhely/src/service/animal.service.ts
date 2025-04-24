@@ -12,4 +12,7 @@ export class AnimalService {
     GetAnimalDataByID(id:string) {
         return axios.post(this.server + "/animal/getByID", [id])
     }
+    updateAnimal(data:FormData) {
+        return axios.post(this.server + "/animal/update", data, {headers: {"Content-Type": "multipart/form-data"}})
+    }
 }

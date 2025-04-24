@@ -54,6 +54,7 @@ exports.acceptRequest = async (id) => {
             animal.type = request.details.type == "dog" ? Kind.dog : Kind.cat;
             animal.gender = Gender.unknown;
             animal.age = null;
+            animal.isPublic = false;
 
             // Elfogadás dátumának formázása (Lehet függvény kéne)
             var today = new Date();

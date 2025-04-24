@@ -55,6 +55,9 @@ export class Animal {
     
     @Column({ type: 'json' })
     details
+
+    @Column('boolean', {default: false})
+    isPublic: boolean = false;   
     
 
 }
