@@ -8,3 +8,4 @@ temp/
 
 src/uploads/*.png
 src/uploads/*.jpg
+src/uploads/*.jfif
