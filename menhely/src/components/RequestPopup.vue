@@ -83,7 +83,7 @@ const name = ref('Szárforsíp terijer kiskutyuska')
             <div class="volunteer-info-row">
               <div class="volunteer-info-item">
                 <p class="request-info-label">Jelentkező neve:</p>
-                <p class="request-info-value">{{currentRequest}}</p>
+                <p class="request-info-value">{{currentRequest.realname}}</p>
               </div>
               
               <div class="volunteer-info-item">

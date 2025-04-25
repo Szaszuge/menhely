@@ -54,12 +54,14 @@ async function refresh() {
 }
 
 // Kérések
+// TODO: Mivel a nezet az ugyan az, mint a sima csak tobb, ezert egyesiteni kell
 const requests = ref([]);
 const raw_requests = ref([]);
 const filtered_requests = ref([]);
 
 async function viewRequest(id:string, type:string) {
-  selectedRequest.value = raw_requests.value.find(x => x.id == id);
+  selectedRequest.value = requests.value.find(x => x.id == id);
+  console.log(selectedRequest.value)
   showRequestDetails.value[0] = true; 
   showRequestDetails.value[1] = type;
 }

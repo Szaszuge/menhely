@@ -41,12 +41,12 @@ exports.reserveVolunteer = async (data) => {
 
 exports.acceptRequest = async (id) => {
     console.log(`[SERVICE] ACCEPTING REQUEST...`)
-    const request = await AppDataSource.manager.findOneBy(Request, {id: id})
+    const request = await AppDataSource.manager.findOneBy(RequestView, {id: id})
     if (!request){
         console.log(`[SERVICE] REQUEST NON-EXISTANT. RETURNING...`)
         return "non-existent";
     }
-    switch (request.Type){
+    switch (request.type){
         case "Leadás":
             console.log(`[SERVICE] REQUEST TYPE: SURRENDER`)
             let animal = new Animal();
@@ -79,9 +79,9 @@ exports.acceptRequest = async (id) => {
             break;
         case "Önkéntes munka":
             console.log(`[SERVICE] REQUEST TYPE: WORK`)
-            console.log(request.details);
+            console.log(request);
             let work = new Activity()
-            work.user = request.user;
+            work.user = await AppDataSource.manager.findOneBy(User, {email: request.targetEmail});
             work.type = ActivityType.work;
             work.date = new Date()
 
