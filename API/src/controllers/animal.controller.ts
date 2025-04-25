@@ -58,6 +58,14 @@ export const update = async (req, res) => {
     return res.status(200).json({message: 'Sikeres frissítés (Az állat nem publikálható)'});
 }
 
+export const togglePublic = async (req, res) => {
+    const answer = await animalService.togglePublicity(req.body[0]);
+    if (!answer) {
+        return res.status(203).json({message: 'Nem sikerült frissíteni'});
+    }
+    return res.status(200).json({message: 'Sikeres frissítés'});
+
+}
 export const getByID = async (req, res) => {
     const animal = await animalService.getByID(req.body[0]);
     return res.status(200).json({message: 'Sikeres lekérdezés!', animal});

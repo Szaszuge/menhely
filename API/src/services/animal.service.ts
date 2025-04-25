@@ -46,9 +46,16 @@ exports.updateAnimal = async(data, filename, allGood) => {
         return true;
     }
     return false;
-
 }
-
+exports.togglePublicity = async(id:string) => {
+    const result = await AppDataSource.manager.findOneBy(Animal, {id: id});
+    return await AppDataSource
+    .createQueryBuilder()
+    .update(Animal)
+    .set({ isPublic: !result.isPublic})
+    .where("id = :id", {id: id})
+    .execute();
+}
 exports.getByID = async(id:string) => {
     return await AppDataSource.manager.findOneBy(Animal, {id: id});
 }

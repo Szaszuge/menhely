@@ -15,4 +15,8 @@ export class AnimalService {
     updateAnimal(data:FormData) {
         return axios.post(this.server + "/animal/update", data, {headers: {"Content-Type": "multipart/form-data"}})
     }
+    togglePublicStatus(id:string){
+        console.log("Send request.")
+        return axios.post(this.server + "/animal/publify", [id])
+    }
 }
