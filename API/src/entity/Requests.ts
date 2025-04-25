@@ -1,6 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ViewEntity } from "typeorm"
 import { Permits, User } from "../entity/User";
-import { Kind } from "./Animal";
 
 export enum RequestType{
         surrender = "Leadás",
@@ -23,7 +22,7 @@ export class Request {
         default: RequestType.surrender
     })
     Type: RequestType
-    // TODO: Add date property
+    
     @Column({ type: 'json' })
     details
 
