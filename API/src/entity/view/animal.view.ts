@@ -5,6 +5,8 @@ import { AppDataSource } from "../../data-source";
     .select("animal.id", "id")
     .addSelect("animal.Type", "species")
     .addSelect("animal.name", "name")
+    .addSelect("animal.isPublicable", "isPublicable")
+    .addSelect("animal.isPublic", "isPublic")
     .from("animal", "animal")
 })
 export class AnimalView {
@@ -14,4 +16,8 @@ id: string;
 species: string;
 @ViewColumn()
 name: string;
+@ViewColumn()
+isPublicable: boolean;
+@ViewColumn()
+isPublic: boolean;
 }

@@ -348,7 +348,7 @@ const savePet = (id) => {
   console.log(formDataEntries);
 
   animSer.updateAnimal(formData).then((res) => {
-    console.log(res.data);
+    console.log(res.data.message);
   })
   // Call API to save the data
 }
@@ -398,7 +398,7 @@ const savePet = (id) => {
         
         <div class="form-grid">
           <div class="form-group">
-            <div class="label">Neve</div>
+            <div class="label">Neve*</div>
             <CustomInput v-model="name" placeholder="Input" class="form-input" />
           </div>
           

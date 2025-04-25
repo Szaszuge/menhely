@@ -324,16 +324,25 @@ function moveToPetEditor(ID:string) {
               }"
             >
               <td class="column-name">{{ animal.name }}</td>
-              <td class="column-middle">{{ animal.species }}</td>
+              <td class="column-middle">{{ animal.species == 'dog' ? "Kutya" : "Macska" }}</td>
               <td class="column-actions">
                 <div class="actions-container">
-                  <button class="action-button" aria-label="Elrejtés">
+                  <button class="action-button" aria-label="Publikálás" v-if="animal.isPublicable && !animal.isPublic">
+                    <img src="../assets/view.png" alt="Publikálás" class="action-icon">
+                  </button>
+                  <button class="action-button" aria-label="Elrejtés" v-else-if="animal.isPublic">
                     <img src="../assets/hide.png" alt="Elrejtés" class="action-icon">
+                  </button>
+                  <button class="disabled-action-button" aria-label="Publikálás" v-else disabled>
+                    <img src="../assets/view.png" alt="Publikálás" class="action-icon">
                   </button>
                   <button class="action-button" aria-label="Törlés">
                     <img src="../assets/close.png" alt="Törlés" class="action-icon">
                   </button>
-                  <button class="action-button" aria-label="Módosítás" @click="moveToPetEditor(animal.id)">
+                  <button class="disabled-action-button" aria-label="Módosítás" @click="moveToPetEditor(animal.id)" v-if="animal.isPublic" disabled>
+                    <img src="../assets/modify.png" alt="Módosítás" class="action-icon">
+                  </button>
+                  <button class="action-button" aria-label="Módosítás" @click="moveToPetEditor(animal.id)"v-else>
                     <img src="../assets/modify.png" alt="Módosítás" class="action-icon">
                   </button>
                 </div>
@@ -442,19 +451,28 @@ function moveToPetEditor(ID:string) {
               </div>
               <div class="mobile-field">
                 <span class="mobile-label">Állatfaj:</span>
-                <span class="mobile-value">{{ animal.species }}</span>
+                <span class="mobile-value">{{ animal.species == 'dog' ? "Kutya" : "Macska" }}</span>
               </div>
             </div>
             <div class="mobile-actions">
-              <button class="action-button" aria-label="Elrejtés">
-                <img src="../assets/hide.png" alt="Elrejtés" class="action-icon">
-              </button>
-              <button class="action-button" aria-label="Törlés">
-                <img src="../assets/close.png" alt="Törlés" class="action-icon">
-              </button>
-              <button class="action-button" aria-label="Módosítás">
-                <img src="../assets/modify.png" alt="Módosítás" class="action-icon">
-              </button>
+              <button class="action-button" aria-label="Publikálás" v-if="animal.isPublicable && !animal.isPublic">
+                    <img src="../assets/view.png" alt="Publikálás" class="action-icon" >
+                  </button>
+                  <button class="action-button" aria-label="Elrejtés" v-else-if="animal.isPublic">
+                    <img src="../assets/hide.png" alt="Elrejtés" class="action-icon">
+                  </button>
+                  <button class="disabled-action-button" aria-label="Publikálás" v-else disabled>
+                    <img src="../assets/view.png" alt="Publikálás" class="action-icon">
+                  </button>
+                  <button class="action-button" aria-label="Törlés">
+                    <img src="../assets/close.png" alt="Törlés" class="action-icon">
+                  </button>
+                  <button class="disabled-action-button" aria-label="Módosítás" @click="moveToPetEditor(animal.id)" v-if="animal.isPublic" disabled>
+                    <img src="../assets/modify.png" alt="Módosítás" class="action-icon">
+                  </button>
+                  <button class="action-button" aria-label="Módosítás" @click="moveToPetEditor(animal.id)"v-else>
+                    <img src="../assets/modify.png" alt="Módosítás" class="action-icon">
+                  </button>
             </div>
           </div>
         </div>

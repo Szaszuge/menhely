@@ -28,7 +28,7 @@ exports.updateAnimal = async(data, filename, allGood) => {
     pushed_animal.gender = data.gender == 'male' ? Gender.male : (data.gender == 'female' ? Gender.female : Gender.unknown);
     pushed_animal.from = data.from == 'home' ? From.home : From.found;
     pushed_animal.details = data.details;
-    pushed_animal.details.isPublicable = allGood ?? false;
+    console.log(`[SERVICE] IS THE ANIMAL PUBLISHABLE: ${allGood ? 'YES' : 'NO'}`);
     console.log(pushed_animal.details)
 
     const result = await AppDataSource.manager.findOneBy(Animal, {id: data.id});
@@ -40,7 +40,7 @@ exports.updateAnimal = async(data, filename, allGood) => {
         await AppDataSource
         .createQueryBuilder()
         .update(Animal)
-        .set({name: pushed_animal.name, age: pushed_animal.age, type: pushed_animal.type, from: pushed_animal.from, gender: pushed_animal.gender, details: pushed_animal.details})
+        .set({name: pushed_animal.name, age: pushed_animal.age, type: pushed_animal.type, from: pushed_animal.from, gender: pushed_animal.gender, details: pushed_animal.details, isPublicable: allGood})
         .where("id = :id", {id: data.id})
         .execute();
         return true;

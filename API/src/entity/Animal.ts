@@ -57,7 +57,9 @@ export class Animal {
     details
 
     @Column('boolean', {default: false})
-    isPublic: boolean = false;   
+    isPublicable: boolean = false;   
     
+    @Column('boolean', {default: false})
+    isPublic: boolean = false;   
 
 }

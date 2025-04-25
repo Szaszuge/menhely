@@ -44,6 +44,10 @@ export const update = async (req, res) => {
     const request = JSON.parse(req.body.data);
     console.log(request);
 
+    if (request.name != '' && request.age != '' && request.gender != '' && request.from != '' && request.details.paragraphs.length > 0) {
+        allGood = true;
+    }
+
     const answer = await animalService.updateAnimal(request, req.file?.filename, allGood);
     if (!answer) {
         return res.status(203).json({message: 'Nem sikerült frissíteni'});
