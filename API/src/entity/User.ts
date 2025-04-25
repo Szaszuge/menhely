@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, ManyToOne, CreateDateColumn, OneToMany } from "typeorm"
 import { Address } from "./Address"
 import { Request } from "./Requests"
+import { Activity } from "./Activity";
 
 
 export enum Permits {
@@ -37,6 +38,9 @@ export class User {
     
     @OneToMany(() => Request, (request) => request.user)
     requests: Request[]
+    
+    @OneToMany(() => Activity, (activity) => activity.user)
+    activities: Activity[]
 
     @Column({
         type: 'enum',
