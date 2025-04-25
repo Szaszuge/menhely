@@ -4,6 +4,7 @@ import { Animal, Kind, From, Gender } from "../entity/Animal";
 import { User } from "../entity/User";
 import { Request, RequestType } from "../entity/Requests";
 import { RequestView } from "../entity/view/request.view";
+import { Activity, ActivityType } from "../entity/Activity";
 exports.getAllRaw = async () => {
     console.log(`[SERVICE] GATHERING ALL REQUESTS RAW...`)
     const requests = await AppDataSource.manager.find(Request);
@@ -18,7 +19,7 @@ exports.getByID = async (id) => {
     if (!request){
         return null;
     }
-    return request
+    return request;
 }
 
 exports.reserveVolunteer = async (data) => {
@@ -66,15 +67,27 @@ exports.acceptRequest = async (id) => {
 
             animal.arrival = ma;
 
-            let details = {
+            const details = {
                 description: request.details.other,
                 image: request.details.image,
                 city: request.details.city,
             };
             animal.details = details;
+
             const uploaded_animal = await AppDataSource.manager.save(animal);
             console.log(`[SERVICE] SAVED ANIMAL`)
             break;
+        case "Önkéntes munka":
+            console.log(`[SERVICE] REQUEST TYPE: WORK`)
+            console.log(request.details);
+            let work = new Activity()
+            work.user = request.user;
+            work.type = ActivityType.work;
+            work.date = new Date()
+
+            const saved_activity = await AppDataSource.manager.save(work);
+            break;
+
         default:
             return "non-handled";
     }
@@ -90,5 +103,4 @@ exports.deleteRequest = async (id) => {
     }
     await AppDataSource.manager.delete(Request, {id: request.id});
     return true;
-    // TODO: E-mail küldése elutasítás esetén
 }

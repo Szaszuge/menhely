@@ -82,7 +82,7 @@ async function acceptRequest(id:string, email:string, name:string) {
     case "Leadás":
       mailData.value = {
         to: email,
-        subject: "GazdiRadar | Állat leadás elfogadva",
+        subject: "GazdiRadar | Állat leadás | elfogadva",
         content: {
           userName: name,
           year: current_request.details.year,
@@ -96,12 +96,14 @@ async function acceptRequest(id:string, email:string, name:string) {
     case "Önkéntes munka":
       mailData.value = {
         to: email,
-        subject: "GazdiRadar | Önkéntes munka elfogadva",
+        subject: "GazdiRadar | Önkéntes munka | elfogadva",
         content: {
           userName: name,
-          year: current_request.details.year,
-          month: current_request.details.month,
-          day: current_request.details.day,
+          year: current_request.details.date.year,
+          month: current_request.details.date.month,
+          day: current_request.details.date.day,
+          from: current_request.details.fromTo[0],  
+          to: current_request.details.fromTo[1]
         },
         template: "request/VoluntaryJobAccepted"
       }
@@ -126,7 +128,7 @@ async function refuseRequest(id:string, email:string, name:string) {
     case "Leadás":
       mailData.value = {
         to: email,
-        subject: "GazdiRadar | Állat leadás elutasítva",
+        subject: "GazdiRadar | Állat leadás | elutasítva",
         content: {
           userName: userStore.loggedUser().name,
           reason: reasonGiven.value,

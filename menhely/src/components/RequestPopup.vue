@@ -24,8 +24,6 @@ watch(() => props.currentRequest, (value, oldvalue) => {
   imageURL.value = `http://localhost:3000/uploads/${!!value.details.image ? value.details.image : 'placeholder/animal.png'}`;
 }, {immediate: true})
 
-// TODO: Watch, hogy ID alapján változzon dinamikusan a Pop-up
-
 const name = ref('Szárforsíp terijer kiskutyuska')
 
 </script>
@@ -85,24 +83,24 @@ const name = ref('Szárforsíp terijer kiskutyuska')
             <div class="volunteer-info-row">
               <div class="volunteer-info-item">
                 <p class="request-info-label">Jelentkező neve:</p>
-                <p class="request-info-value">Auer Zoltán</p>
+                <p class="request-info-value">{{currentRequest}}</p>
               </div>
               
               <div class="volunteer-info-item">
                 <p class="request-info-label">Munka dátuma:</p>
-                <p class="request-info-value">2025-07-18</p>
+                <p class="request-info-value">{{currentRequest.details.date.year}}-{{currentRequest.details.date.month}}-{{currentRequest.details.date.day}}</p>
               </div>
               
               <div class="volunteer-info-item">
                 <p class="request-info-label">Munka ideje:</p>
-                <p class="request-info-value">12:30-15:30</p>
+                <p class="request-info-value">{{currentRequest.details.fromTo[0]}}-{{currentRequest.details.fromTo[1]}}</p>
               </div>
             </div>
             
             <div class="request-info-section">
               <p class="request-info-label">Miért jelentkezett munkára:</p>
               <div class="request-info-text">
-                Szeretek állatokkal foglalkozni és szeretnék segíteni a menhelyüknek ezúton
+                {{currentRequest.details.reason == '' ? 'A felhasználó nem adott hozzá leírást.' : currentRequest.details.reason}}
               </div>
             </div>
           </div>
