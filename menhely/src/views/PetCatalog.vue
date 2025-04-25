@@ -4,11 +4,21 @@ import Allatcard from '@/components/Allatcard.vue';
 import Filter from '@/components/Filter.vue';
 import CustomInput from '@/components/CustomInput.vue';
 import PawFooter from '@/components/PawFooter.vue';
+import { ApiService } from '../service/api.service';
 
+const api = new ApiService()
+
+const animals = ref([]);
 onMounted(() => {
   document.documentElement.style.overflow = 'auto';
   document.body.style.overflow = 'auto';
   document.body.style.position = 'static';
+
+  api.getAllAnimalsRaw().then((res) => {
+    console.log(res.data.animals)
+    animals.value = res.data.animals;
+  })
+
 });
 
 onUnmounted(() => {
@@ -111,15 +121,14 @@ const updateJellemvonasOptions = (newOptions) => {
     </div>
     
     <div id="allatkartyak">
-      <allatcard />
-      <allatcard />
-      <allatcard />
-      <allatcard />
-      <allatcard />
-      <allatcard />
-      <allatcard />
-      <allatcard />
-      <allatcard />
+      <Allatcard v-for="animal in animals"
+      :id="animal.id"
+      :name="animal.name"
+      :gender="animal.gender"
+      :age="animal.age"
+      :type="animal.type"
+      :img="animal.details.image"
+       />
     </div>
   </div>
   <PawFooter />

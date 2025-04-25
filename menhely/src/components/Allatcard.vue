@@ -1,15 +1,47 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
+const imageURL = ref("");
+const props = defineProps({
+  id: {
+    type: String,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  gender: {
+    type: String,
+    required: true,
+  },
+  age: {
+    type: String,
+    required: true,
+  },
+  type: {
+    type: String,
+    required: true,
+  },
+  img: {
+    type: String,
+    required: true,
+  },
+  
 
+})
+  onMounted(() => {
+    imageURL.value = `http://localhost:3000/uploads/${!!props.img ? props.img : 'placeholder/animal.png'}`;
+  })
 </script>
 
 <template>
     <div class="image-container">
-      <img src="../assets/allatkep.png" alt="" class="allatkep">
+      <img :src=imageURL alt="" class="allatkep">
       <div class="white-rectangle">
-        <h2>Sztárforsíp terijer kiskutyuska</h2>
+        <h2>{{props.name}}</h2>
         <div class="igazitas">
-            <p class="text-slate-500">Nőstény, 2 hónapos</p>
-            <RouterLink to="/petdetails">
+            <p class="text-slate-500">{{props.gender == 'male' ? (props.type == "dog" ? "Kan" : "Kandúr") : (props.type == "dog" ? "Szuka" : "Nőstény")}}, {{props.age}}</p>
+            <RouterLink :to="`/petdetails/${props.id}`">
               <img src="../assets/forwardbutton.png" alt="" class="forwardbutton" id="forwardbutton">
         </RouterLink>
 
@@ -49,8 +81,9 @@
   
   .allatkep {
     width: 440px;
-    height: 490px;
+    height: 420px;
     border-radius: 40px 40px 0px 0px;
+    object-fit: cover
   }
   
   .forwardbutton {

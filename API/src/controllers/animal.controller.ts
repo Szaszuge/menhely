@@ -74,3 +74,7 @@ export const getAllAnimals = async (req, res, next) => {
     const animals = await animalService.getAllAnimals();
     return res.status(200).json({message: 'Sikeres lekérdezés!', animals: animals});
 }
+export const getAllAnimalsRaw = async (req, res, next) => {
+    const animals = await animalService.getAllAnimalsRaw();
+    return res.status(200).json({message: 'Sikeres lekérdezés!', animals: animals});
+}

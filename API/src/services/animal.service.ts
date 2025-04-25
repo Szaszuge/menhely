@@ -62,3 +62,6 @@ exports.getByID = async(id:string) => {
 exports.getAllAnimals = async() => {
     return await AppDataSource.manager.find(AnimalView);
 }
+exports.getAllAnimalsRaw = async() => {
+    return await AppDataSource.getRepository(Animal).createQueryBuilder("animal").where("animal.isPublic = 1").getMany();
+}
