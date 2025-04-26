@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed, provide, watch } from 'vue';
+import { ref, onMounted, onUnmounted, computed, provide } from 'vue';
 import { useRouter, useRoute } from "vue-router";
 import { AnimalService } from '../service/animal.service';
 import CustomInput from '../components/CustomInput.vue';
 import Button from '../components/Button.vue';
 import PawFooter from '../components/PawFooter.vue';
-import FilterDropdown from '../components/FilterDropdown.vue';
 
 const router = useRouter()
 const animSer = new AnimalService();

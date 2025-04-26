@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter, RouterLink } from "vue-router";
-import { ApiService } from '@/service/api.service';
+import { ApiService } from '../service/api.service';
 import { environment } from '../enviroments/testing';
 import CustomInput from '../components/CustomInput.vue';
 import Button from '../components/Button.vue';
 import PawFooter from '../components/PawFooter.vue';
-import { useUserStore } from "@/stores/user";
+import { useUserStore } from "../stores/user";
 
 const router = useRouter();
-const api = new ApiService(environment);
+const api = new ApiService();
 const userStore = useUserStore();
 
 const user = ref({

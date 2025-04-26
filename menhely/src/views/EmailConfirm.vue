@@ -4,7 +4,7 @@ import { onMounted, onUnmounted, ref } from 'vue';
 import PawFooter from '@/components/PawFooter.vue';
 import Button from '@/components/Button.vue';
 import CustomInput from '@/components/CustomInput.vue';
-import { ApiService } from "@/service/api.service";
+import { ApiService } from "../service/api.service";
 
 const router = useRouter()
 const api = new ApiService();

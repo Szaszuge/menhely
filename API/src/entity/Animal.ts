@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from "typeorm"
 
 
 export enum Kind {
@@ -62,4 +62,6 @@ export class Animal {
     @Column('boolean', {default: false})
     isPublic: boolean = false;   
 
+    @CreateDateColumn()
+    created_at: Date;
 }

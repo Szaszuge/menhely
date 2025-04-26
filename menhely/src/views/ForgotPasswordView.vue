@@ -5,9 +5,9 @@ import PawFooter from '@/components/PawFooter.vue';
 import Button from '@/components/Button.vue';
 import CustomInput from '@/components/CustomInput.vue';
 import { RouterLink } from 'vue-router';
-import { ApiService } from '@/service/api.service';
-import { MailService } from "@/service/mail.service";
-import { useUserStore } from '@/stores/user';
+import { ApiService } from '../service/api.service';
+import { MailService } from "../service/mail.service";
+import { useUserStore } from '../stores/user';
 
 const userStore = useUserStore();
 const router = useRouter()

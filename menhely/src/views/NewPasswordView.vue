@@ -4,8 +4,8 @@ import { onMounted, onUnmounted, ref } from 'vue';
 import CustomInput from '../components/CustomInput.vue';
 import Button from '../components/Button.vue';
 import PawFooter from '../components/PawFooter.vue';
-import { ApiService } from "@/service/api.service";
-import { useUserStore } from '@/stores/user';
+import { ApiService } from "../service/api.service";
+import { useUserStore } from '../stores/user';
 
 const userStore = useUserStore();
 const router = useRouter()

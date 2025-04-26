@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ViewEntity } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from "typeorm"
 import { Permits, User } from "../entity/User";
 
 export enum RequestType{
@@ -26,4 +26,6 @@ export class Request {
     @Column({ type: 'json' })
     details
 
+    @CreateDateColumn()
+    created_at: Date;
 }
