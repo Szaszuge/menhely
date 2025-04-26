@@ -131,14 +131,16 @@
   <h1 id="headertext">GazdiRadar</h1>
   <p id="empty"></p>
 </div>
-<img src="https://file.garden/Z1X6ItHu3lmreWfD/cat.png" alt="">
+<img src="https://file.garden/Z1X6ItHu3lmreWfD/animal-shelter.png" alt="">
 
-<h1>Értesítő a látogatással kapcsolatban...</h1>
-<h2>Kedves Felhasználó!</h2>
+<h1>Értesítő a látogatással kapcsolatban</h1>
+<h2>Kedves <%= content.userName %>!</h2>
 
 
-<p>Sajnálattal értesítjük, hogy az ön által beküldött időponton nem vagyunk képesek magát menhelyünkön fogadni állat nevű állat meglátogatására</p>
-<p>Kérjük, válasszon egy másik időpontot</p>
+<p>Örömmel értesítjük, hogy az ön által beküldött időponton képesek vagyunk magát menhelyünkön fogadni az állat meglátogatására</p>
+<p>A következő napon tudjuk fogadni magát:</p>
+<h2><%= content.date %></h2>
+<h2><%= content.time %></h2>
 
 
 <p id="warning">Ha nem Ön kezdeményezte a látogatási kérelmet, kérjük hagyja figyelmen kívül ezt az emailt!</p>

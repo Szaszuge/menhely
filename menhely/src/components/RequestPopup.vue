@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { onBeforeMount, ref, watch } from 'vue';
-import { ApiService } from "../service/api.service";
+import { AnimalService } from '../service/animal.service';
 
-const api = new ApiService();
+const animSer = new AnimalService();
 
 const parsed_request = ref({id: 0, Type: "", details: {}})
 const imageURL = ref("");
+
+const animal = ref(null);
 
 const props = defineProps({
     requestType: {
@@ -20,9 +22,17 @@ const props = defineProps({
     }
 })
 
-watch(() => props.currentRequest, (value, oldvalue) => {
+watch(() => props.currentRequest, (value) => {
   imageURL.value = `http://localhost:3000/uploads/${!!value.details.image ? value.details.image : 'placeholder/animal.png'}`;
 }, {immediate: true})
+watch(() => props.requestType, (value) => {
+  console.log(value)
+  if(value ==  'Látogatás') {
+    animSer.GetAnimalDataByID(props.currentRequest.details.animal).then((res) => {
+      console.log(res.data)
+    })
+  }
+})
 
 const name = ref('Szárforsíp terijer kiskutyuska')
 
@@ -106,28 +116,28 @@ const name = ref('Szárforsíp terijer kiskutyuska')
           </div>
         </div>
 
-        <div v-else-if="props.requestType == 'Meglátogatás'">
+        <div v-else-if="props.requestType == 'Látogatás'">
           <div class="request-dog-details">
             <div class="request-image-container" id="petvisitimage">
               <img src="../assets/allatkep.png" alt="Kutya" class="request-dog-image" />
             </div>
             
             <div class="request-details-content" id="petvisit">
-              <h2 class="request-dog-name">Morzsi</h2>
+              <h2 class="request-dog-name">{{currentRequest}}</h2>
               
               <div class="request-info-section">
                 <p class="request-info-label">Látogatást kérelmező neve:</p>
-                <p class="request-info-value pet-visit-value">Auer Zoltán</p>
+                <p class="request-info-value pet-visit-value">{{currentRequest.realname}}</p>
               </div>
               
               <div class="request-info-section">
                 <p class="request-info-label">Meglátogatás dátuma:</p>
-                <p class="request-info-value pet-visit-value">2025-10-21</p>
+                <p class="request-info-value pet-visit-value">{{currentRequest.details.date}}</p>
               </div>
               
               <div class="request-info-section">
                 <p class="request-info-label">Meglátogatás ideje pontosan (óra:perc):</p>
-                <p class="request-info-value pet-visit-value">15:30</p>
+                <p class="request-info-value pet-visit-value">{{currentRequest.details.time}}</p>
               </div>
             </div>
           </div>

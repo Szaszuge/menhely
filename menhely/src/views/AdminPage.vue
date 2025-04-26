@@ -114,6 +114,18 @@ async function acceptRequest(id:string, email:string, name:string) {
         template: "request/VoluntaryJobAccepted"
       }
       break;
+    case "Látogatás":
+      mailData.value = {
+        to: email,
+        subject: "GazdiRadar | Látogatás | elfogadva",
+        content: {
+          userName: name,
+          date: current_request.details.date,
+          time: current_request.details.time,  
+        },
+        template: "request/MeglatogatasAccept"
+      }
+      break;
     default:
       return console.log("TBA");
   }
@@ -136,10 +148,31 @@ async function refuseRequest(id:string, email:string, name:string) {
         to: email,
         subject: "GazdiRadar | Állat leadás | elutasítva",
         content: {
-          userName: userStore.loggedUser().name,
+          userName: name,
           reason: reasonGiven.value,
         },
         template: "request/AnimalDecline"
+      }
+      break;
+    case "Önkéntes munka":
+      mailData.value = {
+        to: email,
+        subject: "GazdiRadar | Önkéntes munka | elutasítva",
+        content: {
+          userName: name,
+          reason: reasonGiven.value,
+        },
+        template: "request/VoluntaryJobRejected"
+      }
+      break;
+    case "Látogatás":
+      mailData.value = {
+        to: email,
+        subject: "GazdiRadar | Látogatás | elutasítva",
+        content: {
+          userName: name
+        },
+        template: "request/MeglatogatasDecline"
       }
       break;
     default:

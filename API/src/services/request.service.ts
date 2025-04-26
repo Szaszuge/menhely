@@ -1,4 +1,4 @@
-import { describe } from "node:test";
+    import { describe } from "node:test";
 import { AppDataSource } from "../data-source";
 import { Animal, Kind, From, Gender } from "../entity/Animal";
 import { User } from "../entity/User";
@@ -100,9 +100,18 @@ exports.acceptRequest = async (id) => {
             let work = new Activity()
             work.user = await AppDataSource.manager.findOneBy(User, {email: request.targetEmail});
             work.type = ActivityType.work;
-            work.date = new Date()
+            work.date = new Date(`${request.details.date.year}-${request.details.date.month}-${request.details.date.day}`)
 
-            const saved_activity = await AppDataSource.manager.save(work);
+            const saved_work = await AppDataSource.manager.save(work);
+            break;
+        case "Látogatás":
+            console.log(`[SERVICE] REQUEST TYPE: VISIT`)
+            console.log(request);
+            let visit = new Activity()
+            visit.user = await AppDataSource.manager.findOneBy(User, {email: request.targetEmail});
+            visit.type = ActivityType.check;
+            visit.date = new Date(request.details.date)
+            const saved_visit = await AppDataSource.manager.save(visit);
             break;
 
         default:
