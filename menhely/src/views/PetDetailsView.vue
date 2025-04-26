@@ -90,7 +90,7 @@ const closeVisitPopup = () => {
 
   <PawFooter :is-sticky="true"/>
   
-  <VisitPopup v-if="showVisitPopup" @close="closeVisitPopup" />
+  <VisitPopup v-if="showVisitPopup" @close="closeVisitPopup" :animal="id" />
 </template>
 
 <style scoped>

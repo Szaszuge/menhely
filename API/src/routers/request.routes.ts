@@ -6,6 +6,7 @@ import * as mailController from "../controllers/mailer.controller";
 const router = Router();
 
 router.post('/volunteer', requestController.volunteer);
+router.post('/visit', requestController.visit);
 
 router.get('/getAll', requestController.getAllRequests);
 router.get('/getAllRaw', requestController.getAllRequestsRaw);

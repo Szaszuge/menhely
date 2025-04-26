@@ -2,17 +2,58 @@
 import { ref, defineEmits } from 'vue';
 import Button from '@/components/Button.vue';
 import PawFooter from '@/components/PawFooter.vue';
+import { RequestService } from '../service/request.service';
+import { useUserStore } from '../stores/user';
+
+const props = defineProps({
+  animal: {
+    type: String,
+    reqired: true
+  }
+})
 
 const emit = defineEmits(['close']);
+const reqSer = new RequestService();
+const userStore = useUserStore();
 
 const ev = ref('');
 const ho = ref('');
 const nap = ref('');
 const time = ref(''); 
 
+const warning = ref('');
+
 const closePopup = () => {
   emit('close');
 };
+function sendVisitRequest() {
+  if (ev.value == '' || ho.value == '' || nap.value == '') {
+    warning.value = 'Valami hiányzik';
+    return;
+  }
+  if (Date.parse(`${ev.value}-${ho.value}-${nap.value}`) < Date.now()) {
+    warning.value = 'A dátum a múltban van';
+    return;
+  }
+  if (!((Number(time.value.split(':')[0]) > 7 && Number(time.value.split(':')[0]) < 18) && (Number(time.value.split(':')[1]) >= 0 && Number(time.value.split(':')[1]) < 60))) {
+    warning.value = 'Ebben az időben nem tudunk fogadni';
+    return;
+  }
+  warning.value = '';
+  const data = {
+    user: userStore.loggedUser().id,
+    type: "visit",
+    details: {
+      date: `${ev.value}-${ho.value}-${nap.value}`,
+      time: time.value,
+      animal: props.animal,
+    }
+  }
+  console.log(data);
+  reqSer.requestVisit(data).then((res) => {
+    console.log(res.data.message)
+  });
+}
 </script>
 
 <template>
@@ -26,15 +67,15 @@ const closePopup = () => {
       <div class="popup-content">
         <p class="description-text">
           Kérem az alábbi mezőket töltse ki az alábbi formátum alapján, majd nyomjon a küldés gombra!
-          Nem helyes formátumot nem fogadunk el!
+          Egy látogatás maximum 1 órán át tart.
         </p>
-
+        <p class="warning">{{ warning }}</p>
         <div class="date-time-grid">
           <div class="input-group">
             <label for="ev">Év</label>
             <select v-model="ev" id="ev" class="date-select">
               <option value="">Év</option>
-              <option v-for="year in 5" :key="year" :value="2025 + year - 1">{{ 2025 + year - 1 }}</option>
+              <option v-for="year in 2" :key="year" :value="new Date().getFullYear() + year - 1">{{ 2025 + year - 1 }}</option>
             </select>
           </div>
           
@@ -67,7 +108,7 @@ const closePopup = () => {
         </div>
         
         <div class="button-container">
-          <Button class="submit-button">Küldés</Button>
+          <Button class="submit-button" @click="sendVisitRequest()">Küldés</Button>
         </div>
       </div>      
     </div>
@@ -141,6 +182,13 @@ const closePopup = () => {
   text-align: center;
   margin-bottom: 1.5rem;
   font-size: 1.1rem; 
+  font-weight: 600;
+}
+.warning {
+  color: var(--button-important);
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1rem; 
   font-weight: 600;
 }
 
