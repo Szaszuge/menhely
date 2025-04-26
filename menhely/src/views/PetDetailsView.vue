@@ -1,8 +1,45 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted, computed, provide, watch } from 'vue';
 import Button from '@/components/Button.vue';
 import PawFooter from '@/components/PawFooter.vue';
 import VisitPopup from '@/components/VisitPopup.vue';
+import { useRouter, useRoute } from "vue-router";
+import { AnimalService } from '../service/animal.service';
+
+const id = useRoute().params.id;
+const imageURL = ref("");
+
+const router = useRouter()
+const animSer = new AnimalService();
+const animal = ref({
+  name: "",
+  gender: "",
+  type: "",
+  details: {
+    color: '',
+    chipped: false,
+    neutered: false,
+    passported: false,
+    paragraphs: [],
+    image: '',
+  },
+  isPublic: false
+});
+
+onMounted(() => {
+
+    animSer.GetAnimalDataByID(id).then((res) => {
+      console.log(res.data.animal)
+      animal.value = res.data.animal; 
+      imageURL.value = `http://localhost:3000/uploads/${!!animal.value.details.image ? animal.value.details.image : 'placeholder/animal.png'}`;
+
+      if (res.data.animal == null || !animal.value.isPublic) {
+      router.push('/')
+      }
+
+    })
+    
+});
 
 const showVisitPopup = ref(false);
 
@@ -19,42 +56,25 @@ const closeVisitPopup = () => {
   <div class="pet-details">
     <div class="left-container">
       <div class="image-card">
-        <img src="../assets/allatkep.png" alt="Kiskutya" />
+        <img v-bind:src="imageURL" alt="Állat kép"/>
         <div class="specs">
-          <div class="spec-row"><span>Fajtája</span> <span>Sztárforsíp terrier kutyuska</span></div>
-          <div class="spec-row"><span>Színe</span> <span>Sötét- és világosbarna</span></div>
-          <div class="spec-row"><span>Chippeltetve?</span> <span>Igen</span></div>
-          <div class="spec-row"><span>Ivartalanított?</span> <span>Nem</span></div>
-          <div class="spec-row"><span>Útlevél?</span> <span>Nem</span></div>
+          <div class="spec-row"><span>Fajtája</span> <span>{{ animal.gender == 'male' ? "Hím" : "Nőstény"}} {{ animal.type == 'dog' ? "kutya" : "macska"}}</span></div>
+          <div class="spec-row"><span>Színe</span> <span>{{ animal.details.color }}</span></div>
+          <div class="spec-row"><span>Chippeltetve?</span> <span>{{ animal.details.chipped ? "Igen" : "Nem"}}</span></div>
+          <div class="spec-row"><span>Ivartalanított?</span> <span>{{ animal.details.neutered ? "Igen" : "Nem"}}</span></div>
+          <div class="spec-row"><span>Útlevél?</span> <span>{{ animal.details.passported ? "Igen" : "Nem"}}</span></div>
         </div>
       </div>
     </div>
 
     <div class="right-container">
       <div class="info-card">
-        <h2 class="pet-name">Sztárforsíp Terijer kiskutyuska</h2>
+        <h2 class="pet-name">{{ animal.name }}</h2>
         
         <div class="info-content">
-          <section>
-            <h3>Bekerülés körülménye</h3>
-            <p>Idős család kutyája volt előzőleg, viszont nem tudtak már rá egészségi okok miatt tovább vigyázni és inkább leadták menhelyünkre.</p>
-          </section>
-
-          <section>
-            <h3>Betegségek</h3>
-            <ul>
-              <li>Cukorbeteg</li>
-              <li>Asztma</li>
-              <li>Rák</li>
-            </ul>
-          </section>
-
-          <section>
-            <h3>Egyéb</h3>
-            <ul>
-              <li>Más kutyákkal tartható, valamint macskákkal is jól kijön és kisgyerekekkel is.</li>
-              <li>Főként lakásban tartandó, eddig abban élt előző gazdájával.</li>
-            </ul>
+          <section v-for="paragraph in animal.details.paragraphs">
+            <h3>{{ paragraph.title }}</h3>
+            <p>{{ paragraph.description }}</p>
           </section>
         </div>
 
@@ -109,12 +129,12 @@ const closeVisitPopup = () => {
 
 .image-card img {
   width: 100%;
+  max-height: 50vh;
   object-fit: cover;
   border-radius: 12px 12px 0 0;
 }
 
 .specs {
-  padding: 0.5rem;
   border-radius: 12px 12px 20px 20px;
 }
 
@@ -123,7 +143,7 @@ const closeVisitPopup = () => {
   justify-content: space-between;
   padding: 0.75rem;
   border-bottom: 1px solid #e0e0e0; 
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .spec-row:last-child {
@@ -159,6 +179,8 @@ const closeVisitPopup = () => {
 .info-content {
   padding: 1.5rem;
   flex-grow: 1;
+  overflow-y: auto;
+  max-height: 550px;
 }
 
 section {

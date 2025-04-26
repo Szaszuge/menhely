@@ -34,12 +34,14 @@ onUnmounted(() => {
     <h1>Tekintse meg a nemrég hozzánk került állatokat!</h1>
     <br>
     <div id="petcards"> 
+      <!-- ideiglenesen ezeket kiveszem amíg a dinamikusságon dolgozom
       <allatcard/>
       <allatcard/>
       <allatcard/>
       <allatcard/>
       <allatcard/>
       <allatcard/>
+      -->
     </div>
     <PawFooter/>
   </main>

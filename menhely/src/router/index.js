@@ -54,7 +54,7 @@ const router = createRouter({
       component: () => import('../views/EmailConfirm.vue')
     },
     {
-      path: '/petdetails',
+      path: '/petdetails/:id',
       name: 'petdetails',
       component: () => import('../views/PetDetailsView.vue')
     },
