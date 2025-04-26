@@ -9,11 +9,13 @@ import { useUserStore } from '../stores/user';
 import RequestPopup from '../components/RequestPopup.vue';
 import { useRouter } from 'vue-router';
 import { AnimalService } from '../service/animal.service';
+import { RequestService } from '../service/request.service';
 
 const activeTab = ref('');
 const search = ref('');
 const api = new ApiService();
 const animSer = new AnimalService();
+const reqSer = new RequestService();
 const userStore = useUserStore();
 const router = useRouter()
 
@@ -31,10 +33,10 @@ function nagybetu(string) {
 }
 
 async function refresh() {
-  await api.getAllRequests().then((res) => {
+  await reqSer.getAllRequests().then((res) => {
     requests.value = res.data.requests;
   });
-  await api.getAllRequestsRaw().then((res) => {
+  await reqSer.getAllRequestsRaw().then((res) => {
     raw_requests.value = res.data.requests;
   });
   await api.getAllUsers().then((res) => {
@@ -75,7 +77,7 @@ async function acceptRequest(id:string, email:string, name:string) {
   let mailData = ref({});
   let current_request = undefined;
   console.log(email, name)
-  await api.RequestByID(id).then((res) => {
+  await reqSer.RequestByID(id).then((res) => {
     current_request = res.data.request;
   })
   console.log(current_request);
@@ -115,13 +117,13 @@ async function acceptRequest(id:string, email:string, name:string) {
     default:
       return console.log("TBA");
   }
-  await api.acceptRequest(id, mailData.value);
+  await reqSer.acceptRequest(id, mailData.value);
   refresh();
 }
 async function refuseRequest(id:string, email:string, name:string) {
   let mailData = ref({});
   let current_request = undefined;
-  await api.RequestByID(id).then((res) => {
+  await reqSer.RequestByID(id).then((res) => {
     current_request = res.data.request;
   })
   console.log(current_request);
@@ -143,7 +145,7 @@ async function refuseRequest(id:string, email:string, name:string) {
     default:
       return console.log("TBA");
   }
-  await api.refuseRequest(id, mailData.value);
+  await reqSer.refuseRequest(id, mailData.value);
   refresh();
 }
 

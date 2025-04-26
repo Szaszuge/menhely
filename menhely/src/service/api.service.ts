@@ -41,18 +41,6 @@ export class ApiService {
         return axios.post(this.server + "/users/mailData", [email])
     }
 
-    RequestByID(id:string){
-        //console.log("Fetching all requests.");
-        return axios.post(this.server + "/requests/getByID", [id]);
-    }
-    getAllRequests(){
-        //console.log("Fetching all requests.");
-        return axios.get(this.server + "/requests/getAll");
-    }
-    getAllRequestsRaw(){
-        //console.log("Fetching all requests.");
-        return axios.get(this.server + "/requests/getAllRaw");
-    }
     getAllUsers(){
         //console.log("Fetching all users.");
         return axios.get(this.server + "/users/getAll");
@@ -73,10 +61,5 @@ export class ApiService {
         return axios.post(this.server + "/users/demote", [id]);
     }
 
-    acceptRequest(id:string, mail:any){
-        return axios.post(this.server + "/requests/accept", [id, mail]);
-    }
-    refuseRequest(id:string, mail:any){
-        return axios.post(this.server + "/requests/refuse", [id, mail])
-    }
+    
 }

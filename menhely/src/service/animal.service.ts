@@ -19,4 +19,7 @@ export class AnimalService {
         console.log("Send request.")
         return axios.post(this.server + "/animal/publify", [id])
     }
+    deleteAnimalByID(id:string){
+        return axios.post(this.server + "/animal/delete", [id])
+    }
 }
