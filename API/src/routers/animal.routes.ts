@@ -16,5 +16,6 @@ router.post('/getByID', animalController.getByID);
 router.get('/getAll', animalController.getAllAnimals);
 router.get('/getAllRaw', animalController.getAllAnimalsRaw);
 
+router.post('/delete', animalController.deleteByID)
 
 module.exports = router;

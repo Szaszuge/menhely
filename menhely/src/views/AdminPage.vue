@@ -209,6 +209,11 @@ async function toggleAnimalPublicity(id:string) {
   refresh();
 }
 
+async function deleteAnimal(id:string) {
+  await animSer.deleteAnimalByID(id);
+  refresh();
+}
+
 function moveToPetEditor(ID:string) {
   router.push(`/peteditor/${ID}`);
 }
@@ -331,23 +336,23 @@ function moveToPetEditor(ID:string) {
               <td class="column-actions">
                 <div class="actions-container">
                   <button class="action-button" aria-label="Publikálás" v-if="animal.isPublicable && !animal.isPublic">
-                <img src="../assets/view.png" alt="Publikálás" class="action-icon" @click="toggleAnimalPublicity(animal.id)" >
-              </button>
-              <button class="action-button" aria-label="Publikálás" v-else-if="animal.isPublic">
-                <img src="../assets/hide.png" alt="Publikálás" class="action-icon" @click="toggleAnimalPublicity(animal.id)" >
-              </button>
-              <button class="disabled-action-button" aria-label="Publikálás" v-else disabled>
-                <img src="../assets/view.png" alt="Publikálás" class="action-icon">
-              </button>
-              <button class="action-button" aria-label="Törlés">
-                <img src="../assets/close.png" alt="Törlés" class="action-icon">
-              </button>
-              <button class="disabled-action-button" aria-label="Módosítás" @click="moveToPetEditor(animal.id)" v-if="animal.isPublic" disabled>
-                 <img src="../assets/modify.png" alt="Módosítás" class="action-icon">
-               </button>
-               <button class="action-button" aria-label="Módosítás" @click="moveToPetEditor(animal.id)"v-else>
-                 <img src="../assets/modify.png" alt="Módosítás" class="action-icon">
-               </button>
+                    <img src="../assets/view.png" alt="Publikálás" class="action-icon" @click="toggleAnimalPublicity(animal.id)" >
+                  </button>
+                  <button class="action-button" aria-label="Publikálás" v-else-if="animal.isPublic">
+                    <img src="../assets/hide.png" alt="Publikálás" class="action-icon" @click="toggleAnimalPublicity(animal.id)" >
+                  </button>
+                  <button class="disabled-action-button" aria-label="Publikálás" v-else disabled>
+                    <img src="../assets/view.png" alt="Publikálás" class="action-icon">
+                  </button>
+                  <button class="action-button" aria-label="Törlés">
+                    <img src="../assets/close.png" alt="Törlés" class="action-icon" @click="deleteAnimal(animal.id)">
+                  </button>
+                  <button class="disabled-action-button" aria-label="Módosítás" @click="moveToPetEditor(animal.id)" v-if="animal.isPublic" disabled>
+                    <img src="../assets/modify.png" alt="Módosítás" class="action-icon">
+                  </button>
+                  <button class="action-button" aria-label="Módosítás" @click="moveToPetEditor(animal.id)"v-else>
+                    <img src="../assets/modify.png" alt="Módosítás" class="action-icon">
+                  </button>
                 </div>
               </td>
             </tr>
@@ -468,9 +473,9 @@ function moveToPetEditor(ID:string) {
                 <img src="../assets/view.png" alt="Publikálás" class="action-icon">
               </button>
               <button class="action-button" aria-label="Törlés">
-                <img src="../assets/close.png" alt="Törlés" class="action-icon">
+                <img src="../assets/close.png" alt="Törlés" class="action-icon" @click="deleteAnimal(animal.id)">
               </button>
-              <button class="disabled-action-button" aria-label="Módosítás" @click="moveToPetEditor(animal.id)" v-if="animal.isPublic" disabled>
+              <button class="disabled-action-button" aria-label="Módosítás" v-if="animal.isPublic" disabled>
                  <img src="../assets/modify.png" alt="Módosítás" class="action-icon">
                </button>
                <button class="action-button" aria-label="Módosítás" @click="moveToPetEditor(animal.id)"v-else>
