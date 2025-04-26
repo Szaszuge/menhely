@@ -78,3 +78,11 @@ export const getAllAnimalsRaw = async (req, res, next) => {
     const animals = await animalService.getAllAnimalsRaw();
     return res.status(200).json({message: 'Sikeres lekérdezés!', animals: animals});
 }
+
+export const deleteByID = async (req, res, next) => {
+    const answer = await animalService.deleteByID(req.body[0]);
+    if (!answer) {
+        return res.status(203).json({message: 'Sikertelen törlés!'});
+    }
+    return res.status(200).json({message: 'Sikeres törlés!'});
+}
