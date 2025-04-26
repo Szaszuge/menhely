@@ -2,6 +2,7 @@
 import PawFooter from '@/components/PawFooter.vue';
 import Button from '@/components/Button.vue';
 import CustomInput from '@/components/CustomInput.vue';
+import AdoptionPopup from '@/components/AdoptionPopup.vue'; 
 import { ref } from 'vue';
 
 const select1 = ref('');
@@ -10,6 +11,23 @@ const select3 = ref('');
 const select4 = ref('');
 const select5 = ref('');
 const textInput = ref('');
+
+const showAdoptionPopup = ref(false);
+const animalId = ref(''); 
+
+const openAdoptionPopup = (id = '') => {
+  animalId.value = id; 
+  showAdoptionPopup.value = true;
+};
+
+const closeAdoptionPopup = () => {
+  showAdoptionPopup.value = false;
+};
+
+const handleSubmit = () => {
+  
+  openAdoptionPopup();
+};
 </script>
 
 <template>
@@ -88,10 +106,17 @@ const textInput = ref('');
       </div>
 
       <div class="button-container">
-        <Button class="submit-button">Küldés</Button>
+        <Button class="submit-button" @click="handleSubmit">Időpontfoglalás</Button>
       </div>
     </div>
   </div>
+  
+  <AdoptionPopup 
+    v-if="showAdoptionPopup" 
+    :animal="animalId" 
+    @close="closeAdoptionPopup" 
+  />
+  
   <PawFooter :is-sticky="true"/>
 </template>
 
