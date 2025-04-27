@@ -5,6 +5,7 @@ import PawFooter from '@/components/PawFooter.vue';
 import VisitPopup from '@/components/VisitPopup.vue';
 import { useRouter, useRoute } from "vue-router";
 import { AnimalService } from '../service/animal.service';
+import { useUserStore } from '../stores/user';
 
 const id = useRoute().params.id;
 const imageURL = ref("");
@@ -77,9 +78,12 @@ const closeVisitPopup = () => {
           </section>
         </div>
 
-        <div class="action-buttons">
+        <div class="action-buttons" v-if="useUserStore().isLoggedIn()" >
           <Button class="visit-btn" @click="openVisitPopup">Meglátogatás</Button>
           <Button class="adopt-btn" @click="router.push(`/petadoption/${id}`)">Örökbefogadás</Button>
+        </div>
+        <div class="action-buttons" v-else >
+          <Button class="disabled-adopt-btn">Az időpontfoglaláshoz jelentkezzen be!</Button>
         </div>
       </div>
     </div>
@@ -219,12 +223,33 @@ ul {
   align-items: center;
   justify-content: center; 
   border-radius: 16px;
-  background: #E85B44;
+  background: var(--button-important);
   font-weight: 600;
   border: none;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
   white-space: nowrap;
+}
+
+.disabled-adopt-btn {
+  color: white;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  text-align: center; 
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  border-radius: 16px;
+  background: var(--button-disabled);
+  width: 350px;
+  font-weight: 600;
+  border: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+}
+.disabled-adopt-btn:hover {
+  background: var(--button-disabled);
+  cursor:default;
 }
 
 .visit-btn:hover, .adopt-btn:hover {
