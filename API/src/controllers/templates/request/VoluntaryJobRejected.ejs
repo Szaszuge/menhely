@@ -139,8 +139,7 @@
 
 <p>Sajnálattal közöljük, hogy csapatunk felülvizsgálta kérelmét az önkéntes munkával kapcsolatosan és úgy döntöttünk, hogy elutasítjuk. Ha bármi kérdése van, keresse fel csapatunkat telefonon! Megértését köszönjük!</p>
 
-<h2>Indok:</h2>
-<p><%= content.reason %></p>
+<p>Indok<%= content.reason == '' ? " nincs megadva" : `: ${content.reason}` %>.</p>
 
 <p id="warning">Ha nem kérvényezett önkéntes munkát menhelyünkre, kérjük hagyja figyelmen kívül ezt az emailt!</p>
 <p>Üdvözlettel: A GazdiRadar csapata</p>

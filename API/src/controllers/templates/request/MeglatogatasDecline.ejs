@@ -138,7 +138,7 @@
 
 
 <p>Sajnálattal értesítjük, hogy az ön által beküldött időponton nem vagyunk képesek magát menhelyünkön fogadni állat nevű állat meglátogatására</p>
-<p>Kérjük, válasszon egy másik időpontot.</p>
+<p>Indok<%= content.reason == '' ? " nincs megadva" : `: ${content.reason}` %>.</p>
 
 
 <p id="warning">Ha nem Ön kezdeményezte a látogatási kérelmet, kérjük hagyja figyelmen kívül ezt az emailt!</p>

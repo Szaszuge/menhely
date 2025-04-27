@@ -9,7 +9,8 @@ import { useUserStore } from '../stores/user';
 import RequestPopup from '../components/RequestPopup.vue';
 import { useRouter } from 'vue-router';
 import { AnimalService } from '../service/animal.service';
-import { RequestService } from '../service/request.service';
+import { RequestService } from '../service/request.service'
+import refusePopup from '../components/refusePopup.vue';
 
 const activeTab = ref('');
 const search = ref('');
@@ -20,9 +21,9 @@ const userStore = useUserStore();
 const router = useRouter()
 
 const showRequestDetails = ref([false, '']);
+const declineRequest = ref(false);
 const selectedRequest = ref('');
 const temp = ref('');
-const reasonGiven = ref('');
 
 const activities = ref([
   {
@@ -61,7 +62,6 @@ const activities = ref([
     time: '16:30'
   }
 ]);
-
 const filtered_activities = ref([]);
 
 onMounted(() => {
@@ -111,6 +111,9 @@ async function viewRequest(id:string, type:string) {
 }
 function closeRequestPopup() {
   showRequestDetails.value[0] = false;
+}
+function closeRefusePopup() {
+  declineRequest.value = false;
 }
 
 async function acceptRequest(id:string, email:string, name:string) {
@@ -184,7 +187,15 @@ async function acceptRequest(id:string, email:string, name:string) {
   await reqSer.acceptRequest(id, mailData.value);
   refresh();
 }
-async function refuseRequest(id:string, email:string, name:string) {
+
+async function showRequestDecline(id:string) {
+  selectedRequest.value = requests.value.find(x => x.id == id);
+  declineRequest.value = true;
+  console.log(selectedRequest.value)
+}
+
+async function refuseRequest(id:string, email:string, name:string, reason:string) {
+  // TODO: Revamp + Add reason
   let mailData = ref({});
   let current_request = undefined;
   await reqSer.RequestByID(id).then((res) => {
@@ -201,7 +212,7 @@ async function refuseRequest(id:string, email:string, name:string) {
         subject: "GazdiRadar | Állat leadás | elutasítva",
         content: {
           userName: name,
-          reason: reasonGiven.value,
+          reason: reason,
         },
         template: "request/AnimalDecline"
       }
@@ -212,7 +223,7 @@ async function refuseRequest(id:string, email:string, name:string) {
         subject: "GazdiRadar | Önkéntes munka | elutasítva",
         content: {
           userName: name,
-          reason: reasonGiven.value,
+          reason: reason,
         },
         template: "request/VoluntaryJobRejected"
       }
@@ -222,7 +233,8 @@ async function refuseRequest(id:string, email:string, name:string) {
         to: email,
         subject: "GazdiRadar | Látogatás | elutasítva",
         content: {
-          userName: name
+          userName: name,
+          reason: reason,
         },
         template: "request/MeglatogatasDecline"
       }
@@ -232,7 +244,8 @@ async function refuseRequest(id:string, email:string, name:string) {
         to: email,
         subject: "GazdiRadar | Örökbefogadás | elutasítva",
         content: {
-          userName: name
+          userName: name,
+          reason: reason,
         },
         template: "request/OrokbefogadasDecline"
       }
@@ -241,6 +254,7 @@ async function refuseRequest(id:string, email:string, name:string) {
       return console.log("TBA");
   }
   await reqSer.refuseRequest(id, mailData.value);
+  declineRequest.value = false;
   refresh();
 }
 
@@ -363,7 +377,7 @@ function moveToPetEditor(ID:string) {
                     <img src="../assets/check.png" alt="Elfogadás" class="action-icon" @click="acceptRequest(request.id, request.targetEmail, request.name)">
                   </button>
                   <button class="action-button" aria-label="Elutasítás">
-                    <img src="../assets/restriction.png" alt="Elutasítás" class="action-icon" @click="refuseRequest(request.id, request.targetEmail, request.name)">
+                    <img src="../assets/restriction.png" alt="Elutasítás" class="action-icon" @click="showRequestDecline(request.id)">
                   </button>
                 </div>
               </td>
@@ -513,7 +527,7 @@ function moveToPetEditor(ID:string) {
               <button class="action-button" aria-label="Elfogadás" @click="acceptRequest(request.id, request.targetEmail, request.name)">
                 <img src="../assets/check.png" alt="Elfogadás" class="action-icon">
               </button>
-              <button class="action-button" aria-label="Elutasítás" @click="refuseRequest(request.id, request.targetEmail, request.name)">
+              <button class="action-button" aria-label="Elutasítás" @click="showRequestDecline(request.id)">
                 <img src="../assets/restriction.png" alt="Elutasítás" class="action-icon">
               </button>
             </div>
@@ -637,6 +651,9 @@ function moveToPetEditor(ID:string) {
 
   <div v-if="showRequestDetails[0]" class="request-popup-overlay">
     <RequestPopup @close-popup="closeRequestPopup" :request-type="showRequestDetails[1]" :current-request="selectedRequest" />
+  </div>
+  <div v-if="declineRequest" class="request-popup-overlay">
+    <refusePopup :current-request="selectedRequest" @close="closeRefusePopup" @send="refuseRequest"/>
   </div>
 </template>
 
