@@ -4,15 +4,18 @@ import { useRouter } from "vue-router";
 import CustomInput from '../components/CustomInput.vue';
 import Button from '../components/Button.vue';
 import PawFooter from '../components/PawFooter.vue';
-import { ApiService } from '@/service/api.service';
-import { Address } from '@/interfaces/address';
-import { MailService } from "@/service/mail.service";
+import { ApiService } from '../service/api.service';
+import { Address } from '../interfaces/address';
+import { MailService } from "../service/mail.service";
+import AlertPopup from '../components/AlertPopup.vue';
 import successImage from '../assets/success.png';
 import failedImage from '../assets/failed.png';
 
 const router = useRouter();
 const api = new ApiService();
 const mail = new MailService();
+
+const alertPopup = ref(null)
 
 const address = reactive<Address>({
   city: "",
@@ -70,7 +73,7 @@ async function register() {
     isLoading.value = true;
     
     const res = await api.userRegister(user, address);
-    
+    alertPopup.value.addAlert(res.data.message, res.data.message == 'Sikeres Feljegyzés' ? 'success' : 'error')
     if (res.data.message == "Sikeres Feljegyzés") {
       registrationSuccess.value = true;
       
@@ -86,9 +89,6 @@ async function register() {
       
       await mail.sendMail(data);
 
-      setTimeout(() => {
-        router.push("/emailsent");
-      }, 3000);
     } else {
       registrationSuccess.value = false;
 
@@ -334,7 +334,7 @@ async function register() {
                        class="status-icon">
                 </div>
                 <h3>{{ registrationSuccess ? 'Minden adat rendben van!' : 'Hiba a regisztráció során!' }}</h3>
-                <p>{{ registrationSuccess ? 'Hamarosan átirányítjuk a következő lapra' : 'Visszatérés az első oldalra...' }}</p>
+                <p>{{ registrationSuccess ? 'Az e-mail címre küldtünk egy levelet az aktivációhoz' : 'Visszatérés az első oldalra...' }}</p>
               </div>
             </div>
           </div>
@@ -345,6 +345,7 @@ async function register() {
     </div>
     <PawFooter :is-sticky="true" />
   </div>
+  <AlertPopup ref="alertPopup" />
 </template>
 
 <style scoped>
