@@ -9,6 +9,8 @@ import { ApiService } from '../service/api.service';
 const api = new ApiService()
 
 const animals = ref([]);
+const filtered_animals = ref([]);
+
 onMounted(() => {
   document.documentElement.style.overflow = 'auto';
   document.body.style.overflow = 'auto';
@@ -17,8 +19,10 @@ onMounted(() => {
   api.getAllAnimalsRaw().then((res) => {
     console.log(res.data.animals)
     animals.value = res.data.animals;
+    if (search.value == '') {
+      filtered_animals.value = animals.value;
+    }
   })
-
 });
 
 onUnmounted(() => {
@@ -42,41 +46,99 @@ const fajOptions = ref([
 ]);
 
 const nemOptions = ref([
-  { id: 1, label: 'Kan', checked: false },
-  { id: 2, label: 'Szuka', checked: false },
+  { id: 1, label: 'Hím', checked: false },
+  { id: 2, label: 'Nőstény', checked: false },
 ]);
 
 const tulajdonsagOptions = ref([
   { id: 1, label: 'Chippeltetve', checked: false },
   { id: 2, label: 'Útlevél', checked: false },
-  { id: 3, label: 'Oltás', checked: false },
-  { id: 4, label: 'Ivartalanított', checked: false },
-  { id: 5, label: 'Beteg', checked: false },
+  { id: 3, label: 'Ivartalanított', checked: false },
 ]);
 
 const jellemvonasOptions = ref([
-  { id: 1, label: 'Barátságos', checked: false },
-  { id: 2, label: 'Játékos', checked: false },
-  { id: 3, label: 'Félénk', checked: false },
+  { id: 1, label: 'Játékos', checked: false },
+  { id: 2, label: 'Ragaszkodó', checked: false },
+  { id: 3, label: 'Okos', checked: false },
   { id: 4, label: 'Független', checked: false },
-  { id: 5, label: 'Bújós', checked: false },
+  { id: 5, label: 'Barátságos', checked: false },
+  { id: 6, label: 'Félénk', checked: false },
+  { id: 7, label: 'Védelmező', checked: false },
+  { id: 8, label: 'Nyugodt', checked: false },
+  { id: 9, label: 'Hangos', checked: false }
 ]);
 
 const updateFajOptions = (newOptions) => {
   fajOptions.value = newOptions;
+  lookUp()
 };
 
 const updateNemOptions = (newOptions) => {
   nemOptions.value = newOptions;
+  lookUp()
 };
 
 const updateTulajdonsagOptions = (newOptions) => {
   tulajdonsagOptions.value = newOptions;
+  lookUp()
 };
 
 const updateJellemvonasOptions = (newOptions) => {
   jellemvonasOptions.value = newOptions;
+  lookUp()
 };
+
+function lookUp() {
+  // Név alapú szűrés
+  if (search.value != "") {
+    let temp_animal = [];
+
+    animals.value.forEach(element => {
+      if (element.name.toLowerCase().includes(search.value.toLowerCase())) {
+        temp_animal.push(element);
+      }
+    });
+    filtered_animals.value = temp_animal;
+  }
+  else{
+    filtered_animals.value = animals.value;
+  }
+  // Faj alapú szűrés
+  const typeFilter = fajOptions.value.find(x => x.checked);
+  if (typeFilter != undefined) {
+    filtered_animals.value = filtered_animals.value.filter(x => x.type == (typeFilter.label == "Macska" ? 'cat' : 'dog'));
+  }
+  // Nem alapú szűrés
+  const genderFilter = nemOptions.value.find(x => x.checked);
+  if (genderFilter != undefined) {
+    filtered_animals.value = filtered_animals.value.filter(x => x.gender == (genderFilter.label == "Nőstény" ? 'female' : 'male'));
+  }
+  // Tulajdonság alapú szűrés
+  const propertyFilter = tulajdonsagOptions.value;
+  for (let index = 0; index < propertyFilter.length; index++) {
+    if (propertyFilter[index].checked){
+      switch (index) {
+      case 0:
+        filtered_animals.value = filtered_animals.value.filter(x => x.details.chipped);
+        break; 
+      case 1:
+      filtered_animals.value = filtered_animals.value.filter(x => x.details.passported);
+        break; 
+      case 2:
+      filtered_animals.value = filtered_animals.value.filter(x => x.details.neutered);
+        break;
+      default:
+        break;  
+        }
+    }
+  }
+  // Jellemvonás alapú szűrés
+  const personalityFilter = jellemvonasOptions.value;
+  for (let index = 0; index < personalityFilter.filter(x => x.checked).length; index++) {
+    filtered_animals.value = filtered_animals.value.filter(x => x.details.characteristics.includes(personalityFilter.filter(x => x.checked)[index].label));
+  }
+
+}
 </script>
 
 <template>
@@ -116,18 +178,13 @@ const updateJellemvonasOptions = (newOptions) => {
     <div class="search-container">
       <div class="search-wrapper">
         <label class="search-label">Keresés név alapján</label>
-        <CustomInput v-model="search" search class="search-input" />
+        <CustomInput v-model="search" search class="search-input" @input="lookUp()" />
       </div>
     </div>
     
     <div id="allatkartyak">
-      <Allatcard v-for="animal in animals"
-      :id="animal.id"
-      :name="animal.name"
-      :gender="animal.gender"
-      :age="animal.age"
-      :type="animal.type"
-      :img="animal.details.image"
+      <Allatcard v-for="animal in filtered_animals"
+      :animal="animal"
        />
     </div>
   </div>
