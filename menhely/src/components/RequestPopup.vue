@@ -142,8 +142,73 @@ const name = ref('Szárforsíp terijer kiskutyuska')
             </div>
           </div>
         </div>
+        
+
+
+        <div v-else-if="props.requestType == 'Örökbefogadás'">
+          <div class="adoption-container">
+            <h2 class="adoption-title">Állat örökbefogadása</h2>
+            <div class="adoption-image-container">
+              <img src="../assets/allatkep.png" alt="Állat" class="adoption-animal-image" />
+            </div>
+            <h3 class="adoption-animal-name">Hüvejk</h3>
+            <div class="volunteer-info-row">
+              <div class="volunteer-info-item">
+                <p class="request-info-label">Örökbefogadó neve:</p>
+                <p class="request-info-value">Kovács Erzsébet</p>
+              </div>
+              
+              <div class="volunteer-info-item">
+                <p class="request-info-label">Dátuma:</p>
+                <p class="request-info-value">2025-05-15</p>
+              </div>
+              
+              <div class="volunteer-info-item">
+                <p class="request-info-label">Időpont (óra:perc)</p>
+                <p class="request-info-value">15:30</p>
+              </div>
+            </div>
+            
+            <div class="request-info-section">
+              <p class="request-info-label">Van-e kisgyermek a családban?</p>
+              <div class="request-info-text">
+                Várandós vagyok
+              </div>
+            </div>
+            
+            <div class="request-info-section">
+              <p class="request-info-label">Hogyan szeretnéd tartani az örökbefogadott kisállatot?</p>
+              <div class="request-info-text">
+                Lakásban és udvaron egyaránt
+              </div>
+            </div>
+            
+            <div class="request-info-section">
+              <p class="request-info-label">Milyen típusú ingatlanban fog élni?</p>
+              <div class="request-info-text">
+                Tanya
+              </div>
+            </div>
+            
+            <div class="request-info-section">
+              <p class="request-info-label">Van-e más kisállat otthon a családban?</p>
+              <div class="request-info-text">
+                Több állatot is szeretnék örökbefogadni
+              </div>
+            </div>
+            
+            <div class="request-info-section">
+              <p class="request-info-label">Mit gondol az ivartalanításról?</p>
+              <div class="request-info-text">
+                Nagyon jó
+              </div>
+            </div>
+          </div>
+        </div>
+
+        </div>
       </div>
-</div>
+
 </template>
 
 <style lang="css" scoped>
@@ -227,7 +292,7 @@ const name = ref('Szárforsíp terijer kiskutyuska')
 
 .request-info-label {
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1rem;
   margin-bottom: 0.5rem;
 }
 
@@ -272,6 +337,41 @@ const name = ref('Szárforsíp terijer kiskutyuska')
   font-weight: 600;
 }
 
+.adoption-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+}
+
+.adoption-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+}
+
+.adoption-image-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+}
+
+.adoption-animal-image {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border: 3px solid #E85B44;
+  border-radius: 8px;
+}
+
+.adoption-animal-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+
 .request-tag-icon {
   width: 20px;
   height: 20px;
@@ -301,9 +401,8 @@ const name = ref('Szárforsíp terijer kiskutyuska')
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-bottom: 1rem;
   flex-wrap: wrap;
-  margin-left: 6rem;
+  margin-left: 4rem;
   margin-top: 1rem;
 }
 
@@ -368,5 +467,10 @@ const name = ref('Szárforsíp terijer kiskutyuska')
   #petvisit{
     margin-top: 0;
   } 
+
+  .adoption-animal-image {
+    width: 200px;
+    height: 220px;
+  }
 }
 </style>
