@@ -1,47 +1,26 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-const imageURL = ref("");
+import { ref, onMounted, computed } from 'vue';
+const imageURL = computed(() => {
+  return `http://localhost:3000/uploads/${props.animal.details.image ?? 'placeholder/animal.png'}`;
+});
 const props = defineProps({
-  id: {
-    type: String,
-    required: true,
-  },
-  name: {
-    type: String,
-    required: true,
-  },
-  gender: {
-    type: String,
-    required: true,
-  },
-  age: {
-    type: String,
-    required: true,
-  },
-  type: {
-    type: String,
-    required: true,
-  },
-  img: {
-    type: String,
+  animal: {
+    type: Object,
     required: true,
   },
   
 
 })
-  onMounted(() => {
-    imageURL.value = `http://localhost:3000/uploads/${!!props.img ? props.img : 'placeholder/animal.png'}`;
-  })
 </script>
 
 <template>
     <div class="image-container">
       <img :src=imageURL alt="" class="allatkep">
       <div class="white-rectangle">
-        <h2>{{props.name}}</h2>
+        <h2>{{props.animal.name}}</h2>
         <div class="igazitas">
-            <p class="text-slate-500">{{props.gender == 'male' ? (props.type == "dog" ? "Kan" : "Kandúr") : (props.type == "dog" ? "Szuka" : "Nőstény")}}, {{props.age}}</p>
-            <RouterLink :to="`/petdetails/${props.id}`">
+            <p class="text-slate-500">{{props.animal.gender == 'male' ? (props.animal.type == "dog" ? "Kan" : "Kandúr") : (props.animal.type == "dog" ? "Szuka" : "Nőstény")}}, {{props.animal.age}}</p>
+            <RouterLink :to="`/petdetails/${props.animal.id}`">
               <img src="../assets/forwardbutton.png" alt="" class="forwardbutton" id="forwardbutton">
         </RouterLink>
 
