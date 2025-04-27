@@ -211,21 +211,26 @@ ul {
 }
 
 .visit-btn, .adopt-btn {
-  background-color: #FF6F3C;
   color: white;
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.2s;
   text-align: center; 
   display: flex;
   align-items: center;
   justify-content: center; 
+  border-radius: 16px;
+  background: #E85B44;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
 }
 
 .visit-btn:hover, .adopt-btn:hover {
-  background-color: #e05a2a;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(232, 91, 68, 0.3);
+  background: #D85840;
 }
 
 

@@ -447,21 +447,20 @@ function send(event:Event) {
 }
 
 .upload-button {
-  height: 42px;
-  border-radius: 10px;
+  height: 50px;
+  border-radius: 16px;
   background: #E85B44;
   color: white;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1rem;
   border: none;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
   white-space: nowrap;
-  padding: 0 1rem;
 }
 
 .upload-button:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   box-shadow: 0 4px 8px rgba(232, 91, 68, 0.3);
   background: #D85840;
 }
@@ -473,17 +472,16 @@ function send(event:Event) {
 }
 
 .submit-button {
-  height: 42px;
-  border-radius: 10px;
+  height: 50px;
+  border-radius: 16px;
   background: #E85B44;
   color: white;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1rem;
   border: none;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
   padding: 0 1.5rem;
-  min-width: 160px;
 }
 
 .submit-button:hover {

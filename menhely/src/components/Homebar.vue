@@ -8,29 +8,29 @@ const auth = useUserStore();
     <div id="main">
         <div id="sub" class="bg-orange-300">
             <h1>Egy kis segítség is életeket menthet!</h1>
-            <p>Oldalunk minden bajai kóbor kutyának és macskának ideiglenes otthont kíván, valamint szeretnénk megadni a lehetőséget hogy minden állat egy szerető gazdához kerüljön miharamabb.</p>
+            <p>Oldalunk minden Baja és környékén lévő kóbor kutyának és macskának ideiglenes otthont kíván, valamint szeretnénk megadni a lehetőséget hogy minden állat egy szerető gazdához kerüljön miharamabb.</p>
             <div class="buttonigazitas">
 
                 <RouterLink to="/login" v-if="!auth.isLoggedIn()">
-                <Button>
+                <Button class="homebar-button">
                     Bejelentkezés
                 </Button>
                 </RouterLink>
 
                 <RouterLink to="/register" v-if="!auth.isLoggedIn()">
-                <Button>
+                <Button class="homebar-button">
                     Regisztráció
                 </Button>
                 </RouterLink>
 
                 <RouterLink to="/petsurrender" v-if="auth.isLoggedIn()">
-                <Button>
+                <Button class="homebar-button">
                     Leadok állatot
                 </Button>
                 </RouterLink>
 
                 <RouterLink to="/hogyansegithet" v-if="auth.isLoggedIn()">
-                <Button>
+                <Button class="homebar-button">
                     Önkéntesség
                 </Button>
                 </RouterLink>
@@ -64,8 +64,9 @@ h1 {
 }
 
 p {
-    font-weight: 600;
+    font-weight: 500;
     text-align: center;
+    font-size: 1.1rem;
 }
 
 .buttonigazitas {
@@ -83,6 +84,24 @@ p {
     height: 100%;
     min-height: 500px;
 }
+
+.homebar-button {
+  border-radius: 16px;
+  background: #E85B44;
+  color: white;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+}
+
+.homebar-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(232, 91, 68, 0.3);
+  background: #D85840;
+}
+
 
 /* 1300px korul kellett javitani, mert szétesett */
 @media (max-width: 1300px) {

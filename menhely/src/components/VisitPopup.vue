@@ -242,11 +242,22 @@ label {
 }
 
 .submit-button {
-  background: #ff5722;
   color: white;
-  width: 230px; 
-  font-size: 1.2rem; 
+  width: 130px; 
+  font-size: 1.1rem; 
   padding: 12px; 
+  border-radius: 16px;
+  background: #E85B44;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+}
+.submit-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(232, 91, 68, 0.3);
+  background: #D85840;
 }
 
 @media (max-width: 400px) {

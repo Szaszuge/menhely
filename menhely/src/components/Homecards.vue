@@ -20,7 +20,7 @@ const props = defineProps({
         <p v-if="props.format == 'care' ? true : false" >Változtass egy életen! Segíts, hogy a menhelyünkön élő állatok biztonságos új otthont találjanak. Minden segítség számít!</p>
         
         <img v-if="props.format == 'food' ? true : false" src="../assets/card3.png">
-        <p v-if="props.format == 'food' ? true : false" >Támogasd menhelyünket! Minden adomány és segítség számít, hogy jobb körülményeket tudjunk biztosítani a rászoruló állatoknak. Együtt életeken változtathatunk!</p>
+        <p v-if="props.format == 'food' ? true : false" >Támogasd menhelyünket! Minden adomány és segítség számít, hogy jobb körülményeket tudjunk biztosítani a rászoruló állatoknak. Együtt életeken is változtathatunk!</p>
     </div>
 </template>
 
@@ -44,10 +44,13 @@ div{
 }
 
 img{
-    width: 80px;
-    height: 80px;
-    margin-bottom: 20px;
+    width: 90px;
+    height: 90px;
+    margin-bottom: 15px;
 }
 
+p{
+    text-align: center;
+}
 
 </style>

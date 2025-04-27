@@ -97,20 +97,20 @@ const handleSubmit = () => {
           <div class="input-group">
             <label for="select4">Milyen típusú ingatlanban fog élni?</label>
             <select id="select4" v-model="select4" class="custom-select">
-              <option value="" disabled selected>Válassz egy lehetőséget</option>
+              <option value="" disabled selected>Válasszon egy lehetőséget</option>
               <option value="option1">Családi ház</option>
               <option value="option5">Albérlet</option>
               <option value="option3">Panel</option>
               <option value="option2">Tanya</option>
               <option value="option4">Kertesház</option>
             </select>
-            <p id="notvisibletext" class="small-note">(Pl.: a kisállat későbbi orvosi költségei egy vizsgálatnál 30-40ezer forintba is kerülhetnek, felszerelések, minőségi etetés)</p>
+            <p class="small-note">(Pl.: Egy nagyobb méretű állatot nem ajánlatos kis helyen tartani, valamint nem is biztos, hogy az adott típusú lakásban tartható.)</p>
           </div>
 
           <div class="input-group">
             <label for="select5">Van-e más kisállat otthon a családban?</label>
             <select id="select5" v-model="select5" class="custom-select">
-              <option value="" disabled selected>Válassz egy lehetőséget</option>
+              <option value="" disabled selected>Válasszon egy lehetőséget</option>
               <option value="option1">Igen</option>
               <option value="option2">Nem</option>
               <option value="option3">Több állatot is szeretnék örökbefogadni</option>
@@ -213,12 +213,6 @@ label {
   text-align: left;
 }
 
-.invisible {
-  visibility: hidden;
-}
-#notvisibletext {
-  visibility: hidden;
-}
 .custom-select {
   width: 100%;
   padding: 10px;
@@ -239,11 +233,23 @@ label {
 }
 
 .submit-button {
-  background: #ff5722;
+  height: 70px;
+  width: 150px;
+  border-radius: 16px;
+  background: #E85B44;
   color: white;
-  width: 205px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
   font-size: 1.1rem;
-  border-radius: 10px;
+}
+
+.submit-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(232, 91, 68, 0.3);
+  background: #D85840;
 }
 
 @media (max-width: 768px) {

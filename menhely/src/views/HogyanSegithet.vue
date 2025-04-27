@@ -231,14 +231,15 @@ onMounted(() => {
 }
 
 .primary-button {
-  background-color: #E85B44;
-  color: white;
-  border: none;
-  border-radius: 0.5rem;
   padding: 0.75rem 1.5rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  border-radius: 16px;
+  background: #E85B44;
+  color: white;
+  border: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
 }
 
 .disabled-button {
@@ -253,7 +254,9 @@ onMounted(() => {
 }
 
 .primary-button:hover {
-  background-color: #d44d37;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(232, 91, 68, 0.3);
+  background: #D85840;
 }
 
 .image-container {
