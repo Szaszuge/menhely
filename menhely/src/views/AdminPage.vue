@@ -11,6 +11,7 @@ import { useRouter } from 'vue-router';
 import { AnimalService } from '../service/animal.service';
 import { RequestService } from '../service/request.service'
 import refusePopup from '../components/refusePopup.vue';
+import AlertPopup from '../components/AlertPopup.vue';
 
 const activeTab = ref('');
 const search = ref('');
@@ -19,6 +20,8 @@ const animSer = new AnimalService();
 const reqSer = new RequestService();
 const userStore = useUserStore();
 const router = useRouter()
+
+const alertPopup = ref(null)
 
 const showRequestDetails = ref([false, '']);
 const declineRequest = ref(false);
@@ -184,7 +187,10 @@ async function acceptRequest(id:string, email:string, name:string) {
     default:
       return console.log("TBA");
   }
-  await reqSer.acceptRequest(id, mailData.value);
+  await reqSer.acceptRequest(id, mailData.value).then((res) => {
+    alertPopup.value.addAlert(res.data.message == 'Sikeres törlés' ? "Sikeresen elfogadva!" : "Valami történt", res.data.message == 'Sikeres törlés' ? 'success' : 'error')
+    
+  });
   refresh();
 }
 
@@ -195,7 +201,6 @@ async function showRequestDecline(id:string) {
 }
 
 async function refuseRequest(id:string, email:string, name:string, reason:string) {
-  // TODO: Revamp + Add reason
   let mailData = ref({});
   let current_request = undefined;
   await reqSer.RequestByID(id).then((res) => {
@@ -253,7 +258,9 @@ async function refuseRequest(id:string, email:string, name:string, reason:string
     default:
       return console.log("TBA");
   }
-  await reqSer.refuseRequest(id, mailData.value);
+  await reqSer.refuseRequest(id, mailData.value).then((res) => {
+    alertPopup.value.addAlert(res.data.message == 'Sikeres törlés' ? "Sikeresen törölve!" : "Valami történt", res.data.message == 'Sikeres törlés' ? 'success' : 'error')
+  });
   declineRequest.value = false;
   refresh();
 }
@@ -655,6 +662,7 @@ function moveToPetEditor(ID:string) {
   <div v-if="declineRequest" class="request-popup-overlay">
     <refusePopup :current-request="selectedRequest" @close="closeRefusePopup" @send="refuseRequest"/>
   </div>
+  <AlertPopup ref="alertPopup" />
 </template>
 
 <style scoped>
