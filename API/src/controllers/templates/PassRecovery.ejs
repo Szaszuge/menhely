@@ -40,9 +40,9 @@
             height: 200px;
             margin-top: 1.5rem;
         }
-        #gomb{
+        .gomb{
             height: 60px;
-            width: 160px;
+            width: 200px;
             border-radius: 15px;
             color: white;
             font-weight: 600;
@@ -91,6 +91,13 @@
             font-weight: 600;
             margin-top: 1.5rem;
         }
+        .row{
+            display: flex;
+            flex-flow: row wrap;    
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
@@ -137,10 +144,11 @@
 
 
 <p>Kérelmét megkaptuk új jelszó igénylésével kapcsolatban. A gombra kattintva vissza lesz vezetve a jelszóváltás oldalra, ahol további instrukciók segítségével megváltoztathatja véglegesen jelszavát.</p>
-
-<a href="<%= content.accept %>"><div id="gomb"><p>Megerősítés</p></div></a>
-<p id="warning">Ha nem Ön kezdeményezte a jelszócserét vagy meggondolta magát kérjük nyomjon a visszaállításra!</p>
-<a href="<%= content.refuse %>"><div id="gomb"><p>Visszaállítás</p></div></a>
+<div class="row">
+    <a href="<%= content.accept %>"><div class="gomb"><p>Megváltoztatom</p></div></a>
+    <a href="<%= content.refuse %>"><div class="gomb"><p>Nem változtatom meg</p></div></a>
+</div>
+<p id="warning">Ha nem Ön kezdeményezte a jelszócserét vagy meggondolta magát kérjük nyomjon a 'Nem változtatom meg' gombra!</p>
 <p>Üdvözlettel: A GazdiRadar csapata</p>
 </div>
 
