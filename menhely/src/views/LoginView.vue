@@ -2,15 +2,17 @@
 import { ref } from 'vue';
 import { useRouter, RouterLink } from "vue-router";
 import { ApiService } from '../service/api.service';
-import { environment } from '../enviroments/testing';
 import CustomInput from '../components/CustomInput.vue';
 import Button from '../components/Button.vue';
 import PawFooter from '../components/PawFooter.vue';
 import { useUserStore } from "../stores/user";
+import AlertPopup from '../components/AlertPopup.vue';
 
 const router = useRouter();
 const api = new ApiService();
 const userStore = useUserStore();
+
+const alertPopup = ref(null)
 
 const user = ref({
   name: '',
@@ -18,25 +20,23 @@ const user = ref({
 });
 
 const isLoading = ref(false);
-const errorMessage = ref('');
 
 async function login() {
   if (!user.value.name || !user.value.pass) {
-    errorMessage.value = 'Kérjük, adja meg a felhasználónevet és jelszót';
+    alertPopup.value.addAlert('Kérjük, adja meg a felhasználónevet és jelszót', 'error')
     return;
   }
   
   try {
     isLoading.value = true;
-    errorMessage.value = '';
     const res = await api.userLogin(user.value.name, user.value.pass)
-    errorMessage.value = res.data.message;
+    alertPopup.value.addAlert(res.data.message, 'error')
     if (res.data.token) {
       userStore.setToken(res.data.token);
       router.push("/");
     }
   } catch (error) {
-    //errorMessage.value = "Bejelentkezési hiba. Kérjük ellenőrizze adatait.";
+    alertPopup.value.addAlert("Bejelentkezési hiba. Kérjük ellenőrizze adatait.", 'error')
   } finally {
     isLoading.value = false;
   }
@@ -51,10 +51,6 @@ async function login() {
           <div class="welcome-text">
             <h2>Üdvözöljük!</h2>
             <p>Jelentkezzen be fiókjába!</p>
-          </div>
-          
-          <div class="alert error" v-if="errorMessage">
-            {{ errorMessage }}
           </div>
           
           <form @submit.prevent="login" class="login-form">
@@ -111,6 +107,7 @@ async function login() {
       <PawFooter :is-sticky="true" />
     </div>
   </div>
+  <AlertPopup ref="alertPopup" />
 </template>
 
 <style scoped>

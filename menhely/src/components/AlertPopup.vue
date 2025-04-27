@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, defineExpose } from 'vue';
 
 interface Alert {
   id: number;
@@ -11,6 +11,7 @@ const alerts = ref<Alert[]>([]);
 const nextId = ref(1);
 const isVisible = computed(() => alerts.value.length > 0);
 
+
 const addAlert = (message: string, type: 'success' | 'error' = 'success') => {
   const id = nextId.value++;
   alerts.value.push({ id, message, type });
@@ -20,6 +21,7 @@ const addAlert = (message: string, type: 'success' | 'error' = 'success') => {
   }, 3000);
 };
 
+
 const closeAlert = (id: number) => {
   const index = alerts.value.findIndex(alert => alert.id === id);
   if (index !== -1) {
@@ -27,17 +29,18 @@ const closeAlert = (id: number) => {
   }
 };
 
-const showSuccessAlert = (message = 'Gomb sikeresen lenyomva!') => {
+const showSuccessAlert = (message) => {
   addAlert(message, 'success');
 };
 
-const showErrorAlert = (message = 'Hiba a leadás során!') => {
+const showErrorAlert = (message) => {
   addAlert(message, 'error');
 };
 
 defineExpose({
   showSuccessAlert,
-  showErrorAlert
+  showErrorAlert,
+  addAlert
 });
 </script>
 
@@ -74,7 +77,7 @@ defineExpose({
             </div>
           </div>
           <div class="flex-grow">
-            <div class="text-xl font-bold mb-1">Rendszerüzenet</div>
+            <div class="text-xl font-bold mb-1">{{ alert.type === 'success' ? "Siker!" : "Hiba!"}}</div>
             <div class="text-lg">{{ alert.message }}</div>
           </div>
           <button 
