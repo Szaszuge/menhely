@@ -36,6 +36,13 @@ function setActiveTab(tab: string) {
       >
         Állatok
       </button>
+      <button 
+        class="nav-tab" 
+        :class="{ active: activeTab === 'Aktivitások'}"
+        @click="setActiveTab('Aktivitások')"
+      >
+        Aktivitások
+      </button>
     </div>
   </div>
 </template>

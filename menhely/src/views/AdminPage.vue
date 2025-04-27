@@ -24,6 +24,46 @@ const selectedRequest = ref('');
 const temp = ref('');
 const reasonGiven = ref('');
 
+const activities = ref([
+  {
+    id: '1',
+    name: 'Kovács János',
+    type: 'Meglátogatás',
+    date: '2025-07-06',
+    time: '15:45'
+  },
+  {
+    id: '2',
+    name: 'Nagy Eszter',
+    type: 'Örökbefogadás',
+    date: '2025-07-10',
+    time: '11:30'
+  },
+  {
+    id: '3',
+    name: 'Szabó Péter',
+    type: 'Önkéntes munka',
+    date: '2025-07-12',
+    time: '09:00'
+  },
+  {
+    id: '4',
+    name: 'Tóth Katalin',
+    type: 'Leadás',
+    date: '2025-07-15',
+    time: '14:20'
+  },
+  {
+    id: '5',
+    name: 'Varga Balázs',
+    type: 'Meglátogatás',
+    date: '2025-07-18',
+    time: '16:30'
+  }
+]);
+
+const filtered_activities = ref([]);
+
 onMounted(() => {
   refresh();
 });
@@ -49,12 +89,12 @@ async function refresh() {
     filtered_requests.value = requests.value;
     filtered_users.value = users.value;
     filtered_animals.value = animals.value;
+    filtered_activities.value = activities.value;
   }
 
   temp.value = activeTab.value;
   activeTab.value = '';
   activeTab.value = temp.value;
-
 }
 
 // Kérések
@@ -234,6 +274,7 @@ function lookUp() {
     let temp_request = [];
     let temp_user = [];
     let temp_animal = [];
+    let temp_activity = [];
 
     animals.value.forEach(element => {
       if (element.name.toLowerCase().includes(search.value.toLowerCase())) {
@@ -250,14 +291,21 @@ function lookUp() {
         temp_request.push(element);
       }
     });
+    activities.value.forEach(element => {
+      if (element.name.toLowerCase().includes(search.value.toLowerCase())) {
+        temp_activity.push(element);
+      }
+    });
     filtered_requests.value = temp_request;
     filtered_users.value = temp_user;
     filtered_animals.value = temp_animal;
+    filtered_activities.value = temp_activity;
   }
   else{
     filtered_requests.value = requests.value;
     filtered_users.value = users.value;
     filtered_animals.value = animals.value;
+    filtered_activities.value = activities.value;
   }
 } 
 
@@ -286,7 +334,6 @@ function moveToPetEditor(ID:string) {
       </div>
 
       <div class="table-container">
-        <!-- Kérések tábla-->
         <table v-if="activeTab === 'Kérések'" class="admin-table">
           <thead>
             <tr class="header-row">
@@ -323,7 +370,6 @@ function moveToPetEditor(ID:string) {
             </tr>
           </tbody>
         </table>
-        <!-- Felhasználók tábla-->
         <table v-if="activeTab === 'Felhasználók'" class="admin-table">
           <thead>
             <tr class="header-row">
@@ -369,7 +415,6 @@ function moveToPetEditor(ID:string) {
             </tr>
           </tbody>
         </table>
-        <!-- Állatok tábla-->
         <table v-if="activeTab === 'Állatok'" class="admin-table">
           <thead>
             <tr class="header-row">
@@ -412,6 +457,31 @@ function moveToPetEditor(ID:string) {
                   </button>
                 </div>
               </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- Aktivitások tábla -->
+        <table v-if="activeTab === 'Aktivitások'" class="admin-table">
+          <thead>
+            <tr class="header-row">
+              <th class="column-name">Név</th>
+              <th class="column-middle">Aktivitás típusa</th>
+              <th class="column-actions">Időpont</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr 
+              v-for="(activity, index) in filtered_activities" 
+              :key="index" 
+              :class="{ 
+                'even-row': index % 2 !== 0, 
+                'odd-row': index % 2 === 0,
+                'last-row': index === activities.length - 1 
+              }"
+            >
+              <td class="column-name">{{ activity.name }}</td>
+              <td class="column-middle">{{ activity.type }}</td>
+              <td class="column-actions" id="activitytoright">{{ activity.date }} / {{ activity.time }}</td>
             </tr>
           </tbody>
         </table>
@@ -471,34 +541,27 @@ function moveToPetEditor(ID:string) {
               </div>
             </div>
             <div class="mobile-actions">
-              
-
-
               <button class="action-button"  aria-label="Előléptetés" @click="PromoteUser(user.id)" v-if="user.role != 'admin' && user.role != 'moderator'">
-                    <img src="../assets/user_promote.png" alt="Előléptetés" class="action-icon">
-                  </button>
-                  <button class="disabled-action-button" aria-label="Előléptetés" disabled v-else>
-                    <img src="../assets/user_promote.png" alt="Előléptetés" class="action-icon">
-                  </button>
-                  <button class="action-button" aria-label="Lefokozás" @click="DemoteUser(user.id)" v-if="(user.role == 'moderator' || user.role == 'admin') && userStore.loggedUser().name != user.name">
-                    <img src="../assets/user_demote.png" alt="Lefokozás" class="action-icon">
-                  </button>
-                  <button class="disabled-action-button" aria-label="Lefokozás" disabled v-else>
-                    <img src="../assets/user_demote.png" alt="Lefokozás" class="action-icon">
-                  </button>
-                  <button class="action-button" aria-label="Kitiltás" @click="DemoteUser(user.id)" v-if="user.role != 'admin' && user.role != 'moderator' && user.role != 'banned'">
-                    <img src="../assets/ban_user.png" alt="Kitiltás" class="action-icon">
-                  </button>
-                  <button class="disabled-action-button" aria-label="Kitiltás" disabled v-else>
-                    <img src="../assets/ban_user.png" alt="Kitiltás" class="action-icon">
-                  </button>
-              
-
-
+                <img src="../assets/user_promote.png" alt="Előléptetés" class="action-icon">
+              </button>
+              <button class="disabled-action-button" aria-label="Előléptetés" disabled v-else>
+                <img src="../assets/user_promote.png" alt="Előléptetés" class="action-icon">
+              </button>
+              <button class="action-button" aria-label="Lefokozás" @click="DemoteUser(user.id)" v-if="(user.role == 'moderator' || user.role == 'admin') && userStore.loggedUser().name != user.name">
+                <img src="../assets/user_demote.png" alt="Lefokozás" class="action-icon">
+              </button>
+              <button class="disabled-action-button" aria-label="Lefokozás" disabled v-else>
+                <img src="../assets/user_demote.png" alt="Lefokozás" class="action-icon">
+              </button>
+              <button class="action-button" aria-label="Kitiltás" @click="DemoteUser(user.id)" v-if="user.role != 'admin' && user.role != 'moderator' && user.role != 'banned'">
+                <img src="../assets/ban_user.png" alt="Kitiltás" class="action-icon">
+              </button>
+              <button class="disabled-action-button" aria-label="Kitiltás" disabled v-else>
+                <img src="../assets/ban_user.png" alt="Kitiltás" class="action-icon">
+              </button>
             </div>
           </div>
         </div>
-        <!-- Állat -->
         <div v-if="activeTab === 'Állatok'" class="mobile-table">
           <div
             v-for="(animal, index) in filtered_animals"
@@ -538,6 +601,32 @@ function moveToPetEditor(ID:string) {
                <button class="action-button" aria-label="Módosítás" @click="moveToPetEditor(animal.id)"v-else>
                  <img src="../assets/modify.png" alt="Módosítás" class="action-icon">
                </button>
+            </div>
+          </div>
+        </div>
+        <div v-if="activeTab === 'Aktivitások'" class="mobile-table">
+          <div
+            v-for="(activity, index) in filtered_activities"
+            :key="`mobile-${index}`"
+            class="mobile-card"
+            :class="{
+              'even-card': index % 2 !== 0,
+              'odd-card': index % 2 === 0
+            }"
+          >
+            <div class="mobile-card-info">
+              <div class="mobile-field">
+                <span class="mobile-label">Név:</span>
+                <span class="mobile-value">{{ activity.name }}</span>
+              </div>
+              <div class="mobile-field">
+                <span class="mobile-label">Aktivitás típusa:</span>
+                <span class="mobile-value">{{ activity.type }}</span>
+              </div>
+              <div class="mobile-field">
+                <span class="mobile-label">Időpont:</span>
+                <span class="mobile-value">{{ activity.date }} / {{ activity.time }}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -618,6 +707,10 @@ function moveToPetEditor(ID:string) {
 
 .header-row {
   background-color: #FDBA74;
+}
+
+#activitytoright {
+  text-align: right;
 }
 
 .header-row th.column-name {
