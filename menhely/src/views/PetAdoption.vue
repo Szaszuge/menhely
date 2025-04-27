@@ -3,7 +3,16 @@ import PawFooter from '@/components/PawFooter.vue';
 import Button from '@/components/Button.vue';
 import CustomInput from '@/components/CustomInput.vue';
 import AdoptionPopup from '@/components/AdoptionPopup.vue'; 
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useRouter, useRoute } from "vue-router";
+import { AnimalService } from '../service/animal.service';
+
+const id = useRoute().params.id;
+const imageURL = ref("");
+
+const router = useRouter()
+const animSer = new AnimalService();
+const animal = ref(null);
 
 const select1 = ref('');
 const select2 = ref('');
@@ -13,10 +22,22 @@ const select5 = ref('');
 const textInput = ref('');
 
 const showAdoptionPopup = ref(false);
-const animalId = ref(''); 
 
-const openAdoptionPopup = (id = '') => {
-  animalId.value = id; 
+onMounted(() => {
+
+animSer.GetAnimalDataByID(id).then((res) => {
+  console.log(res.data.animal)
+  animal.value = res.data.animal; 
+  imageURL.value = `http://localhost:3000/uploads/${!!animal.value.details.image ? animal.value.details.image : 'placeholder/animal.png'}`;
+
+  if (res.data.animal == null || !animal.value.isPublic) {
+  router.push('/')
+  }
+
+})
+});
+
+const openAdoptionPopup = () => {
   showAdoptionPopup.value = true;
 };
 
@@ -24,8 +45,7 @@ const closeAdoptionPopup = () => {
   showAdoptionPopup.value = false;
 };
 
-const handleSubmit = () => {
-  
+const handleSubmit = () => {  
   openAdoptionPopup();
 };
 </script>
@@ -34,7 +54,7 @@ const handleSubmit = () => {
   <div class="form-container">
     <div class="form-title-container">
       <div class="title-content">
-        <img src="../assets/allatkep.png" alt="Állat kép" class="allatkep">
+        <img v-bind:src="imageURL" alt="Állat kép" class="allatkep">
         <p>Kérjük, meséljenek kicsit magukról és a körülményekről, ahová a kisállat kerülne (pl. mivel foglalkoznak, miért szeretnének kisállatot, mennyi időt tudnak vele tölteni). Mivel minden kisállatnak saját személyisége van, segít, ha jobban megismerjük az önökét, hogy megtaláljuk a leginkább hozzá illőt.</p>
       </div>
     </div>
@@ -113,7 +133,7 @@ const handleSubmit = () => {
   
   <AdoptionPopup 
     v-if="showAdoptionPopup" 
-    :animal="animalId" 
+    :animal="animal" 
     @close="closeAdoptionPopup" 
   />
   

@@ -99,6 +99,37 @@ export const visit = async (req, res) => {
     return res.status(203).json({message: "Kérelem továbbítva!"});
 }
 
+export const adopt = async (req, res) => {
+    let request = req.body;
+
+    if (request.type != 'adoption'){
+        return res.status(203).json({ message: 'Hibás vagy helytelen kérelem tipus!'});
+    }
+    if (!request.user || !request.details.date || !request.details.time || !request.details.animal){
+        return res.status(203).json({ message: 'Hiányzó adatok!'});
+    }
+    const request_date = new Date(request.details.date);
+    const current_date = new Date();
+    
+        if (request_date < current_date){
+            return res.status(203).json({ message: 'A dátum a múltban van!'});
+        }
+        current_date.setDate(current_date.getDate() + 7)
+    
+    if (request_date < current_date){
+        return res.status(203).json({ message: 'Nincs idő a feldolgozásra! (A jelentkezés és az örökbefogadás napja közt legyen legalább 7 nap legyen!)'});
+    }
+    // TODO: Az időpont (óra:perc) az foglalt: Dobja vissza.
+
+    console.log(request);
+    const answer = requestService.reserveAdoption(request);
+
+    if (!answer) {
+        return res.status(203).json({message: "Hiba történt a mentéskor!"});
+    }
+    return res.status(203).json({message: "Kérelem továbbítva!"});
+}
+
 const TOTAL_MINUTES = 12 * 60; 
 const START_HOUR = 8;
 

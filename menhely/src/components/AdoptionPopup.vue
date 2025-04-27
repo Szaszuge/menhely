@@ -7,7 +7,7 @@ import { useUserStore } from '../stores/user';
 
 const props = defineProps({
   animal: {
-    type: String,
+    type: Object,
     reqired: true
   }
 })
@@ -36,7 +36,7 @@ function sendAdoptionRequest() {
     warning.value = 'A dátum a múltban van';
     return;
   }
-  if (!((Number(time.value.split(':')[0]) > 7 && Number(time.value.split(':')[0]) < 18) && (Number(time.value.split(':')[1]) >= 0 && Number(time.value.split(':')[1]) < 60))) {
+  if (!((Number(time.value.split(':')[0]) > 7 && Number(time.value.split(':')[0]) < 17) && (Number(time.value.split(':')[1]) >= 0 && Number(time.value.split(':')[1]) < 60))) {
     warning.value = 'Ebben az időben nem tudunk fogadni';
     return;
   }
@@ -47,13 +47,15 @@ function sendAdoptionRequest() {
     details: {
       date: `${ev.value}-${ho.value}-${nap.value}`,
       time: time.value,
-      animal: props.animal,
+      animal: props.animal.id,
     }
   }
   console.log(data);
+  
   reqSer.requestAdoption(data).then((res) => {
     console.log(res.data.message)
   });
+  
 }
 </script>
 

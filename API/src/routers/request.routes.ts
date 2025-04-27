@@ -7,6 +7,7 @@ const router = Router();
 
 router.post('/volunteer', requestController.volunteer);
 router.post('/visit', requestController.visit);
+router.post('/adopt', requestController.adopt);
 
 router.get('/getAll', requestController.getAllRequests);
 router.get('/getAllRaw', requestController.getAllRequestsRaw);

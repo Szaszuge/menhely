@@ -126,6 +126,18 @@ async function acceptRequest(id:string, email:string, name:string) {
         template: "request/MeglatogatasAccept"
       }
       break;
+    case "Örökbefogadás":
+      mailData.value = {
+        to: email,
+        subject: "GazdiRadar | Örökbefogadás | elutasítva",
+        content: {
+          userName: name,
+          date: current_request.details.date,
+          time: current_request.details.time,
+        },
+        template: "request/OrokbefogadasAccept"
+      }
+      break;
     default:
       return console.log("TBA");
   }
@@ -173,6 +185,16 @@ async function refuseRequest(id:string, email:string, name:string) {
           userName: name
         },
         template: "request/MeglatogatasDecline"
+      }
+      break;
+    case "Örökbefogadás":
+      mailData.value = {
+        to: email,
+        subject: "GazdiRadar | Örökbefogadás | elutasítva",
+        content: {
+          userName: name
+        },
+        template: "request/OrokbefogadasDecline"
       }
       break;
     default:

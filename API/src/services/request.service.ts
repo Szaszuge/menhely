@@ -56,6 +56,22 @@ exports.reserveVisit = async (data) => {
     return false;
 };
 
+exports.reserveAdoption = async (data) => {
+    const pushed_adoption_request = new Request();
+    const user = await AppDataSource.manager.findOneBy(User, { id: data.user })
+    pushed_adoption_request.user = user;
+    pushed_adoption_request.Type = RequestType.adopt;
+
+    pushed_adoption_request.details = data.details;
+
+    const volunteer_request = AppDataSource.manager.save(Request, pushed_adoption_request);
+    
+    if (!!volunteer_request){
+        return true;
+    }
+
+    return false;
+};
 exports.acceptRequest = async (id) => {
     console.log(`[SERVICE] ACCEPTING REQUEST...`)
     const request = await AppDataSource.manager.findOneBy(RequestView, {id: id})

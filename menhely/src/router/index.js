@@ -71,7 +71,7 @@ const router = createRouter({
       component: () => import('../views/AllatLeadas.vue')
     },
     {
-      path: '/petadoption',
+      path: '/petadoption/:id',
       name: 'petadoption',
       component: () => import('../views/PetAdoption.vue')
     },

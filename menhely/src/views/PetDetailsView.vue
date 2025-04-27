@@ -38,7 +38,6 @@ onMounted(() => {
       }
 
     })
-    
 });
 
 const showVisitPopup = ref(false);
@@ -80,9 +79,7 @@ const closeVisitPopup = () => {
 
         <div class="action-buttons">
           <Button class="visit-btn" @click="openVisitPopup">Meglátogatás</Button>
-          <RouterLink to="/petadoption">
-            <Button class="adopt-btn">Örökbefogadás</Button>
-          </RouterLink>
+          <Button class="adopt-btn" @click="router.push(`/petadoption/${id}`)">Örökbefogadás</Button>
         </div>
       </div>
     </div>

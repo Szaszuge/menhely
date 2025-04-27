@@ -27,4 +27,7 @@ export class RequestService {
         requestVisit(data:any){
             return axios.post(this.server + "/requests/visit", data);
         }
+        requestAdoption(data:any){
+            return axios.post(this.server + "/requests/adopt", data);
+        }
 }
