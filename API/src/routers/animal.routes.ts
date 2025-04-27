@@ -15,6 +15,7 @@ router.post('/publify', animalController.togglePublic)
 router.post('/getByID', animalController.getByID);
 router.get('/getAll', animalController.getAllAnimals);
 router.get('/getAllRaw', animalController.getAllAnimalsRaw);
+router.get('/getHomePets', animalController.getHomePets);
 
 router.post('/delete', animalController.deleteByID)
 

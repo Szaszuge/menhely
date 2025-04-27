@@ -78,6 +78,10 @@ export const getAllAnimalsRaw = async (req, res, next) => {
     const animals = await animalService.getAllAnimalsRaw();
     return res.status(200).json({message: 'Sikeres lekérdezés!', animals: animals});
 }
+export const getHomePets = async (req, res, next) => {
+    const animals = await animalService.getHomePets();
+    return res.status(200).json({message: 'Sikeres lekérdezés!', animals: animals});
+}
 
 export const deleteByID = async (req, res, next) => {
     const answer = await animalService.deleteByID(req.body[0]);

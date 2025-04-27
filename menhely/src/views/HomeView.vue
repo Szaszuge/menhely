@@ -1,16 +1,25 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue';
+import { onMounted, onUnmounted, ref, provide } from 'vue';
 import homebar from '../components/Homebar.vue'
 import homecard from '../components/Homecards.vue'
 import Allatcard from '../components/Allatcard.vue';
 import PawFooter from '@/components/PawFooter.vue';
+import { ApiService } from '../service/api.service';
 
+const api = new ApiService()
+
+const animals = ref([]);
 
 onMounted(() => {
 
     document.documentElement.style.overflow = 'auto';
     document.body.style.overflow = 'auto';
     document.body.style.position = 'static';
+
+    api.getHomePageAnimals().then((res) => {
+    console.log(res.data.animals)
+    animals.value = res.data.animals;
+  })
 });
 
 onUnmounted(() => {
@@ -34,14 +43,9 @@ onUnmounted(() => {
     <h1>Tekintse meg a nemrég hozzánk került állatokat!</h1>
     <br>
     <div id="petcards"> 
-      <!-- ideiglenesen ezeket kiveszem amíg a dinamikusságon dolgozom
-      <allatcard/>
-      <allatcard/>
-      <allatcard/>
-      <allatcard/>
-      <allatcard/>
-      <allatcard/>
-      -->
+      <Allatcard v-for="animal in animals"
+      :animal="animal"
+       />
     </div>
     <PawFooter/>
   </main>

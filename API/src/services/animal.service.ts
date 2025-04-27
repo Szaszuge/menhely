@@ -65,6 +65,9 @@ exports.getAllAnimals = async() => {
 exports.getAllAnimalsRaw = async() => {
     return await AppDataSource.getRepository(Animal).createQueryBuilder("animal").where("animal.isPublic = 1").getMany();
 }
+exports.getHomePets = async() => {
+    return await AppDataSource.getRepository(Animal).createQueryBuilder("pet").orderBy("pet.created_at", "DESC").limit(6).getMany();
+}
 
 exports.deleteByID = async(id:string) => {
     const answer = await AppDataSource.manager.delete(Animal, {id: id});

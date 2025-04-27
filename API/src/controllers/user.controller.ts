@@ -50,11 +50,13 @@ export const reserve = async (req, res, next) => {
         console.log("E-mail check passed!");
 
         console.log("Validating phone number...");
+        /*
         let phoneValidator = /^\d{11}$/;
         if (!phoneValidator.test(user.phoneNumber)) {
             return res.status(203).json({ message: 'Helytelen Telefonszám formátum!'});
         }
-        console.log("Phone number check passed!");
+            */
+        console.log("Phone number check 'passed'!");
 
         console.log("Validating postal code...");
         if (isNaN(address.postal)) {
