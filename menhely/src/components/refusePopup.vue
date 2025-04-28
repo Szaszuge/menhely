@@ -25,12 +25,12 @@ const reason = ref('')
   <div class="popup-overlay">
     <div class="popup-container">
       <div class="popup-title-container">
-        <h2>Kérelem elutasítása</h2>
+        <h2>Kérelem elutasításának indoka</h2>
         <img src="../assets/close.png" alt="Bezárás" class="close-icon" @click="$emit('close')" />
       </div>
       <div class="popup-content">
         <p class="description-text">
-          Írjuk meg a felhasználónak, hogy miért volt a kérelme elutasítva!
+          Írjuk meg a felhasználónak, hogy miért volt a kérelme elutasítva! Jogtalanul ne utasítsuk el a felhasználót, mert ez jogi következményekkel járhat!
         </p>
           
         <div class="input-group">
@@ -121,7 +121,7 @@ const reason = ref('')
 
 .description-text {
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   font-size: 1.1rem; 
   font-weight: 600;
 }
@@ -187,7 +187,8 @@ label {
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
   white-space: nowrap;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
+  margin-top: -2rem;
 }
 .submit-button:hover {
   transform: translateY(-3px);
@@ -199,6 +200,7 @@ label {
 @media (max-width: 400px) {
   .submit-button {
     width: 100%;
+    margin-top: 0;
   }
   
   .popup-content {

@@ -380,17 +380,18 @@ function moveToPetEditor(ID:string) {
                   <button class="action-button" aria-label="Megtekintés" @click="viewRequest(request.id, request.type)">
                     <img src="../assets/view.png" alt="Megtekintés" class="action-icon">
                   </button>
-                  <button class="action-button" aria-label="Elfogadás">
-                    <img src="../assets/check.png" alt="Elfogadás" class="action-icon" @click="acceptRequest(request.id, request.targetEmail, request.name)">
+                  <button class="action-button" aria-label="Elfogadás" @click="acceptRequest(request.id, request.targetEmail, request.name)">
+                    <img src="../assets/check.png" alt="Elfogadás" class="action-icon">
                   </button>
-                  <button class="action-button" aria-label="Elutasítás">
-                    <img src="../assets/restriction.png" alt="Elutasítás" class="action-icon" @click="showRequestDecline(request.id)">
+                  <button class="action-button" aria-label="Elutasítás" @click="showRequestDecline(request.id)">
+                    <img src="../assets/restriction.png" alt="Elutasítás" class="action-icon">
                   </button>
                 </div>
               </td>
             </tr>
           </tbody>
         </table>
+        
         <table v-if="activeTab === 'Felhasználók'" class="admin-table">
           <thead>
             <tr class="header-row">
@@ -413,7 +414,7 @@ function moveToPetEditor(ID:string) {
               <td class="column-middle">{{ user.role == "recovering" ? "User" : nagybetu(user.role) }}</td>
               <td class="column-actions">
                 <div class="actions-container">
-                  <button class="action-button"  aria-label="Előléptetés" @click="PromoteUser(user.id)" v-if="user.role != 'admin' && user.role != 'moderator'">
+                  <button class="action-button" aria-label="Előléptetés" @click="PromoteUser(user.id)" v-if="user.role != 'admin' && user.role != 'moderator'">
                     <img src="../assets/user_promote.png" alt="Előléptetés" class="action-icon">
                   </button>
                   <button class="disabled-action-button" aria-label="Előléptetés" disabled v-else>
@@ -436,6 +437,7 @@ function moveToPetEditor(ID:string) {
             </tr>
           </tbody>
         </table>
+        
         <table v-if="activeTab === 'Állatok'" class="admin-table">
           <thead>
             <tr class="header-row">
@@ -458,22 +460,22 @@ function moveToPetEditor(ID:string) {
               <td class="column-middle">{{ animal.species == 'dog' ? "Kutya" : "Macska" }}</td>
               <td class="column-actions">
                 <div class="actions-container">
-                  <button class="action-button" aria-label="Publikálás" v-if="animal.isPublicable && !animal.isPublic">
-                    <img src="../assets/view.png" alt="Publikálás" class="action-icon" @click="toggleAnimalPublicity(animal.id)" >
+                  <button class="action-button" aria-label="Publikálás" @click="toggleAnimalPublicity(animal.id)" v-if="animal.isPublicable && !animal.isPublic">
+                    <img src="../assets/view.png" alt="Publikálás" class="action-icon">
                   </button>
-                  <button class="action-button" aria-label="Publikálás" v-else-if="animal.isPublic">
-                    <img src="../assets/hide.png" alt="Publikálás" class="action-icon" @click="toggleAnimalPublicity(animal.id)" >
+                  <button class="action-button" aria-label="Publikálás" @click="toggleAnimalPublicity(animal.id)" v-else-if="animal.isPublic">
+                    <img src="../assets/hide.png" alt="Publikálás" class="action-icon">
                   </button>
                   <button class="disabled-action-button" aria-label="Publikálás" v-else disabled>
                     <img src="../assets/view.png" alt="Publikálás" class="action-icon">
                   </button>
-                  <button class="action-button" aria-label="Törlés">
-                    <img src="../assets/close.png" alt="Törlés" class="action-icon" @click="deleteAnimal(animal.id)">
+                  <button class="action-button" aria-label="Törlés" @click="deleteAnimal(animal.id)">
+                    <img src="../assets/close.png" alt="Törlés" class="action-icon">
                   </button>
-                  <button class="disabled-action-button" aria-label="Módosítás" @click="moveToPetEditor(animal.id)" v-if="animal.isPublic" disabled>
+                  <button class="disabled-action-button" aria-label="Módosítás" v-if="animal.isPublic" disabled>
                     <img src="../assets/modify.png" alt="Módosítás" class="action-icon">
                   </button>
-                  <button class="action-button" aria-label="Módosítás" @click="moveToPetEditor(animal.id)"v-else>
+                  <button class="action-button" aria-label="Módosítás" @click="moveToPetEditor(animal.id)" v-else>
                     <img src="../assets/modify.png" alt="Módosítás" class="action-icon">
                   </button>
                 </div>
@@ -481,32 +483,8 @@ function moveToPetEditor(ID:string) {
             </tr>
           </tbody>
         </table>
-        <!-- Aktivitások tábla -->
-        <table v-if="activeTab === 'Aktivitások'" class="admin-table">
-          <thead>
-            <tr class="header-row">
-              <th class="column-name">Név</th>
-              <th class="column-middle">Aktivitás típusa</th>
-              <th class="column-actions">Időpont</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr 
-              v-for="(activity, index) in filtered_activities" 
-              :key="index" 
-              :class="{ 
-                'even-row': index % 2 !== 0, 
-                'odd-row': index % 2 === 0,
-                'last-row': index === activities.length - 1 
-              }"
-            >
-              <td class="column-name">{{ activity.name }}</td>
-              <td class="column-middle">{{ activity.type }}</td>
-              <td class="column-actions" id="activitytoright">{{ activity.date }} / {{ activity.time }}</td>
-            </tr>
-          </tbody>
-        </table>
-        <!-- Kérés -->
+        
+        <!-- Fix for mobile view as well -->
         <div v-if="activeTab === 'Kérések'" class="mobile-table">
           <div
             v-for="(request, index) in filtered_requests"
@@ -540,7 +518,8 @@ function moveToPetEditor(ID:string) {
             </div>
           </div>
         </div>
-        <!-- Felhasználó -->
+        
+        <!-- Fix for mobile Felhasználók view -->
         <div v-if="activeTab === 'Felhasználók'" class="mobile-table">
           <div
             v-for="(user, index) in filtered_users"
@@ -583,6 +562,8 @@ function moveToPetEditor(ID:string) {
             </div>
           </div>
         </div>
+        
+        <!-- Fix for mobile Állatok view -->
         <div v-if="activeTab === 'Állatok'" class="mobile-table">
           <div
             v-for="(animal, index) in filtered_animals"
@@ -604,50 +585,24 @@ function moveToPetEditor(ID:string) {
               </div>
             </div>
             <div class="mobile-actions">
-              <button class="action-button" aria-label="Publikálás" v-if="animal.isPublicable && !animal.isPublic">
-                <img src="../assets/view.png" alt="Publikálás" class="action-icon" @click="toggleAnimalPublicity(animal.id)" >
+              <button class="action-button" aria-label="Publikálás" @click="toggleAnimalPublicity(animal.id)" v-if="animal.isPublicable && !animal.isPublic">
+                <img src="../assets/view.png" alt="Publikálás" class="action-icon">
               </button>
-              <button class="action-button" aria-label="Publikálás" v-else-if="animal.isPublic">
-                <img src="../assets/hide.png" alt="Publikálás" class="action-icon" @click="toggleAnimalPublicity(animal.id)" >
+              <button class="action-button" aria-label="Publikálás" @click="toggleAnimalPublicity(animal.id)" v-else-if="animal.isPublic">
+                <img src="../assets/hide.png" alt="Publikálás" class="action-icon">
               </button>
               <button class="disabled-action-button" aria-label="Publikálás" v-else disabled>
                 <img src="../assets/view.png" alt="Publikálás" class="action-icon">
               </button>
-              <button class="action-button" aria-label="Törlés">
-                <img src="../assets/close.png" alt="Törlés" class="action-icon" @click="deleteAnimal(animal.id)">
+              <button class="action-button" aria-label="Törlés" @click="deleteAnimal(animal.id)">
+                <img src="../assets/close.png" alt="Törlés" class="action-icon">
               </button>
               <button class="disabled-action-button" aria-label="Módosítás" v-if="animal.isPublic" disabled>
-                 <img src="../assets/modify.png" alt="Módosítás" class="action-icon">
-               </button>
-               <button class="action-button" aria-label="Módosítás" @click="moveToPetEditor(animal.id)"v-else>
-                 <img src="../assets/modify.png" alt="Módosítás" class="action-icon">
-               </button>
-            </div>
-          </div>
-        </div>
-        <div v-if="activeTab === 'Aktivitások'" class="mobile-table">
-          <div
-            v-for="(activity, index) in filtered_activities"
-            :key="`mobile-${index}`"
-            class="mobile-card"
-            :class="{
-              'even-card': index % 2 !== 0,
-              'odd-card': index % 2 === 0
-            }"
-          >
-            <div class="mobile-card-info">
-              <div class="mobile-field">
-                <span class="mobile-label">Név:</span>
-                <span class="mobile-value">{{ activity.name }}</span>
-              </div>
-              <div class="mobile-field">
-                <span class="mobile-label">Aktivitás típusa:</span>
-                <span class="mobile-value">{{ activity.type }}</span>
-              </div>
-              <div class="mobile-field">
-                <span class="mobile-label">Időpont:</span>
-                <span class="mobile-value">{{ activity.date }} / {{ activity.time }}</span>
-              </div>
+                <img src="../assets/modify.png" alt="Módosítás" class="action-icon">
+              </button>
+              <button class="action-button" aria-label="Módosítás" @click="moveToPetEditor(animal.id)" v-else>
+                <img src="../assets/modify.png" alt="Módosítás" class="action-icon">
+              </button>
             </div>
           </div>
         </div>
