@@ -6,10 +6,13 @@ import PawFooter from '@/components/PawFooter.vue';
 import { useUserStore } from '../stores/user';
 import { AnimalService } from '../service/animal.service';
 import { MailService } from "../service/mail.service";
+import AlertPopup from '../components/AlertPopup.vue';
 
 const auth = useUserStore();
 const animal = new AnimalService();
 let mail = new MailService();
+
+const alertPopup = ref(null)
 
 const emit = defineEmits(['submit']);
 
@@ -61,9 +64,8 @@ function send(event:Event) {
   console.log(formDataEntries);
 
   animal.requestSurrender(formData).then((res) => {
-    visszajelzes.value = res.data.message
+    alertPopup.value.addAlert(res.data.message, res.status == 200 ? "success" : "failure")
 
-    console.log(auth.loggedUser())
     const data = {
       "to": auth.loggedUser().email,
         "subject": "GazdiRadar | Állat leadás",
@@ -73,7 +75,9 @@ function send(event:Event) {
             },
         "template": "request/AnimalSent"
     };
-        mail.sendMail(data);
+    if(res.status == 200) {
+      mail.sendMail(data);
+    }
   }); // Jegyzet: SOHA NE KÓDÓLJ BETEGEN!
   
 }
@@ -219,6 +223,7 @@ function send(event:Event) {
     </div>
     <PawFooter :is-sticky="true" />
   </div>
+  <AlertPopup ref="alertPopup" />
 </template>
 
 <style scoped>
