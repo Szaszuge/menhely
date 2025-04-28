@@ -64,7 +64,7 @@ export const volunteer = async (req, res) => {
         return res.status(203).json({message: "Hiba történt a mentéskor!"});
     }
 
-    return res.status(203).json({message: "Kérelem továbbítva!"});
+    return res.status(200).json({message: "Kérelem továbbítva!"});
 }
 
 export const visit = async (req, res) => {

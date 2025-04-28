@@ -4,11 +4,14 @@ import SupportCard from "@/components/SupportCard.vue";
 import PawFooter from "@/components/PawFooter.vue";
 import CustomInput from "@/components/CustomInput.vue";
 import DualRangeSlider from "@/components/DualRangeSlider.vue";
+import AlertPopup from '../components/AlertPopup.vue';
 import { useUserStore } from '../stores/user';
 import { ApiService } from "../service/api.service";
-
 const userStore = useUserStore();
 const api = new ApiService();
+
+const alertPopup = ref(null)
+
 // State management
 const showVolunteerForm = ref(false);
 const volunteerDate = ref({
@@ -36,7 +39,7 @@ function submitVolunteerForm() {
     }
   }
   api.submitVolunteerRequest(data).then((res) => {
-    console.log(res.data.message);
+    alertPopup.value.addAlert(res.data.message, res.status == 200 ? "Success" : "Failure");
   });
 }
 
@@ -180,6 +183,7 @@ onMounted(() => {
 
     <PawFooter v-if="!isMobile" :is-sticky="true" />
   </div>
+  <AlertPopup ref="alertPopup" />
 </template>
 
 <style scoped>
