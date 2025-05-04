@@ -4,6 +4,7 @@ import Button from '@/components/Button.vue';
 import PawFooter from '@/components/PawFooter.vue';
 import { RequestService } from '../service/request.service';
 import { useUserStore } from '../stores/user';
+import AlertPopup from '../components/AlertPopup.vue';
 
 const props = defineProps({
   animal: {
@@ -15,6 +16,7 @@ const props = defineProps({
 const emit = defineEmits(['close']);
 const reqSer = new RequestService();
 const userStore = useUserStore();
+const alertPopup = ref(null)
 
 const ev = ref('');
 const ho = ref('');
@@ -29,14 +31,17 @@ const closePopup = () => {
 function sendVisitRequest() {
   if (ev.value == '' || ho.value == '' || nap.value == '') {
     warning.value = 'Valami hiányzik';
+    alertPopup.value.addAlert(warning.value, 'error')
     return;
   }
   if (Date.parse(`${ev.value}-${ho.value}-${nap.value}`) < Date.now()) {
     warning.value = 'A dátum a múltban van';
+    alertPopup.value.addAlert(warning.value, 'error')
     return;
   }
   if (!((Number(time.value.split(':')[0]) > 7 && Number(time.value.split(':')[0]) < 18) && (Number(time.value.split(':')[1]) >= 0 && Number(time.value.split(':')[1]) < 60))) {
     warning.value = 'Ebben az időben nem tudunk fogadni';
+    alertPopup.value.addAlert(warning.value, 'error')
     return;
   }
   warning.value = '';
@@ -52,6 +57,7 @@ function sendVisitRequest() {
   console.log(data);
   reqSer.requestVisit(data).then((res) => {
     console.log(res.data.message)
+    alertPopup.value.addAlert(res.data.message, res.data.message == 'Kérelem továbbítva!' ? 'success' : 'error')
   });
 }
 </script>
@@ -113,6 +119,7 @@ function sendVisitRequest() {
       </div>      
     </div>
   </div>
+  <AlertPopup ref="alertPopup" />
 </template>
 
 <style scoped>
