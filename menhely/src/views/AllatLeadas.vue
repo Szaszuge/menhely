@@ -291,6 +291,12 @@ function send(event:Event) {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .form-group {
