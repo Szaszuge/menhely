@@ -108,9 +108,9 @@ const filtered_requests = ref([]);
 
 async function viewRequest(id:string, type:string) {
   selectedRequest.value = requests.value.find(x => x.id == id);
-  console.log(selectedRequest.value)
   showRequestDetails.value[0] = true; 
   showRequestDetails.value[1] = type;
+  console.log(id)
 }
 function closeRequestPopup() {
   showRequestDetails.value[0] = false;

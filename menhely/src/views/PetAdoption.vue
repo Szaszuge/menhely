@@ -6,12 +6,16 @@ import AdoptionPopup from '@/components/AdoptionPopup.vue';
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from "vue-router";
 import { AnimalService } from '../service/animal.service';
+import AlertPopup from '../components/AlertPopup.vue';  
+import { RequestService } from '../service/request.service';
 
 const id = useRoute().params.id;
 const imageURL = ref("");
+const alertPopup = ref(null)
 
 const router = useRouter()
 const animSer = new AnimalService();
+const reqSer = new RequestService();
 const animal = ref(null);
 
 const select1 = ref('');
@@ -45,6 +49,19 @@ const closeAdoptionPopup = () => {
   showAdoptionPopup.value = false;
 };
 
+const sendAdoptionRequest = (data) => {
+  data.details.answers = [select1.value, 
+                          select2.value, 
+                          select3.value,
+                          select4.value, 
+                          select5.value, 
+                          textInput.value]
+  console.log(data);
+  reqSer.requestAdoption(data).then((res) => {
+    alertPopup.value.addAlert(res.data.message, res.data.message == 'Kérelem továbbítva!' ? 'success' : 'error')
+  });
+}
+
 const handleSubmit = () => {  
   openAdoptionPopup();
 };
@@ -65,9 +82,9 @@ const handleSubmit = () => {
             <label for="select1">Tudsz-e anyagilag megfelelően gondoskodni a kisállatról?</label>
             <select id="select1" v-model="select1" class="custom-select">
               <option value="" disabled selected>Válasszon egy lehetőséget</option>
-              <option value="option1">Igen</option>
-              <option value="option2">Nem</option>
-              <option value="option3">Jelenleg nem, de hamarosan képes leszek rá</option>
+              <option value="Igen">Igen</option>
+              <option value="Nem">Nem</option>
+              <option value="Jelenleg nem, de hamarosan képes leszek rá">Jelenleg nem, de hamarosan képes leszek rá</option>
             </select>
             <p class="small-note">(Pl.: a kisállat későbbi orvosi költségei egy vizsgálatnál 30-40ezer forintba is kerülhetnek, felszerelések, minőségi etetés)</p>
           </div>
@@ -76,9 +93,9 @@ const handleSubmit = () => {
             <label for="select2">Van-e kisgyermek a családban?</label>
             <select id="select2" v-model="select2" class="custom-select">
               <option value="" disabled selected>Válasszon egy lehetőséget</option>
-              <option value="option1">Igen</option>
-              <option value="option2">Nem</option>
-              <option value="option3">Várandós vagyok</option>
+              <option value="Igen">Igen</option>
+              <option value="Nem">Nem</option>
+              <option value="Várandós vagyok">Várandós vagyok</option>
             </select>
           </div>
 
@@ -86,9 +103,9 @@ const handleSubmit = () => {
             <label for="select3">Hogyan szeretnéd tartani az örökbefogadott kisállatot?</label>
             <select id="select3" v-model="select3" class="custom-select">
               <option value="" disabled selected>Válasszon egy lehetőséget</option>
-              <option value="option1">Lakásban</option>
-              <option value="option2">Udvaron</option>
-              <option value="option3">Lakásban és udvaron egyaránt</option>
+              <option value="Lakásban">Lakásban</option>
+              <option value="Udvaron">Udvaron</option>
+              <option value="Lakásban és udvaron egyaránt">Lakásban és udvaron egyaránt</option>
             </select>
           </div>
         </div>
@@ -98,11 +115,11 @@ const handleSubmit = () => {
             <label for="select4">Milyen típusú ingatlanban fog élni?</label>
             <select id="select4" v-model="select4" class="custom-select">
               <option value="" disabled selected>Válasszon egy lehetőséget</option>
-              <option value="option1">Családi ház</option>
-              <option value="option5">Albérlet</option>
-              <option value="option3">Panel</option>
-              <option value="option2">Tanya</option>
-              <option value="option4">Kertesház</option>
+              <option value="Családi ház">Családi ház</option>
+              <option value="Albérlet">Albérlet</option>
+              <option value="Panel">Panel</option>
+              <option value="Tanya">Tanya</option>
+              <option value="Kertesház">Kertesház</option>
             </select>
             <p class="small-note">(Pl.: Egy nagyobb méretű állatot nem ajánlatos kis helyen tartani, valamint nem is biztos, hogy az adott típusú lakásban tartható.)</p>
           </div>
@@ -111,9 +128,9 @@ const handleSubmit = () => {
             <label for="select5">Van-e más kisállat otthon a családban?</label>
             <select id="select5" v-model="select5" class="custom-select">
               <option value="" disabled selected>Válasszon egy lehetőséget</option>
-              <option value="option1">Igen</option>
-              <option value="option2">Nem</option>
-              <option value="option3">Több állatot is szeretnék örökbefogadni</option>
+              <option value="Igen">Igen</option>
+              <option value="Nem">Nem</option>
+              <option value="Több állatot is szeretnék örökbefogadni">Több állatot is szeretnék örökbefogadni</option>
             </select>
             
           </div>
@@ -135,9 +152,11 @@ const handleSubmit = () => {
     v-if="showAdoptionPopup" 
     :animal="animal" 
     @close="closeAdoptionPopup" 
+    @send="sendAdoptionRequest"
   />
   
   <PawFooter :is-sticky="true"/>
+  <AlertPopup ref="alertPopup" />
 </template>
 
 <style scoped>

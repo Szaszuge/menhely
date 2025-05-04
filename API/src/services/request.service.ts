@@ -15,6 +15,7 @@ exports.getAll = async () => {
     return requests;
 }
 exports.getByID = async (id) => {
+    console.log(`[SERVICE] GATHERING REQUEST BY ID...`)
     const request = await AppDataSource.manager.findOneBy(Request, {id: id})
     if (!request){
         return null;

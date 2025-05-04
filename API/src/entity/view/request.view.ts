@@ -1,8 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ViewEntity, ViewColumn, DataSource } from "typeorm"
-import { AppDataSource } from "../../data-source";
+import { Column, ViewEntity, ViewColumn, DataSource } from "typeorm"
 @ViewEntity({
-    
-    //expression: `SELECT request.id as id, request.Type as type, user.userName as name FROM request INNER JOIN user ON user.id = request.userId`,
 
     expression: (AppDataSource:DataSource) => AppDataSource.createQueryBuilder()
     .select("request.id", "id")

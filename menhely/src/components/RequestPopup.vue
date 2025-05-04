@@ -7,13 +7,29 @@ const animSer = new AnimalService();
 const parsed_request = ref({id: 0, Type: "", details: {}})
 const imageURL = ref("");
 
-const animal = ref(null);
+const animal = ref({ "isPublicable": undefined,
+  "isPublic": undefined,
+  "id": undefined,
+  "name": undefined,
+  "age": undefined,
+  "type": undefined,
+  "from": undefined,
+  "gender": undefined,
+  "arrival": undefined,
+  "details": {
+    "color": undefined,
+    "chipped": undefined,
+    "neutered": undefined,
+    "passported": undefined,
+    "characteristics": [],
+    "paragraphs": [],
+    "image": undefined },
+  "created_at": undefined });
 
 const props = defineProps({
     requestType: {
         type: String,
         required: false, 
-        default: "Leadás",
     },
     currentRequest: {
         type: Object,
@@ -22,17 +38,24 @@ const props = defineProps({
     }
 })
 
-watch(() => props.currentRequest, (value) => {
-  imageURL.value = `http://localhost:3000/uploads/${!!value.details.image ? value.details.image : 'placeholder/animal.png'}`;
+watch(() => animal, (value) => {
+  imageURL.value = `http://localhost:3000/uploads/${value.value.details.image ? value.value.details.image : 'placeholder/animal.png'}`;
 }, {immediate: true})
-watch(() => props.requestType, (value) => {
-  console.log(value)
-  if(value ==  'Látogatás') {
-    animSer.GetAnimalDataByID(props.currentRequest.details.animal).then((res) => {
-      console.log(res.data)
+watch(() => props.requestType, async (value) => {
+  console.log(value);
+  if (value == 'Örökbefogadás') {
+    await animSer.GetAnimalDataByID(props.currentRequest.details.animal).then((res) => {
+      imageURL.value = `http://localhost:3000/uploads/${res.data.animal.details.image ? res.data.animal.details.image : 'placeholder/animal.png'}`;
+      animal.value = res.data.animal;
     })
   }
-})
+  else if (value ==  'Látogatás') {
+    await animSer.GetAnimalDataByID(props.currentRequest.details.animal.id).then((res) => {
+      imageURL.value = `http://localhost:3000/uploads/${res.data.animal.details.image ? res.data.animal.details.image : 'placeholder/animal.png'}`;
+      animal.value = res.data.animal;
+    })
+  }
+}, {deep: true, immediate: true})
 
 const name = ref('Szárforsíp terijer kiskutyuska')
 
@@ -119,11 +142,11 @@ const name = ref('Szárforsíp terijer kiskutyuska')
         <div v-else-if="props.requestType == 'Látogatás'">
           <div class="request-dog-details">
             <div class="request-image-container" id="petvisitimage">
-              <img src="../assets/allatkep.png" alt="Kutya" class="request-dog-image" />
+              <img :src=imageURL alt="Kutya" class="request-dog-image" />
             </div>
             
             <div class="request-details-content" id="petvisit">
-              <h2 class="request-dog-name">{{currentRequest}}</h2>
+              <h2 class="request-dog-name">{{animal.name}}</h2>
               
               <div class="request-info-section">
                 <p class="request-info-label">Látogatást kérelmező neve:</p>
@@ -149,58 +172,65 @@ const name = ref('Szárforsíp terijer kiskutyuska')
           <div class="adoption-container">
             <h2 class="adoption-title">Állat örökbefogadása</h2>
             <div class="adoption-image-container">
-              <img src="../assets/allatkep.png" alt="Állat" class="adoption-animal-image" />
+              <img :src=imageURL alt="Állat" class="adoption-animal-image" />
             </div>
-            <h3 class="adoption-animal-name">Hüvejk</h3>
+            <h3 class="adoption-animal-name">{{animal.name}}</h3>
             <div class="volunteer-info-row">
               <div class="volunteer-info-item">
                 <p class="request-info-label">Örökbefogadó neve:</p>
-                <p class="request-info-value">Kovács Erzsébet</p>
+                <p class="request-info-value">{{currentRequest.realname}}</p>
               </div>
               
               <div class="volunteer-info-item">
                 <p class="request-info-label">Dátuma:</p>
-                <p class="request-info-value">2025-05-15</p>
+                <p class="request-info-value">{{currentRequest.details.date}}</p>
               </div>
               
               <div class="volunteer-info-item">
                 <p class="request-info-label">Időpont (óra:perc)</p>
-                <p class="request-info-value">15:30</p>
+                <p class="request-info-value">{{currentRequest.details.time}}</p>
+              </div>
+            </div>
+
+            <div class="request-info-section">
+              <p class="request-info-label">Tudsz-e anyagilag megfelelően gondoskodni a kisállatról?</p>
+              <div class="request-info-text">
+                {{currentRequest.details.answers[0]}}
               </div>
             </div>
             
             <div class="request-info-section">
               <p class="request-info-label">Van-e kisgyermek a családban?</p>
               <div class="request-info-text">
-                Várandós vagyok
+                {{currentRequest.details.answers[1]}}
               </div>
             </div>
             
             <div class="request-info-section">
               <p class="request-info-label">Hogyan szeretnéd tartani az örökbefogadott kisállatot?</p>
               <div class="request-info-text">
-                Lakásban és udvaron egyaránt
+                {{currentRequest.details.answers[2]}}
               </div>
             </div>
             
             <div class="request-info-section">
               <p class="request-info-label">Milyen típusú ingatlanban fog élni?</p>
               <div class="request-info-text">
-                Tanya
+                {{currentRequest.details.answers[3]}}
               </div>
             </div>
             
             <div class="request-info-section">
               <p class="request-info-label">Van-e más kisállat otthon a családban?</p>
               <div class="request-info-text">
-                Több állatot is szeretnék örökbefogadni
+                {{currentRequest.details.answers[4]}}
               </div>
             </div>
             
             <div class="request-info-section">
               <p class="request-info-label">Mit gondol az ivartalanításról?</p>
               <div class="request-info-text">
-                Nagyon jó
+                {{currentRequest.details.answers[5]}}
               </div>
             </div>
           </div>

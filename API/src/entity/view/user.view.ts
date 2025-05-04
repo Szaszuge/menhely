@@ -1,5 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ViewEntity, ViewColumn, DataSource } from "typeorm"
-import { AppDataSource } from "../../data-source";
+import { ViewEntity, ViewColumn, DataSource } from "typeorm"
 @ViewEntity({
     expression: (AppDataSource:DataSource) => AppDataSource.createQueryBuilder()
     .select("user.id", "id")

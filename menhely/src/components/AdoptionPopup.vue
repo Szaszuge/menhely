@@ -4,7 +4,6 @@ import Button from '@/components/Button.vue';
 import PawFooter from '@/components/PawFooter.vue';
 import { RequestService } from '../service/request.service';
 import { useUserStore } from '../stores/user';
-import AlertPopup from '../components/AlertPopup.vue';
 
 const props = defineProps({
   animal: {
@@ -13,10 +12,8 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['close']);
-const reqSer = new RequestService();
+const emit = defineEmits(['close', 'send']);
 const userStore = useUserStore();
-const alertPopup = ref(null)
 
 const ev = ref('');
 const ho = ref('');
@@ -43,6 +40,7 @@ function sendAdoptionRequest() {
     return;
   }
   warning.value = '';
+  // Emit
   const data = {
     user: userStore.loggedUser().id,
     type: "adoption",
@@ -50,13 +48,12 @@ function sendAdoptionRequest() {
       date: `${ev.value}-${ho.value}-${nap.value}`,
       time: time.value,
       animal: props.animal.id,
+      answers: [],
     }
   }
-  console.log(data);
-  
-  reqSer.requestAdoption(data).then((res) => {
-    alertPopup.value.addAlert(res.data.message, res.data.message == 'Kérelem továbbítva!' ? 'success' : 'error')
-  });
+  emit('send', data);
+  /*
+  */
   
 }
 </script>
@@ -117,7 +114,6 @@ function sendAdoptionRequest() {
       </div>      
     </div>
   </div>
-  <AlertPopup ref="alertPopup" />
 </template>
 
 <style scoped>
