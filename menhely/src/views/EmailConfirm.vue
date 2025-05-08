@@ -5,9 +5,12 @@ import PawFooter from '@/components/PawFooter.vue';
 import Button from '@/components/Button.vue';
 import CustomInput from '@/components/CustomInput.vue';
 import { ApiService } from "../service/api.service";
+import AlertPopup from '../components/AlertPopup.vue';
 
 const router = useRouter()
 const api = new ApiService();
+
+const alertPopup = ref(null)
 
 let id;
 let status = ref('loading');
@@ -30,6 +33,8 @@ onUnmounted(() => {
 function activate(event) {
     api.userActivate(id, confirm).then((res) =>{
         console.log(res.data.message);
+        alertPopup.value.addAlert(res.data.message, res.data.message == 'Sikeres Aktiváció!' ? 'success' : 'error')
+
         if (res.data.message == "Sikeres Aktiváció!"){
             router.push("/");
         }
@@ -146,6 +151,7 @@ let confirm = '';
             <PawFooter :is-sticky="true" />
         </div>
     </div>
+    <AlertPopup ref="alertPopup" />
 </template>
 
 <style scoped>
