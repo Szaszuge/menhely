@@ -5,6 +5,7 @@ import { User } from "../entity/User";
 import { Request, RequestType } from "../entity/Requests";
 import { RequestView } from "../entity/view/request.view";
 import { Activity, ActivityType } from "../entity/Activity";
+import { ActivityView } from "../entity/view/activity.view";
 exports.getAllRaw = async () => {
     console.log(`[SERVICE] GATHERING ALL REQUESTS RAW...`)
     const requests = await AppDataSource.manager.find(Request);
@@ -21,6 +22,11 @@ exports.getByID = async (id) => {
         return null;
     }
     return request;
+}
+
+exports.getActivities = async () => {
+    const activities = await AppDataSource.manager.find(ActivityView)
+    return activities;
 }
 
 exports.reserveVolunteer = async (data) => {
@@ -118,7 +124,6 @@ exports.acceptRequest = async (id) => {
             work.user = await AppDataSource.manager.findOneBy(User, {email: request.targetEmail});
             work.type = ActivityType.work;
             work.date = new Date(`${request.details.date.year}-${request.details.date.month}-${request.details.date.day}`)
-
             const saved_work = await AppDataSource.manager.save(work);
             break;
         case "Látogatás":
@@ -129,6 +134,15 @@ exports.acceptRequest = async (id) => {
             visit.type = ActivityType.check;
             visit.date = new Date(request.details.date)
             const saved_visit = await AppDataSource.manager.save(visit);
+            break;
+        case "Örökbefogadás":
+            console.log(`[SERVICE] REQUEST TYPE: VISIT`)
+            console.log(request);
+            let adopt = new Activity()
+            adopt.user = await AppDataSource.manager.findOneBy(User, {email: request.targetEmail});
+            adopt.type = ActivityType.adopt;
+            adopt.date = new Date(request.details.date)
+            const saved_adopt = await AppDataSource.manager.save(adopt);
             break;
 
         default:

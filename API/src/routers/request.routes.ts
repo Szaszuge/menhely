@@ -11,6 +11,9 @@ router.post('/adopt', requestController.adopt);
 
 router.get('/getAll', requestController.getAllRequests);
 router.get('/getAllRaw', requestController.getAllRequestsRaw);
+
+router.get('/getActivities', requestController.getActivities);
+
 router.post('/getByID', requestController.getByID);
 router.post('/accept', requestController.acceptRequest, mailController.RenderMailThen, requestController.deleteRequest);
 router.post('/refuse', mailController.RenderMailThen, requestController.deleteRequest);

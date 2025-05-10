@@ -57,6 +57,9 @@ export class ApiService {
         //console.log("Fetching all animals.");
         return axios.get(this.server + "/animal/getHomePets");
     }
+    getAllActivities(){
+        return axios.get(this.server + "/requests/getActivities");
+    }
 
     PromoteUser(id:string){
         return axios.post(this.server + "/users/promote", [id]);

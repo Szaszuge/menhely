@@ -28,43 +28,8 @@ const declineRequest = ref(false);
 const selectedRequest = ref('');
 const temp = ref('');
 
-const activities = ref([
-  {
-    id: '1',
-    name: 'Kovács János',
-    type: 'Meglátogatás',
-    date: '2025-07-06',
-    time: '15:45'
-  },
-  {
-    id: '2',
-    name: 'Nagy Eszter',
-    type: 'Örökbefogadás',
-    date: '2025-07-10',
-    time: '11:30'
-  },
-  {
-    id: '3',
-    name: 'Szabó Péter',
-    type: 'Önkéntes munka',
-    date: '2025-07-12',
-    time: '09:00'
-  },
-  {
-    id: '4',
-    name: 'Tóth Katalin',
-    type: 'Leadás',
-    date: '2025-07-15',
-    time: '14:20'
-  },
-  {
-    id: '5',
-    name: 'Varga Balázs',
-    type: 'Meglátogatás',
-    date: '2025-07-18',
-    time: '16:30'
-  }
-]);
+const activities = ref([]);
+
 const filtered_activities = ref([]);
 
 onMounted(() => {
@@ -88,6 +53,13 @@ async function refresh() {
   await api.getAllAnimals().then((res) => {
     animals.value = res.data.animals;
   });
+  await api.getAllActivities().then((res) => {
+    activities.value = res.data.activities;
+    activities.value.sort(function(a,b){
+    return new Date(b.date) - new Date(a.date);
+});
+  })
+
   if (search.value == ""){
     filtered_requests.value = requests.value;
     filtered_users.value = users.value;
@@ -483,6 +455,31 @@ function moveToPetEditor(ID:string) {
             </tr>
           </tbody>
         </table>
+
+        <table v-if="activeTab === 'Aktivitások'" class="admin-table">
+          <thead>
+            <tr class="header-row">
+              <th class="column-name">Név</th>
+              <th class="column-middle">Típus</th>
+              <th class="column-actions">Mikor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr 
+              v-for="(activity, index) in activities" 
+              :key="index" 
+              :class="{ 
+                'even-row': index % 2 !== 0, 
+                'odd-row': index % 2 === 0,
+                'last-row': index === activities.length - 1 
+              }"
+            >
+              <td class="column-name">{{ activity.name }}</td>
+              <td class="column-middle">{{ activity.type }}</td>
+              <td class="column-end">{{ activity.date.split('T')[0] }}</td>
+            </tr>
+          </tbody>
+        </table>
         
         <!-- Fix for mobile view as well -->
         <div v-if="activeTab === 'Kérések'" class="mobile-table">
@@ -683,6 +680,11 @@ function moveToPetEditor(ID:string) {
 
 .column-actions {
   width: 30%;
+}
+
+.column-end {
+  width: 20%;
+  text-align: end;
 }
 
 .header-row {

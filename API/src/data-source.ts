@@ -8,6 +8,7 @@ import { RequestView } from "./entity/view/request.view"
 import { UserView } from "./entity/view/user.view"
 import { AnimalView } from "./entity/view/animal.view"
 import { Activity } from "./entity/Activity"
+import { ActivityView } from "./entity/view/activity.view"
 
 export const AppDataSource = new DataSource({
     type: "mysql",
@@ -18,7 +19,7 @@ export const AppDataSource = new DataSource({
     database: "menhely",
     synchronize: true,
     logging: false,
-    entities: [User, Address, Animal, Request, Activity, UserView, AnimalView, RequestView],
+    entities: [User, Address, Animal, Request, Activity, UserView, AnimalView, RequestView, ActivityView],
     migrations: [],
     subscribers: [],
 })

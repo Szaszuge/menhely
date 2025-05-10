@@ -7,6 +7,10 @@ export const getAllRequestsRaw = async (req, res) => {
     const requests = await requestService.getAllRaw();
     return res.status(200).json({ message: "Sikeres lekérdezés", requests: requests });
 }
+export const getActivities = async (req, res) => {
+    const requests = await requestService.getActivities();
+    return res.status(200).json({ message: "Sikeres lekérdezés", activities: requests });
+}
 export const getByID = async (req, res) => {
     console.log(req.body[0]);
     const found = await requestService.getByID(req.body[0]);
