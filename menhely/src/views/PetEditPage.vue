@@ -5,9 +5,12 @@ import { AnimalService } from '../service/animal.service';
 import CustomInput from '../components/CustomInput.vue';
 import Button from '../components/Button.vue';
 import PawFooter from '../components/PawFooter.vue';
+import AlertPopup from '../components/AlertPopup.vue';
 
 const router = useRouter()
 const animSer = new AnimalService();
+
+const alertPopup = ref(null)
 
 const personalityOptions = ref([
   { id: 1, label: 'Játékos', selected: false },
@@ -347,9 +350,9 @@ const savePet = (id) => {
   console.log(formDataEntries);
 
   animSer.updateAnimal(formData).then((res) => {
-    console.log(res.data.message);
+    console.log(res.data.status);
+    alertPopup.value.addAlert(res.data.message, res.data.message.includes("Sikeres frissítés") ? 'success' : 'error')
   })
-  // Call API to save the data
 }
 
 </script>
@@ -611,6 +614,7 @@ const savePet = (id) => {
     
     <PawFooter :is-sticky="true" />
   </div>
+  <AlertPopup ref="alertPopup" />
 </template>
 
 <style scoped>
