@@ -86,6 +86,8 @@ exports.acceptRequest = async (id) => {
         console.log(`[SERVICE] REQUEST NON-EXISTANT. RETURNING...`)
         return "non-existent";
     }
+    console.log(id);
+    console.log(request);
     switch (request.type){
         case "Leadás":
             console.log(`[SERVICE] REQUEST TYPE: SURRENDER`)
@@ -132,7 +134,8 @@ exports.acceptRequest = async (id) => {
             let visit = new Activity()
             visit.user = await AppDataSource.manager.findOneBy(User, {email: request.targetEmail});
             visit.type = ActivityType.check;
-            visit.date = new Date(request.details.date)
+            visit.date = new Date(`${request.details.date} ${request.details.time}`)
+            visit.animal = request.details.animal;
             const saved_visit = await AppDataSource.manager.save(visit);
             break;
         case "Örökbefogadás":
@@ -141,7 +144,8 @@ exports.acceptRequest = async (id) => {
             let adopt = new Activity()
             adopt.user = await AppDataSource.manager.findOneBy(User, {email: request.targetEmail});
             adopt.type = ActivityType.adopt;
-            adopt.date = new Date(request.details.date)
+            adopt.date = new Date(`${request.details.date} ${request.details.time}`)
+            adopt.animal = request.details.animal;
             const saved_adopt = await AppDataSource.manager.save(adopt);
             break;
 

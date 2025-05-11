@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from "typeorm"
-
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from "typeorm"
+import { Activity } from "./Activity";
 
 export enum Kind {
     dog = "dog",
@@ -64,4 +64,7 @@ export class Animal {
 
     @CreateDateColumn()
     created_at: Date;
+
+    @OneToMany(() => Activity, (activity) => activity.user)
+    activities: Activity[]
 }

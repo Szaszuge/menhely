@@ -1,4 +1,5 @@
 import { Column, ViewEntity, ViewColumn, DataSource } from "typeorm"
+import { Animal } from "../Animal";
 @ViewEntity({
 
     expression: (AppDataSource:DataSource) => AppDataSource.createQueryBuilder()
@@ -7,6 +8,7 @@ import { Column, ViewEntity, ViewColumn, DataSource } from "typeorm"
     .addSelect("user.fullName", "realname")
     .addSelect("activity.type", "type")
     .addSelect("activity.date", "date")
+    .addSelect("activity.animal", "animal")
     .from("activity", "activity")
     .innerJoin("user", "user", "user.id = activity.user")
 })
@@ -21,4 +23,7 @@ realname: string;
 type: string;
 @ViewColumn()
 date: string;
+@ViewColumn()
+animal: Animal;
+
 }
