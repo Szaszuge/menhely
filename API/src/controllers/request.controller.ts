@@ -20,7 +20,7 @@ export const getByID = async (req, res) => {
     return res.status(200).json({ message: "Kérelem lekérve", request: found});
 }
 export const acceptRequest = async (req, res, next) => {
-    const id = req.body.id;
+    const id = req.body[0];
     console.log(`Accepting request... [${id}]`);
     const answer = await requestService.acceptRequest(id);
     if (!answer) {
