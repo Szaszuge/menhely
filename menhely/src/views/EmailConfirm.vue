@@ -52,7 +52,7 @@ let confirm = '';
                 <div class="form-container">
                     <div class="welcome-text">
                         <h2>Megerősítés</h2>
-                        <p>A mezőbe kérjük azt a jelszót írja be, amellyel a fiókját regisztrálta.</p>
+                        <p>Kérjük, a mezőbe kérjük azt a jelszót írja be, amellyel a fiókját regisztrálta.</p>
                     </div>
                     
                     <form @submit.prevent="activate" class="login-form">
@@ -97,8 +97,8 @@ let confirm = '';
             <div class="form-side">
                 <div class="form-container">
                     <div class="welcome-text">
-                        <h2>Sajnáljuk</h2>
-                        <p>Ez a fiók már aktiválva van.</p>
+                        <h2>Sajnáljuk!</h2>
+                        <p>Ezt a fiókot már korábban aktiválták. Ha ez nem maga által történt, jelezze csapatunk felé. Megértését köszönjük!</p>
                     </div>
                 </div>
             </div>
@@ -118,7 +118,7 @@ let confirm = '';
                 <div class="form-container">
                     <div class="welcome-text">
                         <h2>Hiba</h2>
-                        <p>A fiók nem létezik.</p>
+                        <p>Ez a fiók nem létezik.</p>
                     </div>
                 </div>
             </div>
@@ -138,7 +138,7 @@ let confirm = '';
                 <div class="form-container">
                     <div class="welcome-text">
                         <h2>Sajnáljuk</h2>
-                        <p>Ez a fiók le van tiltva.</p>
+                        <p>Ezt a fiókot csapatunk letiltotta. Valószínűleg olyat követett el, ami miatt elvettük a fiókja jogait. Megértését köszönjük!</p>
                     </div>
                 </div>
             </div>
@@ -237,12 +237,14 @@ div#banned.banned {
 
 .welcome-text h2 {
     font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    text-align: center;
 }
 
 .welcome-text p {
     font-size: 1.1rem;
+    text-align: center;
 }
 
 .login-form {
