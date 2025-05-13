@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineEmits } from 'vue';
+import { ref } from 'vue';
 import Button from '@/components/Button.vue';
 import PawFooter from '@/components/PawFooter.vue';
 import { RequestService } from '../service/request.service';
@@ -16,7 +16,6 @@ const props = defineProps({
         default: '',
     }
 })
-
 const reason = ref('')
 
 </script>
@@ -26,7 +25,7 @@ const reason = ref('')
     <div class="popup-container">
       <div class="popup-title-container">
         <h2>Kérelem elutasításának indoka</h2>
-        <img src="../assets/close.png" alt="Bezárás" class="close-icon" @click="$emit('close')" />
+        <img src="../assets/close.png" alt="Bezárás" class="close-icon" @click="$emit('close-popup')" />
       </div>
       <div class="popup-content">
         <p class="description-text">

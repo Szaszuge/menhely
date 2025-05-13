@@ -41,17 +41,9 @@ const props = defineProps({
 watch(() => animal, (value) => {
   imageURL.value = `http://localhost:3000/uploads/${value.value.details.image ? value.value.details.image : 'placeholder/animal.png'}`;
 }, {immediate: true})
-watch(() => props.requestType, async (value) => {
-  console.log(value);
-  if (value == 'Örökbefogadás' || value ==  'Látogatás') {
-    await animSer.GetAnimalDataByID(props.currentRequest.details.animal).then((res) => {
-      imageURL.value = `http://localhost:3000/uploads/${res.data.animal.details.image ? res.data.animal.details.image : 'placeholder/animal.png'}`;
-      animal.value = res.data.animal;
-    })
-  }
-}, {deep: true, immediate: true})
-watch(() => props.currentRequest, (value) => {
-  console.log(value);
+watch(() => props.currentRequest, async (value) => {
+  console.log(value)
+  imageURL.value = `http://localhost:3000/uploads/${value.details.image ? value.details.image : 'placeholder/animal.png'}`;
 }, {immediate: true})
 const name = ref('Szárforsíp terijer kiskutyuska')
 

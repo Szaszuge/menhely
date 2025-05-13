@@ -10,7 +10,7 @@ import RequestPopup from '../components/RequestPopup.vue';
 import { useRouter } from 'vue-router';
 import { AnimalService } from '../service/animal.service';
 import { RequestService } from '../service/request.service'
-import refusePopup from '../components/refusePopup.vue';
+import RefusePopup from '../components/refusePopup.vue';
 import AlertPopup from '../components/AlertPopup.vue';
 import ActivityPopup from '../components/ActivityPopup.vue';
 
@@ -171,9 +171,9 @@ async function acceptRequest(id:string, email:string, name:string) {
 }
 
 async function showRequestDecline(id:string) {
-  showRequestDetails.value[1] = requests.value.find(x => x.id == id);
-  declineRequest.value = true;
+  showRequestDetails.value[1] = await requests.value.find(x => x.id == id);
   console.log(showRequestDetails.value[1])
+  declineRequest.value = true;
 }
 
 async function refuseRequest(id:string, email:string, name:string, reason:string) {
@@ -234,6 +234,7 @@ async function refuseRequest(id:string, email:string, name:string, reason:string
     default:
       return console.log("TBA");
   }
+  console.log(mailData.value)
   await reqSer.refuseRequest(id, mailData.value).then((res) => {
     alertPopup.value.addAlert(res.data.message == 'Sikeres törlés' ? "Sikeresen törölve!" : "Valami történt", res.data.message == 'Sikeres törlés' ? 'success' : 'error')
   });
@@ -307,7 +308,10 @@ function lookUp() {
 } 
 
 async function toggleAnimalPublicity(id:string) {
-  await animSer.togglePublicStatus(id);
+  await animSer.togglePublicStatus(id).then((res) => {
+    console.log(res.data.message);
+    alertPopup.value.addAlert(res.data.message, res.data.message == 'Sikeres frissítés' ? 'success' : 'error')
+  });
   refresh();
 }
 
@@ -331,7 +335,6 @@ async function viewActivity(id, type){
 }
 async function deleteActivity(id){
   console.log(id);
-
   // Kell ez egyáltalán?
 }
 
@@ -671,7 +674,7 @@ async function deleteActivity(id){
     <RequestPopup @close-popup="closeRequestPopup" :current-request="showRequestDetails[1]" :request-type="showRequestDetails[2]" />
   </div>
   <div v-if="declineRequest" class="request-popup-overlay">
-    <refusePopup @close="closeRefusePopup" :current-request="selectedRequest" @send="refuseRequest"/>
+    <RefusePopup @close-popup="closeRefusePopup" :current-request="showRequestDetails[1]" @send="refuseRequest"/>
   </div>
   <div v-if="showActivityDetails[0]" class="request-popup-overlay">
     <ActivityPopup @close-popup="closeActivityPopup" :current-activity="showActivityDetails[1]" :activity-type="showActivityDetails[2]"/>
