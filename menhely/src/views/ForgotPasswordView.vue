@@ -8,11 +8,14 @@ import { RouterLink } from 'vue-router';
 import { ApiService } from '../service/api.service';
 import { MailService } from "../service/mail.service";
 import { useUserStore } from '../stores/user';
+import AlertPopup from '../components/AlertPopup.vue';
 
 const userStore = useUserStore();
 const router = useRouter()
 const api = new ApiService();
 const mail = new MailService();
+
+const alertPopup = ref(null)
 
 const email = ref("");
 
@@ -21,6 +24,7 @@ function AskForPass() {
   if (!userStore.isLoggedIn()) {
     api.userPassRecover(email.value).then(() => {
       api.getMailDataByMail(email.value).then((res)=> {
+        alertPopup.value.addAlert(res.data.message, res.data.success ? 'success' : 'error')
         if (res.data.success){
           const maildata = res.data.maildata;
           const data = {
@@ -95,6 +99,7 @@ function AskForPass() {
       <PawFooter :is-sticky="true" />
     </div>
   </div>
+  <AlertPopup ref="alertPopup" />
 </template>
 
 <style scoped>
