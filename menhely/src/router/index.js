@@ -37,12 +37,6 @@ const router = createRouter({
     },
 
     {
-      path: '/emailsent',
-      name: 'emailsent',
-      component: () => import('../views/EmailSent.vue')
-    },
-
-    {
       path: '/hogyansegithet', // Ha a többi route angolul van akkor legyen ez is.
       name: 'hogyansegithet',
       component: () => import('../views/HogyanSegithet.vue')

@@ -148,7 +148,7 @@ export const resetPass = async (req, res) => {
         return res.status(203).json({message: "A fiók nem kért jelszó váltást."});
     }
     if (pass != confirm){
-        return res.status(400).json({message: "A két jelszó nem egyezik!"});
+        return res.status(203).json({message: "A két jelszó nem egyezik!"});
     }
     const answer = await userService.changePWD(id, pass)
     if (answer){
