@@ -6,10 +6,13 @@ import Button from '../components/Button.vue';
 import PawFooter from '../components/PawFooter.vue';
 import { ApiService } from "../service/api.service";
 import { useUserStore } from '../stores/user';
+import AlertPopup from '../components/AlertPopup.vue';
 
 const userStore = useUserStore();
 const router = useRouter()
 const api = new ApiService();
+
+const alertPopup = ref(null)
 
 const id = useRoute().params.id; // sír de ez jó
 let status = ref('loading');
@@ -32,6 +35,7 @@ onMounted(() => {
 });
 function resetPassword() {
   api.resetPassByID(id, password.value, confirmPassword.value).then((res) => {
+    alertPopup.value.addAlert(res.data.message, res.data.message == 'A fiók jelszava sikeresen frissült.' ? 'success' : 'error')
     if(res.data.message == "A fiók jelszava sikeresen frissült."){
       router.push("/")
     }
@@ -100,6 +104,7 @@ function resetPassword() {
       <PawFooter :is-sticky="true" />
     </div>
   </div>
+  <AlertPopup ref="alertPopup" />
 </template>
 
 <style scoped>
