@@ -506,9 +506,6 @@ async function deleteActivity(id){
                   <button class="action-button" aria-label="Megtekintés" @click="viewActivity(activity.id, activity.type)">
                     <img src="../assets/view.png" alt="Megtekintés" class="action-icon">
                   </button>
-                  <button class="action-button" aria-label="Törlés" @click="deleteActivity(activity.id)">
-                    <img src="../assets/close.png" alt="Törlés" class="action-icon">
-                  </button>
                 </div>
               </td>
             </tr>

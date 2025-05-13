@@ -17,8 +17,9 @@ onMounted(() => {
     document.body.style.position = 'static';
 
     api.getHomePageAnimals().then((res) => {
-    console.log(res.data.animals)
-    animals.value = res.data.animals;
+    console.log(res.data.animals);
+
+    animals.value = res.data.animals.filter(x => x.isPublic == true);
   })
 });
 
