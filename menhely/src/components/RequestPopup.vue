@@ -43,20 +43,16 @@ watch(() => animal, (value) => {
 }, {immediate: true})
 watch(() => props.requestType, async (value) => {
   console.log(value);
-  if (value == 'Örökbefogadás') {
+  if (value == 'Örökbefogadás' || value ==  'Látogatás') {
     await animSer.GetAnimalDataByID(props.currentRequest.details.animal).then((res) => {
       imageURL.value = `http://localhost:3000/uploads/${res.data.animal.details.image ? res.data.animal.details.image : 'placeholder/animal.png'}`;
       animal.value = res.data.animal;
     })
   }
-  else if (value ==  'Látogatás') {
-    await animSer.GetAnimalDataByID(props.currentRequest.details.animal.id).then((res) => {
-      imageURL.value = `http://localhost:3000/uploads/${res.data.animal.details.image ? res.data.animal.details.image : 'placeholder/animal.png'}`;
-      animal.value = res.data.animal;
-    })
-  }
 }, {deep: true, immediate: true})
-
+watch(() => props.currentRequest, (value) => {
+  console.log(value);
+}, {immediate: true})
 const name = ref('Szárforsíp terijer kiskutyuska')
 
 </script>

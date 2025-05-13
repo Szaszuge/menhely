@@ -29,4 +29,6 @@ export class Activity {
     @ManyToOne(() => Animal, (animal) => animal.activities, {nullable: true})
     animal: Animal;
     
+    @Column({nullable: true})
+    secondaryTime: String
 }

@@ -9,6 +9,7 @@ import { Animal } from "../Animal";
     .addSelect("activity.type", "type")
     .addSelect("activity.date", "date")
     .addSelect("activity.animal", "animal")
+    .addSelect("activity.secondaryTime", "secondaryTime")
     .from("activity", "activity")
     .innerJoin("user", "user", "user.id = activity.user")
 })
@@ -25,5 +26,6 @@ type: string;
 date: string;
 @ViewColumn()
 animal: Animal;
-
+@ViewColumn()
+secondaryTime: string;
 }

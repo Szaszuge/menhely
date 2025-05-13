@@ -125,7 +125,8 @@ exports.acceptRequest = async (id) => {
             let work = new Activity()
             work.user = await AppDataSource.manager.findOneBy(User, {email: request.targetEmail});
             work.type = ActivityType.work;
-            work.date = new Date(`${request.details.date.year}-${request.details.date.month}-${request.details.date.day}`)
+            work.date = new Date(`${request.details.date.year}-${request.details.date.month}-${request.details.date.day} ${request.details.fromTo[0]}`);
+            work.secondaryTime = request.details.fromTo[1];
             const saved_work = await AppDataSource.manager.save(work);
             break;
         case "Látogatás":

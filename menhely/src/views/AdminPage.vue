@@ -12,6 +12,7 @@ import { AnimalService } from '../service/animal.service';
 import { RequestService } from '../service/request.service'
 import refusePopup from '../components/refusePopup.vue';
 import AlertPopup from '../components/AlertPopup.vue';
+import ActivityPopup from '../components/ActivityPopup.vue';
 
 const activeTab = ref('');
 const search = ref('');
@@ -23,10 +24,12 @@ const router = useRouter()
 
 const alertPopup = ref(null)
 
-const showRequestDetails = ref([false, '']);
+const showRequestDetails = ref([false, '', '']);
 const declineRequest = ref(false);
 const selectedRequest = ref('');
 const temp = ref('');
+
+const showActivityDetails = ref([false, '', '']);
 
 const activities = ref([]);
 
@@ -79,10 +82,9 @@ const raw_requests = ref([]);
 const filtered_requests = ref([]);
 
 async function viewRequest(id:string, type:string) {
-  selectedRequest.value = requests.value.find(x => x.id == id);
+  showRequestDetails.value[1] = requests.value.find(x => x.id == id);
   showRequestDetails.value[0] = true; 
-  showRequestDetails.value[1] = type;
-  console.log(id)
+  showRequestDetails.value[2] = type;
 }
 function closeRequestPopup() {
   showRequestDetails.value[0] = false;
@@ -90,11 +92,13 @@ function closeRequestPopup() {
 function closeRefusePopup() {
   declineRequest.value = false;
 }
+function closeActivityPopup() {
+  showActivityDetails.value[0] = false;
+}
 
 async function acceptRequest(id:string, email:string, name:string) {
   let mailData = ref({});
   let current_request = undefined;
-  console.log(email, name)
   await reqSer.RequestByID(id).then((res) => {
     current_request = res.data.request;
   })
@@ -167,9 +171,9 @@ async function acceptRequest(id:string, email:string, name:string) {
 }
 
 async function showRequestDecline(id:string) {
-  selectedRequest.value = requests.value.find(x => x.id == id);
+  showRequestDetails.value[1] = requests.value.find(x => x.id == id);
   declineRequest.value = true;
-  console.log(selectedRequest.value)
+  console.log(showRequestDetails.value[1])
 }
 
 async function refuseRequest(id:string, email:string, name:string, reason:string) {
@@ -315,6 +319,22 @@ async function deleteAnimal(id:string) {
 function moveToPetEditor(ID:string) {
   router.push(`/peteditor/${ID}`);
 }
+
+// Állatok vége
+// Aktivitások
+
+async function viewActivity(id, type){
+  showActivityDetails.value[0] = true;
+  showActivityDetails.value[1] = filtered_activities.value.find(x => x.id == id);
+  showActivityDetails.value[2] = type;
+  console.log(id);
+}
+async function deleteActivity(id){
+  console.log(id);
+
+  // Kell ez egyáltalán?
+}
+
 </script>
 
 <template>
@@ -462,6 +482,7 @@ function moveToPetEditor(ID:string) {
               <th class="column-name">Név</th>
               <th class="column-middle">Típus</th>
               <th class="column-actions">Mikor</th>
+              <th class="column-actions">Műveletek</th>
             </tr>
           </thead>
           <tbody>
@@ -477,6 +498,16 @@ function moveToPetEditor(ID:string) {
               <td class="column-name">{{ activity.name }}</td>
               <td class="column-middle">{{ activity.type }}</td>
               <td class="column-end">{{ activity.date.split('T')[0] }}</td>
+              <td class="column-actions">
+                <div class="actions-container">
+                  <button class="action-button" aria-label="Megtekintés" @click="viewActivity(activity.id, activity.type)">
+                    <img src="../assets/view.png" alt="Megtekintés" class="action-icon">
+                  </button>
+                  <button class="action-button" aria-label="Törlés" @click="deleteActivity(activity.id)">
+                    <img src="../assets/close.png" alt="Törlés" class="action-icon">
+                  </button>
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -603,16 +634,47 @@ function moveToPetEditor(ID:string) {
             </div>
           </div>
         </div>
+        
+        <!-- Fix for mobile Aktivitások view -->
+        <div v-if="activeTab === 'Aktivitások'" class="mobile-table">
+          <div
+            v-for="(activity, index) in activities"
+            :key="`mobile-${index}`"
+            class="mobile-card"
+            :class="{
+              'even-card': index % 2 !== 0,
+              'odd-card': index % 2 === 0
+            }"
+          >
+            <div class="mobile-card-info">
+              <div class="mobile-field">
+                <span class="mobile-label">Név:</span>
+                <span class="mobile-value">{{ activity.name }}</span>
+              </div>
+              <div class="mobile-field">
+                <span class="mobile-label">Típus:</span>
+                <span class="mobile-value">{{ activity.type }}</span>
+              </div>
+            </div>
+            <div class="mobile-actions">
+              TBA
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
   <PawFooter :is-sticky="true"/>
 
   <div v-if="showRequestDetails[0]" class="request-popup-overlay">
-    <RequestPopup @close-popup="closeRequestPopup" :request-type="showRequestDetails[1]" :current-request="selectedRequest" />
+    <RequestPopup @close-popup="closeRequestPopup" :current-request="showRequestDetails[1]" :request-type="showRequestDetails[2]" />
   </div>
   <div v-if="declineRequest" class="request-popup-overlay">
-    <refusePopup :current-request="selectedRequest" @close="closeRefusePopup" @send="refuseRequest"/>
+    <refusePopup @close="closeRefusePopup" :current-request="selectedRequest" @send="refuseRequest"/>
+  </div>
+  <div v-if="showActivityDetails[0]" class="request-popup-overlay">
+    <ActivityPopup @close-popup="closeActivityPopup" :current-activity="showActivityDetails[1]" :activity-type="showActivityDetails[2]"/>
   </div>
   <AlertPopup ref="alertPopup" />
 </template>
