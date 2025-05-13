@@ -39,7 +39,7 @@ function submitVolunteerForm() {
     }
   }
   api.submitVolunteerRequest(data).then((res) => {
-    alertPopup.value.addAlert(res.data.message, res.status == 200 ? "Success" : "Failure");
+    alertPopup.value.addAlert(res.data.message, res.status == 200 ? "success" : "failure");
   });
 }
 
