@@ -3,6 +3,9 @@ import { AppDataSource } from "../data-source";
 import { Request, RequestType } from "../entity/Requests";
 import { User } from "../entity/User";
 import { AnimalView } from "../entity/view/animal.view";
+import { Activity } from "../entity/Activity";
+import { JsonContains } from 'typeorm';
+
 
 exports.reserveAnimalSurrenderRequest = async(data, filename) => {
     console.log(`[SERVICE] ANIMAL SURRENDER REQUEST... ${data.user}`)
@@ -72,6 +75,16 @@ exports.getHomePets = async() => {
 exports.deleteByID = async(id:string) => {
     const answer = await AppDataSource.manager.delete(Animal, {id: id});
     if (answer.affected > 0){
+        return true;
+    }
+    return false;
+}
+exports.isAdoptable = async(id:string) => {
+    const helper:Animal = await AppDataSource.manager.findOneBy(Animal, {id: id})
+    console.log("\n\n\nallat megvan in shallah\n\n\n")
+    const answer = await AppDataSource.manager.query(`SELECT * FROM activity WHERE type = 'Örökbefogadás' AND animalId = '${helper.id}'`);
+    console.log(answer);
+    if (answer.length == 0) {
         return true;
     }
     return false;

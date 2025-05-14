@@ -39,6 +39,12 @@ animSer.GetAnimalDataByID(id).then((res) => {
   }
 
 })
+
+animSer.isReservedForAdoption(id).then((res) => {
+      if (!res.data.adoptable) {
+      router.push(`/petdetails/${id}`)
+      }
+    })
 });
 
 const openAdoptionPopup = () => {

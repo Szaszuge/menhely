@@ -90,3 +90,8 @@ export const deleteByID = async (req, res, next) => {
     }
     return res.status(200).json({message: 'Sikeres törlés!'});
 }
+
+export const isAdoptable = async (req, res) => {
+    const answer = await animalService.isAdoptable(req.body[0]);
+    return res.status(200).json({message: 'Adat lekérve', adoptable: answer})
+}

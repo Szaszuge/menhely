@@ -9,6 +9,7 @@ import { useUserStore } from '../stores/user';
 
 const id = useRoute().params.id;
 const imageURL = ref("");
+const isAdoptable = ref();
 
 const router = useRouter()
 const animSer = new AnimalService();
@@ -27,17 +28,19 @@ const animal = ref({
   isPublic: false
 });
 
-onMounted(() => {
 
+onMounted(() => {
     animSer.GetAnimalDataByID(id).then((res) => {
-      console.log(res.data.animal)
+      console.log(res.data.animal);
       animal.value = res.data.animal; 
       imageURL.value = `http://localhost:3000/uploads/${!!animal.value.details.image ? animal.value.details.image : 'placeholder/animal.png'}`;
-
       if (res.data.animal == null || !animal.value.isPublic) {
       router.push('/')
       }
-
+    })
+    animSer.isReservedForAdoption(id).then((res) => {
+      console.log(res.data.adoptable);
+      isAdoptable.value = res.data.adoptable;
     })
 });
 
@@ -78,7 +81,10 @@ const closeVisitPopup = () => {
           </section>
         </div>
 
-        <div class="action-buttons" v-if="useUserStore().isLoggedIn()" >
+        <div class="action-buttons" v-if="!isAdoptable" >
+          <Button class="disabled-adopt-btn">Ezt az állatot valaki örökbefogadta</Button>
+        </div>
+        <div class="action-buttons" v-else-if="useUserStore().isLoggedIn()" >
           <Button class="visit-btn" @click="openVisitPopup">Meglátogatás</Button>
           <Button class="adopt-btn" @click="router.push(`/petadoption/${id}`)">Örökbefogadás</Button>
         </div>

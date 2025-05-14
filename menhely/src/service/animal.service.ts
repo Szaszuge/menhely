@@ -15,11 +15,14 @@ export class AnimalService {
     updateAnimal(data:FormData) {
         return axios.post(this.server + "/animal/update", data, {headers: {"Content-Type": "multipart/form-data"}})
     }
-    togglePublicStatus(id:string){
+    togglePublicStatus(id:string) {
         console.log("Send request.")
         return axios.post(this.server + "/animal/publify", [id])
     }
-    deleteAnimalByID(id:string){
+    deleteAnimalByID(id:string) {
         return axios.post(this.server + "/animal/delete", [id])
+    }
+    isReservedForAdoption(id:string) {
+        return axios.post(this.server + "/animal/isAdoptable", [id])
     }
 }
