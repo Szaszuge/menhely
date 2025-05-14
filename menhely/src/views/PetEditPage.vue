@@ -367,16 +367,20 @@ const savePet = (id) => {
       <div class="card-content">
         <div class="pet-info-section">
           <div class="image-section">
-            <img v-bind:src="imageURL" alt="Pet photo" class="pet-image"  @click="uploadImage"/>
-            <div class="image-modify-text" @click="uploadImage">Kép módosítása</div>
-                <input 
-                  hidden 
-                  type="file" 
-                  accept="image/png, image/jpeg" 
-                  id="image-file-input" 
-                  v-on:change="imageAdded" 
-                  @change="changeFileName"
-                >
+            <div class="image-container">
+              <img v-bind:src="imageURL" alt="Pet photo" class="pet-image" @click="uploadImage"/>
+              <div class="image-overlay" @click="uploadImage">
+                <span class="overlay-text">Kép módosítása</span>
+              </div>
+            </div>
+            <input 
+              hidden 
+              type="file" 
+              accept="image/png, image/jpeg" 
+              id="image-file-input" 
+              v-on:change="imageAdded" 
+              @change="changeFileName"
+            >
           </div>
           
           <div class="admission-info">
@@ -703,6 +707,7 @@ const savePet = (id) => {
   flex-direction: column;
   align-items: center;
   flex-shrink: 0;
+  margin-bottom: 20px;  
 }
 
 .pet-image {
@@ -713,38 +718,42 @@ const savePet = (id) => {
   border: 1px solid black;
 }
 
-.image-modify-text {
-  margin-top: 10px;
-  font-size: 1rem;
-  font-weight: 600;
+.image-container {
   position: relative;
-  cursor: pointer;
-  transition: color 0.3s ease-in-out;
+  width: 200px;
+  height: 200px;
+  margin-bottom: 15px;  
 }
 
-.image-modify-text:hover {
-  color: #ff6600;
-}
-
-.image-modify-text::after {
-  content: "";
+.image-overlay {
   position: absolute;
+  bottom: 0;
   left: 0;
-  bottom: -5px;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  overflow: hidden;
   width: 100%;
-  height: 3px;
-  background-color: #ff6600;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.3s ease-in-out;
+  height: 0;
+  transition: .5s ease;
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+  cursor: pointer;
 }
 
-.image-modify-text:hover::after {
-  transform: scaleX(1);
-  transform-origin: left;
+.image-container:hover .image-overlay {
+  height: 50px;  
 }
 
-
+.overlay-text {
+  color: white;
+  font-size: 1rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  white-space: nowrap;
+}
 
 .admission-info {
   flex-grow: 1;
