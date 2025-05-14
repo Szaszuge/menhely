@@ -657,7 +657,9 @@ async function deleteActivity(id){
               </div>
             </div>
             <div class="mobile-actions">
-              TBA
+              <button class="action-button" aria-label="Megtekintés" @click="viewActivity(activity.id, activity.type)">
+                    <img src="../assets/view.png" alt="Megtekintés" class="action-icon">
+                  </button>
             </div>
           </div>
         </div>
