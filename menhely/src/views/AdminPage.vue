@@ -76,7 +76,6 @@ async function refresh() {
 }
 
 // Kérések
-// TODO: Mivel a nezet az ugyan az, mint a sima csak tobb, ezert egyesiteni kell
 const requests = ref([]);
 const raw_requests = ref([]);
 const filtered_requests = ref([]);
@@ -335,7 +334,6 @@ async function viewActivity(id, type){
 }
 async function deleteActivity(id){
   console.log(id);
-  // Kell ez egyáltalán?
 }
 
 </script>
@@ -479,12 +477,12 @@ async function deleteActivity(id){
           </tbody>
         </table>
 
-        <table v-if="activeTab === 'Aktivitások'" class="admin-table">
+        <table v-if="activeTab === 'Aktivitások'" class="admin-table activity-table">
           <thead>
             <tr class="header-row">
               <th class="column-name">Név</th>
               <th class="column-middle">Típus</th>
-              <th class="column-actions">Mikor</th>
+              <th class="column-date">Mikor</th>
               <th class="column-actions">Műveletek</th>
             </tr>
           </thead>
@@ -500,7 +498,7 @@ async function deleteActivity(id){
             >
               <td class="column-name">{{ activity.name }}</td>
               <td class="column-middle">{{ activity.type }}</td>
-              <td class="column-end">{{ activity.date.split('T')[0] }}</td>
+              <td class="column-date">{{ activity.date.split('T')[0] }}</td>
               <td class="column-actions">
                 <div class="actions-container">
                   <button class="action-button" aria-label="Megtekintés" @click="viewActivity(activity.id, activity.type)">
@@ -512,7 +510,6 @@ async function deleteActivity(id){
           </tbody>
         </table>
         
-        <!-- Fix for mobile view as well -->
         <div v-if="activeTab === 'Kérések'" class="mobile-table">
           <div
             v-for="(request, index) in filtered_requests"
@@ -547,7 +544,6 @@ async function deleteActivity(id){
           </div>
         </div>
         
-        <!-- Fix for mobile Felhasználók view -->
         <div v-if="activeTab === 'Felhasználók'" class="mobile-table">
           <div
             v-for="(user, index) in filtered_users"
@@ -591,7 +587,6 @@ async function deleteActivity(id){
           </div>
         </div>
         
-        <!-- Fix for mobile Állatok view -->
         <div v-if="activeTab === 'Állatok'" class="mobile-table">
           <div
             v-for="(animal, index) in filtered_animals"
@@ -635,7 +630,6 @@ async function deleteActivity(id){
           </div>
         </div>
         
-        <!-- Fix for mobile Aktivitások view -->
         <div v-if="activeTab === 'Aktivitások'" class="mobile-table">
           <div
             v-for="(activity, index) in activities"
@@ -771,6 +765,32 @@ async function deleteActivity(id){
 .header-row th.column-actions {
   text-align: right;
   padding-right: 24px;
+}
+
+
+.activity-table th.column-name {
+  width: 30%;
+  text-align: left;
+  padding-left: 24px;
+}
+
+.activity-table th.column-middle {
+  width: 25%;
+  text-align: center;
+}
+
+
+.activity-table th.column-actions {
+  width: 20%;
+  text-align: center;
+}
+
+.activity-table td.column-end {
+  text-align: center;
+}
+
+.activity-table .actions-container {
+  justify-content: center;
 }
 
 .odd-row {
