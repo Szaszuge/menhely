@@ -62,10 +62,10 @@ export const volunteer = async (req, res) => {
     // TODO: Van-e már két önkéntes azon a napon: Dobja vissza.
 
     console.log(request);
-    const answer = requestService.reserveVolunteer(request);
+    const answer = await requestService.reserveVolunteer(request);
 
-    if (!answer) {
-        return res.status(203).json({message: "Hiba történt a mentéskor!"});
+    if (answer == false) {
+        return res.status(203).json({message: "Ez a nap nem elérhető!"});
     }
 
     return res.status(200).json({message: "Kérelem továbbítva!"});

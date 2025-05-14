@@ -81,7 +81,6 @@ exports.deleteByID = async(id:string) => {
 }
 exports.isAdoptable = async(id:string) => {
     const helper:Animal = await AppDataSource.manager.findOneBy(Animal, {id: id})
-    console.log("\n\n\nallat megvan in shallah\n\n\n")
     const answer = await AppDataSource.manager.query(`SELECT * FROM activity WHERE type = 'Örökbefogadás' AND animalId = '${helper.id}'`);
     console.log(answer);
     if (answer.length == 0) {

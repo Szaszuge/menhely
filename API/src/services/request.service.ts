@@ -30,6 +30,8 @@ exports.getActivities = async () => {
 }
 
 exports.reserveVolunteer = async (data) => {
+    const request_date = `${data.details.date.year}-${data.details.date.month}-${data.details.date.day}T00:00:00.000`;
+    const request_date_plus = `${data.details.date.year}-${data.details.date.month}-${data.details.date.day + 1}T00:00:00.000`;
     const pushed_volunteer_request = new Request();
     const user = await AppDataSource.manager.findOneBy(User, { id: data.user })
     pushed_volunteer_request.user = user;
@@ -37,13 +39,12 @@ exports.reserveVolunteer = async (data) => {
 
     pushed_volunteer_request.details = data.details;
 
-    const volunteer_request = AppDataSource.manager.save(Request, pushed_volunteer_request);
-    
-    if (!!volunteer_request){
-        return true;
+    const answer = await AppDataSource.manager.query(`SELECT * FROM activity WHERE type = 'Önkéntes munka' AND date >= '${request_date}' AND date < '${request_date_plus}'`);
+    if (answer.length > 1) {
+        return false;
     }
-
-    return false;
+    AppDataSource.manager.save(Request, pushed_volunteer_request);
+    return true;
 };
 
 exports.reserveVisit = async (data) => {
