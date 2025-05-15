@@ -37,7 +37,7 @@ const router = createRouter({
     },
 
     {
-      path: '/hogyansegithet', // Ha a többi route angolul van akkor legyen ez is.
+      path: '/hogyansegithet',
       name: 'hogyansegithet',
       component: () => import('../views/HogyanSegithet.vue')
     },
@@ -92,6 +92,10 @@ const router = createRouter({
       path: '/peteditor/:id',
       name: 'peteditor',
       component: () => import('../views/PetEditPage.vue')
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: '/'
     }
   ],
 })
