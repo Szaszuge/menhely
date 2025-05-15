@@ -409,7 +409,7 @@ async function viewActivity(id, type){
                   <button class="disabled-action-button" aria-label="Előléptetés" disabled v-else>
                     <img src="../assets/user_promote.png" alt="Előléptetés" class="action-icon">
                   </button>
-                  <button class="action-button" aria-label="Lefokozás" @click="DemoteUser(user.id)" v-if="(user.role == 'moderator' || user.role == 'admin') && userStore.loggedUser().name != user.name">
+                  <button class="action-button" aria-label="Lefokozás" @click="DemoteUser(user.id)" v-if="user.role == 'moderator' && userStore.loggedUser().name != user.name">
                     <img src="../assets/user_demote.png" alt="Lefokozás" class="action-icon">
                   </button>
                   <button class="disabled-action-button" aria-label="Lefokozás" disabled v-else>

@@ -19,7 +19,6 @@ const closeMenu = () => {
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=keyboard_arrow_down,menu" />
 <div id="main">
     <div id="left">
-        <!-- SVG ikon nem tölt be ha fájlból próbálom behívni, úgyhogy egy kicsit ocsmány lesz, de működik -->
         <RouterLink to="/" @click="closeMenu">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:serif="http://www.serif.com/" width="auto" height="75px" viewBox="0 0 3200 2134" version="1.1" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;" id="mh-icon">
             <g id="Radar">
@@ -56,7 +55,7 @@ const closeMenu = () => {
         </RouterLink>
     </div>
     <div id="right" :class="{ 'mobile-menu-open': isMenuOpen }">
-        <RouterLink to="/adminpage" class="link" v-if="userStore.loggedUser()?.role === 'admin'">Admin</RouterLink> 
+        <RouterLink to="/adminpage" class="link" v-if="userStore.loggedUser()?.role === 'admin' || userStore.loggedUser()?.role === 'moderator'">Admin</RouterLink> 
         <RouterLink to="/petcatalog" class="link" @click="closeMenu">Állatkatalógus</RouterLink>
         <RouterLink to="/petsurrender" class="link" @click="closeMenu">Állat leadása</RouterLink>
         <RouterLink to="/hogyansegithet" class="link" @click="closeMenu">Hogyan segíthet?</RouterLink>
