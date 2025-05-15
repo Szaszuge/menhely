@@ -1,18 +1,28 @@
-# 🐾 **Állatmenhely Weboldal** 🐾
+# **GazdiRadar** 
 
- Egy weboldal, amely lehetőséget biztosít a kutyák és macskák örökbefogadására, valamint az állatok leadására.🌟
-
----
-
-## 👨‍💻 **Csapattagok**:
-
-- **Kecskés Zsolt István** 👨‍💻
-- **Ótott-Kovács Máté** 👨‍💻
-- **Auer Zoltán** 👨‍💻
+ A GazdiRadar többek között egy menhely webes felülete, amely Baja környékén lévő állatoknak kínál menedéket, a felhasználó képes állatokat leadni (akár talált vagy anyagi / egyéb körülmények miatt már képtelen az adott kiskedvencre vigyázni), a jelenleg menhelyen lévő állatokat megtekinteni, valamint anyagilag támogatni a menhelyet, vagy önkéntes munkával segíteni.
 
 ---
 
-## ⚙️ **Használt Technológiák**:
+##  **Csapattagok**:
+
+- **Kecskés Zsolt István** 
+- **Auer Zoltán** 
+- **Ótott-Kovács Máté** 
+
+---
+
+## **Főbb funkciók**:
+- Bejelentkezés
+- Regisztrálás
+- Szűrt keresés az állatkatalógusban
+- Állat leadása
+
+---
+
+##  **Használt Technológiák**:
+
+---
 
 ### Frontend:
 -  **[Vue.js](https://vuejs.org/)** - JavaScript keretrendszer
@@ -30,4 +40,24 @@
 
 ### Projekt Keretrendszer:
 -  **[Scrum](https://www.scrum.org/)** - Fejlesztési módszertan
-## ghteszt
+
+---
+## Telepítés
+### 1. Klónozd le a repository-t
+
+### 2. Frontend indítása
+```sh
+ cd menhely
+ npm i
+ npm run dev
+```
+
+### 3. Backend indítása
+```sh
+ cd backend
+ npm i
+ npm run start
+```
+---
+
+
