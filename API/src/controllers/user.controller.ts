@@ -13,14 +13,14 @@ export const reserve = async (req, res, next) => {
         console.log("Performing mandatory checks..");
 
         console.log("Checking missing data...");
-        if ( user == undefined || address == undefined || !user.fullName ||!user.userName || !user.password || !user.email || !user.phoneNumber || !user.address.city  || !user.address.postal  || !user.address.street  || !user.address.number){
+        if ( user == undefined || address == undefined || !user.fullName ||!user.userName || !user.password || !user.email || !user.phoneNumber || !address.city  || !address.postal  || !address.street  || !address.number){
             console.log("Missing data. Returning...")
             return res.status(203).json({ message: 'Hiányzó adatok!'});
         }
         console.log("Data check passed!");
 
-        if (user.address.floor == undefined) user.address.floor = 0;
-        if (user.address.door == undefined) user.address.door = 1;
+        if (address.floor == undefined || address.floor == null) address.floor = 0;
+        if (address.door == undefined || address.door == null) address.door = 1;
 
         console.log("Checking whether email is already in used...")
         if ((await userService.IsEmailUsed(user.email))){
@@ -50,12 +50,10 @@ export const reserve = async (req, res, next) => {
         console.log("E-mail check passed!");
 
         console.log("Validating phone number...");
-        /*
         let phoneValidator = /^\d{11}$/;
         if (!phoneValidator.test(user.phoneNumber)) {
             return res.status(203).json({ message: 'Helytelen Telefonszám formátum!'});
         }
-            */
         console.log("Phone number check 'passed'!");
 
         console.log("Validating postal code...");
@@ -104,7 +102,7 @@ export const activateById = async (req, res) => {
             res.status(203).json({ message: "A fiók nem létezik!"});
             break;
         default:
-            res.status(400).json({message: "Van ami nem jó."})
+            res.status(203).json({message: "Van ami nem jó."})
             break;
     }
 }
