@@ -38,13 +38,21 @@ const props = defineProps({
     }
 })
 
-watch(() => animal, (value) => {
+watch(() => animal, async (value) => {
   imageURL.value = `http://localhost:3000/uploads/${value.value.details.image ? value.value.details.image : 'placeholder/animal.png'}`;
 }, {immediate: true})
-watch(() => props.currentRequest, async (value) => {
+watch(() => props.currentRequest, (value) => {
   console.log(value)
-  imageURL.value = `http://localhost:3000/uploads/${value.details.image ? value.details.image : 'placeholder/animal.png'}`;
-}, {immediate: true})
+  if (value.type == 'Örökbefogadás' || value.type ==  'Látogatás') {
+    animSer.GetAnimalDataByID(value.details.animal.id).then((res) => {
+      imageURL.value = `http://localhost:3000/uploads/${res.data.animal.details.image ? res.data.animal.details.image : 'placeholder/animal.png'}`;
+      animal.value = res.data.animal;
+    })
+  }
+  else if (value.type == "Leadás") {
+    imageURL.value =  `http://localhost:3000/uploads/${value.details.image ? value.details.image : 'placeholder/animal.png'}`;
+  }
+}, {immediate: true, deep: true})
 const name = ref('Szárforsíp terijer kiskutyuska')
 
 </script>
