@@ -53,6 +53,43 @@ const openVisitPopup = () => {
 const closeVisitPopup = () => {
   showVisitPopup.value = false;
 };
+
+const formatParagraphText = (text: string) => {
+  if (!text) return '';
+  
+  const lines = text.split('\n');
+  const formattedLines = lines.map(line => {
+    if (line.trim().startsWith('- ')) {
+      return `<li>${line.trim().substring(2)}</li>`;
+    }
+    return `<p>${line}</p>`;
+  });
+  
+  let result = '';
+  let inList = false;
+  
+  formattedLines.forEach(line => {
+    if (line.startsWith('<li>')) {
+      if (!inList) {
+        result += '<ul class="pet-description-list">';
+        inList = true;
+      }
+      result += line;
+    } else {
+      if (inList) {
+        result += '</ul>';
+        inList = false;
+      }
+      result += line;
+    }
+  });
+  
+  if (inList) {
+    result += '</ul>';
+  }
+  
+  return result;
+};
 </script>
 
 <template>
@@ -77,7 +114,7 @@ const closeVisitPopup = () => {
         <div class="info-content">
           <section v-for="paragraph in animal.details.paragraphs">
             <h3>{{ paragraph.title }}</h3>
-            <p>{{ paragraph.description }}</p>
+            <div v-html="formatParagraphText(paragraph.description)"></div>
           </section>
         </div>
 
@@ -97,7 +134,7 @@ const closeVisitPopup = () => {
 
   <PawFooter :is-sticky="true"/>
   
-  <VisitPopup v-if="showVisitPopup" @close="closeVisitPopup" :animal="animal" />
+  <VisitPopup v-if="showVisitPopup" @close="closeVisitPopup" :animal="animal"/>
 </template>
 
 <style scoped>
@@ -143,14 +180,18 @@ const closeVisitPopup = () => {
 
 .specs {
   border-radius: 12px 12px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .spec-row {
   display: flex;
   justify-content: space-between;
-  padding: 0.75rem;
+  padding: 1rem;
   border-bottom: 1px solid #e0e0e0; 
   font-size: 1rem;
+  flex: 1;
 }
 
 .spec-row:last-child {
@@ -187,7 +228,7 @@ const closeVisitPopup = () => {
   padding: 1.5rem;
   flex-grow: 1;
   overflow-y: auto;
-  max-height: 550px;
+  max-height: 450px;
 }
 
 section {
@@ -285,5 +326,16 @@ ul {
   .pet-details {
     max-width: 85%; 
   }
+}
+
+:deep(.pet-description-list) {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+:deep(p) {
+  margin: 0.5rem 0;
 }
 </style>

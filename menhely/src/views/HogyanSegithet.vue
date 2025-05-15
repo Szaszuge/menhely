@@ -44,7 +44,7 @@ function submitVolunteerForm() {
 }
 
 const currentYear = new Date().getFullYear();
-const availableYears = Array.from({ length: 3 }, (_, i) => currentYear + i);
+const availableYears = Array.from({ length: 2 }, (_, i) => currentYear + i);
 
 const isMobile = ref(false);
 
