@@ -180,14 +180,18 @@ const formatParagraphText = (text: string) => {
 
 .specs {
   border-radius: 12px 12px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .spec-row {
   display: flex;
   justify-content: space-between;
-  padding: 0.75rem;
+  padding: 1rem;
   border-bottom: 1px solid #e0e0e0; 
   font-size: 1rem;
+  flex: 1;
 }
 
 .spec-row:last-child {
@@ -224,7 +228,7 @@ const formatParagraphText = (text: string) => {
   padding: 1.5rem;
   flex-grow: 1;
   overflow-y: auto;
-  max-height: 550px;
+  max-height: 450px;
 }
 
 section {
