@@ -149,7 +149,7 @@ function send(event:Event) {
               <div class="date-container">
                 <select v-model="ev" class="date-select year-select">
                   <option value="">Év</option>
-                  <option v-for="year in 3" :key="year" :value="2025 + year - 1">{{ 2025 + year - 1 }}</option>
+                  <option v-for="year in 2" :key="year" :value="2025 + year - 1">{{ 2025 + year - 1 }}</option>
                 </select>
                 
                 <select v-model="ho" class="date-select month-select">
