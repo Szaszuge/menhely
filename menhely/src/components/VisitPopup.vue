@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { ref, defineEmits } from 'vue';
 import Button from '@/components/Button.vue';
-import PawFooter from '@/components/PawFooter.vue';
 import { RequestService } from '../service/request.service';
 import { useUserStore } from '../stores/user';
-import AlertPopup from '../components/AlertPopup.vue';
+import AlertPopup from './AlertPopup.vue';
 
 const props = defineProps({
   animal: {

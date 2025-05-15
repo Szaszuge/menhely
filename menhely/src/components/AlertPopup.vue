@@ -46,7 +46,7 @@ defineExpose({
 
 <template>
   <Teleport to="body">
-    <div class="fixed bottom-8 right-8 flex flex-col gap-4 z-50">
+    <div class="fixed bottom-8 right-8 flex flex-col gap-4 z-150">
       <TransitionGroup name="slide-fade" tag="div" class="flex flex-col gap-4">
         <div 
           v-for="alert in alerts" 
