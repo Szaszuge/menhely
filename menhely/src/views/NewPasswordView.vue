@@ -37,7 +37,9 @@ function resetPassword() {
   api.resetPassByID(id, password.value, confirmPassword.value).then((res) => {
     alertPopup.value.addAlert(res.data.message, res.data.message == 'A fiók jelszava sikeresen frissült.' ? 'success' : 'error')
     if(res.data.message == "A fiók jelszava sikeresen frissült."){
-      router.push("/")
+      setTimeout(() => {
+        router.push("/")
+      }, 3000) 
     }
   })
 }

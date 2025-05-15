@@ -30,12 +30,12 @@ const closePopup = () => {
 };
 function sendVisitRequest() {
   if (ev.value == '' || ho.value == '' || nap.value == '') {
-    warning.value = 'Valami hiányzik';
+    warning.value = 'Hiányzó adatok!';
     alertPopup.value.addAlert(warning.value, 'error')
     return;
   }
   if (Date.parse(`${ev.value}-${ho.value}-${nap.value}`) < Date.now()) {
-    warning.value = 'A dátum a múltban van';
+    warning.value = 'Látogatás időpontja a múltban van';
     alertPopup.value.addAlert(warning.value, 'error')
     return;
   }
@@ -75,7 +75,7 @@ function sendVisitRequest() {
           Kérem az alábbi mezőket töltse ki az alábbi formátum alapján, majd nyomjon a küldés gombra!
           Egy látogatás maximum 1 órán át tart.
         </p>
-        <p class="warning">{{ warning }}</p>
+
         <div class="date-time-grid">
           <div class="input-group">
             <label for="ev">Év</label>

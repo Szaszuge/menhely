@@ -70,7 +70,6 @@ function sendAdoptionRequest() {
         <p class="description-text">
           Kérjük a magának megfelelő időt válassza ki, mikor tudná örökbefogadni a kisállatot. Ezt csapatunk felülbírálja és visszajelzést fog erről kapni!
         </p>
-        <p class="warning">{{ warning }}</p>
         <div class="date-time-grid">
           <div class="input-group">
             <label for="ev">Év</label>

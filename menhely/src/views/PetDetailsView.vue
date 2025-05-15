@@ -220,7 +220,7 @@ const formatParagraphText = (text: string) => {
 .pet-name {
   font-weight: 600;
   text-align: center;
-  font-size: 1.8rem;
+  font-size: 2rem;
   background-color: #FDBA74;
   padding: 1rem;
   margin: 0;
@@ -228,10 +228,15 @@ const formatParagraphText = (text: string) => {
 }
 
 .info-content {
-  padding: 1.5rem;
+  padding: 2rem;
   flex-grow: 1;
   overflow-y: auto;
   max-height: 450px;
+  font-size: 1.2rem;
+}
+
+.info-content h3 {
+font-size: 1.5rem;
 }
 
 .cardspace{
