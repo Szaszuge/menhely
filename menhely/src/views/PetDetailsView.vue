@@ -118,6 +118,9 @@ const formatParagraphText = (text: string) => {
           </section>
         </div>
 
+<div class="cardspace"></div>
+
+
         <div class="action-buttons" v-if="!isAdoptable" >
           <Button class="disabled-adopt-btn">Ezt az állatot valaki örökbefogadta</Button>
         </div>
@@ -230,6 +233,14 @@ const formatParagraphText = (text: string) => {
   overflow-y: auto;
   max-height: 450px;
 }
+
+.cardspace{
+  padding: 1.5rem;
+  flex-grow: 2;
+  overflow-y: auto;
+  max-height: 450px;
+}
+
 
 section {
   margin-bottom: 1.5rem;
