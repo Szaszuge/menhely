@@ -241,7 +241,6 @@ async function refuseRequest(id:string, email:string, name:string, reason:string
   refresh();
 }
 
-
 // Kérések vége
 // Felhaszálók
 

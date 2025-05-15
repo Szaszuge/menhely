@@ -36,7 +36,9 @@ function activate(event) {
         alertPopup.value.addAlert(res.data.message, res.data.message == 'Sikeres Aktiváció!' ? 'success' : 'error')
 
         if (res.data.message == "Sikeres Aktiváció!"){
-            router.push("/");
+            setTimeout(() => {
+                router.push("/");
+            }, 3000)  
         }
     })
 }

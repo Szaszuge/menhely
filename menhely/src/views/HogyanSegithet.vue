@@ -40,6 +40,16 @@ function submitVolunteerForm() {
   }
   api.submitVolunteerRequest(data).then((res) => {
     alertPopup.value.addAlert(res.data.message, res.status == 200 ? "success" : "failure");
+    
+    if (res.status == 200) {
+      volunteerDate.value = {
+        year: "",
+        month: "",
+        day: ""
+      };
+      values.value = [25, 75]; 
+      volunteerReason.value = "";
+    }
   });
 }
 
@@ -61,7 +71,6 @@ onMounted(() => {
 <template>
   <div class="content-wrapper">
     <div class="cards-container">
-      <!-- Volunteer Card -->
       <SupportCard title="Jelentkezzen önkéntesnek!">
         <div class="card-content">
           <p class="intro-text">

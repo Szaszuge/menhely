@@ -14,7 +14,7 @@ const api = new ApiService();
 
 const alertPopup = ref(null)
 
-const id = useRoute().params.id; // sír de ez jó
+const id = useRoute().params.id; 
 let status = ref('loading');
 
 const password = ref('');

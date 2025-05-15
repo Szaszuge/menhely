@@ -68,17 +68,28 @@ function send(event:Event) {
 
     const data = {
       "to": auth.loggedUser().email,
-        "subject": "GazdiRadar | Állat leadás",
-        "content": {
-            "userName": auth.loggedUser().name,
-            "animalname": allatNeve.value,
-            },
-        "template": "request/AnimalSent"
+      "subject": "GazdiRadar | Állat leadás",
+      "content": {
+          "userName": auth.loggedUser().name,
+          "animalname": allatNeve.value,
+      },
+      "template": "request/AnimalSent"
     };
+    
     if(res.status == 200) {
       mail.sendMail(data);
+      allatNeve.value = '';
+      honnan.value = '';
+      faj.value = '';
+      telepules.value = '';
+      ev.value = '';
+      ho.value = '';
+      nap.value = '';
+      egyebInfo.value = '';
+      kep = null;
+      fileName.value = '';
     }
-  }); // Jegyzet: SOHA NE KÓDÓLJ BETEGEN!
+  }); 
   
 }
 </script>
@@ -510,7 +521,7 @@ function send(event:Event) {
   font-size: 0.9rem;
   border: none;
   padding: 0 1.5rem;
-  min-width: 220px; /* Wider button to fit text better */
+  min-width: 220px; 
 }
 
 .submit-button-disabled:hover {

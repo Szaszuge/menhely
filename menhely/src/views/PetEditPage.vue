@@ -302,7 +302,6 @@ const toggleAdmissionOption = (optionId) => {
       item.selected = false;
     });
   } else {
-    // Otherwise select only this option
     admissionOptions.value.forEach(item => {
       item.selected = item.id === optionId;
     });
