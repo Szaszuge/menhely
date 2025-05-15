@@ -142,7 +142,7 @@ async function acceptRequest(id:string, email:string, name:string) {
         content: {
           userName: name,
           date: current_request.details.date,
-          time: current_request.details.time,  
+          time: current_request.details.time,
         },
         template: "request/MeglatogatasAccept"
       }
@@ -150,7 +150,7 @@ async function acceptRequest(id:string, email:string, name:string) {
     case "Örökbefogadás":
       mailData.value = {
         to: email,
-        subject: "GazdiRadar | Örökbefogadás | elutasítva",
+        subject: "GazdiRadar | Örökbefogadás | elfogadva",
         content: {
           userName: name,
           date: current_request.details.date,
@@ -330,9 +330,6 @@ async function viewActivity(id, type){
   showActivityDetails.value[0] = true;
   showActivityDetails.value[1] = filtered_activities.value.find(x => x.id == id);
   showActivityDetails.value[2] = type;
-  console.log(id);
-}
-async function deleteActivity(id){
   console.log(id);
 }
 
