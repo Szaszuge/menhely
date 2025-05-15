@@ -62,10 +62,17 @@ const sendAdoptionRequest = (data) => {
                           select4.value, 
                           select5.value, 
                           textInput.value]
+  if (!textInput.value) {
+    alertPopup.value.addAlert("Hiányzó adatok!", 'error')
+    return;
+  }
   console.log(data);
   reqSer.requestAdoption(data).then((res) => {
     alertPopup.value.addAlert(res.data.message, res.data.message == 'Kérelem továbbítva!' ? 'success' : 'error')
   });
+}
+const showChildError = (message) => {
+  alertPopup.value.addAlert(message, 'error')
 }
 
 const handleSubmit = () => {  
@@ -159,6 +166,7 @@ const handleSubmit = () => {
     :animal="animal" 
     @close="closeAdoptionPopup" 
     @send="sendAdoptionRequest"
+    @error="showChildError"
   />
   
   <PawFooter :is-sticky="true"/>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineEmits } from 'vue';
+import { ref, defineEmits, watch } from 'vue';
 import Button from '@/components/Button.vue';
 import PawFooter from '@/components/PawFooter.vue';
 import { RequestService } from '../service/request.service';
@@ -12,7 +12,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['close', 'send']);
+const emit = defineEmits(['close', 'send', 'error']);
 const userStore = useUserStore();
 
 const ev = ref('');
@@ -28,15 +28,15 @@ const closePopup = () => {
 
 function sendAdoptionRequest() {
   if (ev.value == '' || ho.value == '' || nap.value == '') {
-    warning.value = 'Valami hiányzik';
+    emit('error', 'Hiányzó adatok!')
     return;
   }
   if (Date.parse(`${ev.value}-${ho.value}-${nap.value}`) < Date.now()) {
-    warning.value = 'A dátum a múltban van';
+    emit('error', 'A dátum a múltban van!')
     return;
   }
   if (!((Number(time.value.split(':')[0]) > 7 && Number(time.value.split(':')[0]) < 17) && (Number(time.value.split(':')[1]) >= 0 && Number(time.value.split(':')[1]) < 60))) {
-    warning.value = 'Ebben az időben nem tudunk fogadni';
+    emit('error', 'Ebben az időben nem tudunk fogadni!')
     return;
   }
   warning.value = '';
